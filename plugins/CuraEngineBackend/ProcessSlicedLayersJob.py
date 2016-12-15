@@ -7,6 +7,7 @@ from UM.Job import Job
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Scene.SceneNode import SceneNode
 from UM.Application import Application
+from UM.Mesh.MeshBuilder import MeshBuilder
 from UM.Mesh.MeshData import MeshData
 
 from UM.Message import Message
@@ -85,6 +86,7 @@ class ProcessSlicedLayersJob(Job):
                 min_layer_number = layer.id
 
         current_layer = 0
+        test_mesh = MeshBuilder()
 
         for layer in self._layers:
             abs_layer_number = layer.id + abs(min_layer_number)
@@ -130,6 +132,12 @@ class ProcessSlicedLayersJob(Job):
                 this_layer.polygons.append(this_poly)
 
                 Job.yieldThread()
+
+            # _layer = this_layer.createMesh()
+            # test_mesh.addIndices(test_mesh.getVertexCount() + _layer.getIndices())
+            # test_mesh.addVertices(_layer.getVertices())
+            # test_mesh.addColors(_layer.getColors())
+
             Job.yieldThread()
             current_layer += 1
             progress = (current_layer / layer_count) * 99
@@ -145,6 +153,7 @@ class ProcessSlicedLayersJob(Job):
 
         # We are done processing all the layers we got from the engine, now create a mesh out of the data
         layer_mesh = layer_data.build()
+        # test_layer_mesh = test_mesh.build()
 
         if self._abort_requested:
             if self._progress:

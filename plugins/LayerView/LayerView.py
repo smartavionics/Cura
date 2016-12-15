@@ -282,13 +282,15 @@ class _CreateTopLayersJob(Job):
             return
 
         layer_mesh = MeshBuilder()
-        for i in range(self._solid_layers):
-            layer_number = self._layer_number - i
+        # for i in range(self._solid_layers):
+        #     layer_number = self._layer_number - i
+        for layer_number in range(self._layer_number):
+            Logger.log("d", "Layer # %s" % layer_number)
             if layer_number < 0:
                 continue
 
             try:
-                layer = layer_data.getLayer(layer_number).createMesh()
+                layer = layer_data.getLayer(layer_number).createMesh2()
             except Exception:
                 Logger.logException("w", "An exception occurred while creating layer mesh.")
                 return
@@ -301,9 +303,10 @@ class _CreateTopLayersJob(Job):
 
             # Scale layer color by a brightness factor based on the current layer number
             # This will result in a range of 0.5 - 1.0 to multiply colors by.
-            brightness = numpy.ones((1, 4), dtype=numpy.float32) * (2.0 - (i / self._solid_layers)) / 2.0
-            brightness[0, 3] = 1.0
-            layer_mesh.addColors(layer.getColors() * brightness)
+            # brightness = numpy.ones((1, 4), dtype=numpy.float32) * (2.0 - (i / self._solid_layers)) / 2.0
+            # brightness[0, 3] = 1.0
+            # layer_mesh.addColors(layer.getColors() * brightness)
+            layer_mesh.addColors(layer.getColors())
 
             if self._cancel:
                 return
@@ -318,6 +321,8 @@ class _CreateTopLayersJob(Job):
         if not jump_mesh or jump_mesh.getVertices() is None:
             jump_mesh = None
 
+        Logger.log("d", "Calculating normals...")
+        layer_mesh.calculateNormals()
         self.setResult({"layers": layer_mesh.build(), "jumps": jump_mesh})
 
     def cancel(self):
