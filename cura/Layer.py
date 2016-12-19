@@ -160,12 +160,6 @@ class Layer:
             normals_y *= (polygon.lineWidths[index_mask.ravel()] / 2)
 
             # Create 8 points to draw each line segment, points +- normals results in 2 points each. Reshape to one point per line
-            # f_points = numpy.concatenate((points - normals, points + normals, points - normals_y, points + normals_y), 1).reshape((-1, 3))
-            # # __index_pattern defines which points to use to draw the two faces for each lines egment, the following linesegment is offset by 4
-            # f_indices = (self.__index_pattern + numpy.arange(0, 16 * len(normals), 16, dtype=numpy.int32).reshape((-1, 1))).reshape((-1, 3))
-            # f_colors = numpy.repeat(polygon.mapLineTypeToColor(line_types), 16, 0)
-
-            # Create 4 points to draw each line segment, points +- normals results in 2 points each. Reshape to one point per line
             f_points = numpy.concatenate((points - normals, points - normals_y, points + normals, points + normals_y), 1).reshape((-1, 3))
             # __index_pattern defines which points to use to draw the two faces for each line segment, the following linesegment is offset by 4
             f_indices = (self.__index_pattern2 + numpy.arange(0, 8 * len(normals), 8, dtype=numpy.int32).reshape((-1, 1))).reshape((-1, 3))
