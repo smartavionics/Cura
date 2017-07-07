@@ -33,6 +33,7 @@ UM.Dialog
                 text: catalog.i18nc("@action:button", "Refresh")
                 onClicked: manager.requestPluginList()
                 anchors.right: parent.right
+                enabled: !manager.isDownloading
             }
         }
         ScrollView
@@ -48,6 +49,7 @@ UM.Dialog
                 model: manager.pluginsModel
                 anchors.fill: parent
 
+                property var activePlugin
                 delegate: pluginDelegate
             }
         }
@@ -62,14 +64,12 @@ UM.Dialog
             {
                 id: progressbar
                 anchors.bottom: parent.bottom
-                style: UM.Theme.styles.progressbar
                 minimumValue: 0;
                 maximumValue: 100
                 anchors.left:parent.left
                 anchors.right: closeButton.left
                 anchors.rightMargin: UM.Theme.getSize("default_margin").width
-                height: 10
-                value: manager.downloadProgress
+                value: manager.isDownloading ? manager.downloadProgress : 0
             }
 
             Button
@@ -77,7 +77,14 @@ UM.Dialog
                 id: closeButton
                 text: catalog.i18nc("@action:button", "Close")
                 iconName: "dialog-close"
-                onClicked: base.close()
+                onClicked:
+                {
+                    if (manager.isDownloading)
+                    {
+                        manager.cancelDownload()
+                    }
+                    base.close();
+                }
                 anchors.bottom: parent.bottom
                 anchors.right: parent.right
             }
@@ -123,12 +130,48 @@ UM.Dialog
                     Button
                     {
                         id: downloadButton
-                        text: (model.already_installed && model.can_upgrade) ? catalog.i18nc("@action:button", "Upgrade") : catalog.i18nc("@action:button", "Download")
-                        onClicked: manager.downloadAndInstallPlugin(model.file_location)
+                        text:
+                        {
+                            if (manager.isDownloading && pluginList.activePlugin == model)
+                            {
+                                return catalog.i18nc("@action:button", "Cancel");
+                            }
+                            else if (model.already_installed)
+                            {
+                                if (model.can_upgrade)
+                                {
+                                    return catalog.i18nc("@action:button", "Upgrade");
+                                }
+                                return catalog.i18nc("@action:button", "Installed");
+                            }
+                            return catalog.i18nc("@action:button", "Download");
+                        }
+                        onClicked:
+                        {
+                            if(!manager.isDownloading)
+                            {
+                                pluginList.activePlugin = model;
+                                manager.downloadAndInstallPlugin(model.file_location);
+                            }
+                            else
+                            {
+                                manager.cancelDownload();
+                            }
+                        }
                         anchors.right: parent.right
                         anchors.rightMargin: UM.Theme.getSize("default_margin").width
                         anchors.verticalCenter: parent.verticalCenter
-                        enabled: (!model.already_installed || model.can_upgrade) && !manager.isDownloading
+                        enabled:
+                        {
+                            if (manager.isDownloading)
+                            {
+                                return (pluginList.activePlugin == model);
+                            }
+                            else
+                            {
+                                return (!model.already_installed || model.can_upgrade);
+                            }
+                        }
                     }
                 }
 
