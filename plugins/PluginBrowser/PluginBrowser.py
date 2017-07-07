@@ -100,10 +100,19 @@ class PluginBrowser(QObject, Extension):
             if new_progress == 100.0:
                 self.setIsDownloading(False)
                 self._download_plugin_reply.downloadProgress.disconnect(self._onDownloadPluginProgress)
-                self._temp_plugin_file = tempfile.NamedTemporaryFile(suffix = ".curaplugin")
-                self._temp_plugin_file.write(self._download_plugin_reply.readAll())
 
-                result = PluginRegistry.getInstance().installPlugin("file://" + self._temp_plugin_file.name)
+                # must not delete the temporary file on Windows
+                self._temp_plugin_file = tempfile.NamedTemporaryFile(mode = "w+b", suffix = ".curaplugin", delete = False)
+                location = self._temp_plugin_file.name
+
+                # write first and close, otherwise on Windows, it cannot read the file
+                self._temp_plugin_file.write(self._download_plugin_reply.readAll())
+                self._temp_plugin_file.close()
+
+                # open as read
+                if not location.startswith("/"):
+                    location = "/" + location # Ensure that it starts with a /, as otherwise it doesn't work on windows.
+                result = PluginRegistry.getInstance().installPlugin("file://" + location)
 
                 self._newly_installed_plugin_ids.append(result["id"])
                 self.pluginsMetadataChanged.emit()
