@@ -76,6 +76,8 @@ class CuraStackBuilder:
         stack.setName(definition.getName())
         stack.setDefinition(definition)
         stack.addMetaDataEntry("position", definition.getMetaDataEntry("position"))
+        if "next_stack" in kwargs: #Add stacks before containers are added, since they may trigger a setting update.
+            stack.setNextStack(kwargs["next_stack"])
 
         user_container = InstanceContainer(new_stack_id + "_user")
         user_container.addMetaDataEntry("type", "user")
@@ -86,15 +88,12 @@ class CuraStackBuilder:
 
         stack.setUserChanges(user_container)
 
-        if "next_stack" in kwargs:
-            stack.setNextStack(kwargs["next_stack"])
-
         # Important! The order here matters, because that allows the stack to
         # assume the material and variant have already been set.
         if "definition_changes" in kwargs:
             stack.setDefinitionChangesById(kwargs["definition_changes"])
         else:
-            stack.setDefinitionChanges(cls._createDefinitionChangesContainer(stack, new_stack_id + "_settings"))
+            stack.setDefinitionChanges(cls.createDefinitionChangesContainer(stack, new_stack_id + "_settings"))
 
         if "variant" in kwargs:
             stack.setVariantById(kwargs["variant"])
@@ -143,7 +142,7 @@ class CuraStackBuilder:
         if "definition_changes" in kwargs:
             stack.setDefinitionChangesById(kwargs["definition_changes"])
         else:
-            stack.setDefinitionChanges(cls._createDefinitionChangesContainer(stack, new_stack_id + "_settings"))
+            stack.setDefinitionChanges(cls.createDefinitionChangesContainer(stack, new_stack_id + "_settings"))
 
         if "variant" in kwargs:
             stack.setVariantById(kwargs["variant"])
@@ -164,9 +163,12 @@ class CuraStackBuilder:
         return stack
 
     @classmethod
-    def _createDefinitionChangesContainer(cls, container_stack, container_name, container_index = None):
+    def createDefinitionChangesContainer(cls, container_stack, container_name, container_index = None):
         from cura.CuraApplication import CuraApplication
-        definition_changes_container = InstanceContainer(container_name)
+
+        unique_container_name = ContainerRegistry.getInstance().uniqueName(container_name)
+
+        definition_changes_container = InstanceContainer(unique_container_name)
         definition = container_stack.getBottom()
         definition_changes_container.setDefinition(definition)
         definition_changes_container.addMetaDataEntry("type", "definition_changes")

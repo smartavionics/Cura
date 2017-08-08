@@ -205,7 +205,7 @@ Item
                     Layout.preferredHeight: UM.Theme.getSize("layerview_row").height + UM.Theme.getSize("default_lining").height
                     Layout.preferredWidth: UM.Theme.getSize("layerview_row").width
                     style: UM.Theme.styles.checkbox
-                    Text
+                    Label
                     {
                         text: model.name
                         elide: Text.ElideRight
@@ -272,7 +272,7 @@ Item
                     Layout.preferredHeight: UM.Theme.getSize("layerview_row").height + UM.Theme.getSize("default_lining").height
                     Layout.preferredWidth: UM.Theme.getSize("layerview_row").width
                     style: UM.Theme.styles.checkbox
-                    Text
+                    Label
                     {
                         text: label
                         elide: Text.ElideRight
@@ -324,10 +324,10 @@ Item
                 Label {
                     text: label
                     visible: view_settings.show_legend
-                    id: typesLegenModelLabel
+                    id: typesLegendModelLabel
                     Rectangle {
                         anchors.verticalCenter: parent.verticalCenter
-                        anchors.right: typesLegenModelLabel.right
+                        anchors.right: typesLegendModelLabel.right
                         anchors.rightMargin: UM.Theme.getSize("default_margin").width
                         width: UM.Theme.getSize("layerview_legend_size").width
                         height: UM.Theme.getSize("layerview_legend_size").height
