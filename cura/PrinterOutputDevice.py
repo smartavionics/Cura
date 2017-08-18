@@ -163,6 +163,8 @@ class PrinterOutputDevice(QObject, OutputDevice):
             Logger.log("e", "QQmlComponent error string %s", self._control_component.errorString())
 
     def _createMonitorViewFromQML(self):
+        if not self._monitor_view_qml_path:
+            return
         path = QUrl.fromLocalFile(self._monitor_view_qml_path)
 
         # Because of garbage collection we need to keep this referenced by python.
@@ -615,7 +617,7 @@ class PrinterOutputDevice(QObject, OutputDevice):
     @pyqtSlot("long")
     @pyqtSlot("long", "long")
     def setHeadZ(self, z, speed = 3000):
-        self._setHeadY(z, speed)
+        self._setHeadZ(z, speed)
 
     ##  Move the head of the printer.
     #   Note that this is a relative move. If you want to move the head to a specific position you can use
