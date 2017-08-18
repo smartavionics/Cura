@@ -190,121 +190,97 @@ Rectangle
         }
         ExclusiveGroup { id: modeMenuGroup; }
 
-        Label
+        ListView
         {
-            id: toggleLeftText
-            anchors.right: modeToggleSwitch.left
-            anchors.rightMargin: UM.Theme.getSize("default_margin").width
-            anchors.verticalCenter: parent.verticalCenter
-            text: ""
-            color:
-            {
-                if(toggleLeftTextMouseArea.containsMouse)
-                {
-                    return UM.Theme.getColor("mode_switch_text_hover");
-                }
-                else if(!modeToggleSwitch.checked)
-                {
-                    return UM.Theme.getColor("mode_switch_text_checked");
-                }
-                else
-                {
-                    return UM.Theme.getColor("mode_switch_text");
-                }
-            }
-            font: UM.Theme.getFont("default")
+            id: modesList
+            property var index: 0
+            model: modesListModel
+            delegate: wizardDelegate
+            anchors.top: parent.top
+            anchors.left: parent.left
+            width: parent.width
+        }
+    }
 
-            MouseArea
-            {
-                id: toggleLeftTextMouseArea
-                hoverEnabled: true
-                anchors.fill: parent
-                onClicked:
-                {
-                    modeToggleSwitch.checked = false;
-                }
+    Item
+    {
+        id: globalProfileRow
+        height: UM.Theme.getSize("sidebar_setup").height
+        visible: !sidebar.monitoringPrint && !sidebar.hideSettings
 
-                Component.onCompleted:
-                {
-                    clicked.connect(modeToggleSwitch.clicked)
-                }
-            }
+        anchors
+        {
+            top: settingsModeSelection.bottom
+            topMargin: UM.Theme.getSize("default_margin").width
+            left: parent.left
+            leftMargin: UM.Theme.getSize("default_margin").width
+            right: parent.right
+            rightMargin: UM.Theme.getSize("default_margin").width
         }
 
-        Switch
+        Text
         {
-            id: modeToggleSwitch
-            checked: false
-            anchors.right: toggleRightText.left
-            anchors.rightMargin: UM.Theme.getSize("default_margin").width
-            anchors.verticalCenter: parent.verticalCenter
-
-            property bool _hovered: modeToggleSwitchMouseArea.containsMouse || toggleLeftTextMouseArea.containsMouse || toggleRightTextMouseArea.containsMouse
-
-            MouseArea
-            {
-                id: modeToggleSwitchMouseArea
-                anchors.fill: parent
-                hoverEnabled: true
-                acceptedButtons: Qt.NoButton
-            }
-
-            onCheckedChanged:
-            {
-                var index = 0;
-                if (checked)
-                {
-                    index = 1;
-                }
-                updateActiveMode(index);
-            }
-
-            function updateActiveMode(index)
-            {
-                base.currentModeIndex = index;
-                UM.Preferences.setValue("cura/active_mode", index);
-            }
-
-            style: UM.Theme.styles.mode_switch
+            id: globalProfileLabel
+            text: catalog.i18nc("@label","Profile:");
+            width: parent.width * 0.45 - UM.Theme.getSize("default_margin").width
+            font: UM.Theme.getFont("default");
+            color: UM.Theme.getColor("text");
+            verticalAlignment: Text.AlignVCenter
+            anchors.top: parent.top
+            anchors.bottom: parent.bottom
         }
 
-        Label
+        ToolButton
         {
-            id: toggleRightText
+            id: globalProfileSelection
+
+            text: {
+                var result = Cura.MachineManager.activeQualityName;
+                if (Cura.MachineManager.activeQualityLayerHeight > 0) {
+                    result += " <font color=\"" + UM.Theme.getColor("text_detail") + "\">";
+                    result += " - ";
+                    result += Cura.MachineManager.activeQualityLayerHeight + "mm";
+                    result += "</font>";
+                }
+                return result;
+            }
+            enabled: !header.currentExtruderVisible || header.currentExtruderIndex  > -1
+
+            width: parent.width * 0.7 + UM.Theme.getSize("default_margin").width
+            height: UM.Theme.getSize("setting_control").height
             anchors.right: parent.right
-            anchors.verticalCenter: parent.verticalCenter
-            text: ""
-            color:
-            {
-                if(toggleRightTextMouseArea.containsMouse)
-                {
-                    return UM.Theme.getColor("mode_switch_text_hover");
-                }
-                else if(modeToggleSwitch.checked)
-                {
-                    return UM.Theme.getColor("mode_switch_text_checked");
-                }
-                else
-                {
-                    return UM.Theme.getColor("mode_switch_text");
-                }
-            }
-            font: UM.Theme.getFont("default")
+            tooltip: Cura.MachineManager.activeQualityName
+            style: UM.Theme.styles.sidebar_header_button
+            activeFocusOnPress: true;
+            property var valueWarning: ! Cura.MachineManager.isActiveQualitySupported
+            menu: ProfileMenu { }
 
-            MouseArea
+            UM.SimpleButton
             {
-                id: toggleRightTextMouseArea
-                hoverEnabled: true
-                anchors.fill: parent
+                id: customisedSettings
+
+                visible: Cura.MachineManager.hasUserSettings
+                height: parent.height * 0.6
+                width: parent.height * 0.6
+
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.right: parent.right
+                anchors.rightMargin: UM.Theme.getSize("setting_preferences_button_margin").width - UM.Theme.getSize("default_margin").width
+
+                color: hovered ? UM.Theme.getColor("setting_control_button_hover") : UM.Theme.getColor("setting_control_button");
+                iconSource: UM.Theme.getIcon("star");
+
                 onClicked:
                 {
-                    modeToggleSwitch.checked = true;
+                    forceActiveFocus();
+                    Cura.Actions.manageProfiles.trigger()
                 }
-
-                Component.onCompleted:
+                onEntered:
                 {
-                    clicked.connect(modeToggleSwitch.clicked)
+                    var content = catalog.i18nc("@tooltip","Some setting/override values are different from the values stored in the profile.\n\nClick to open the profile manager.")
+                    base.showTooltip(globalProfileRow, Qt.point(- UM.Theme.getSize("default_margin").width, 0),  content)
                 }
+                onExited: base.hideTooltip()
             }
         }
     }
@@ -314,7 +290,7 @@ Rectangle
         id: sidebarContents
 
         anchors.bottom: footerSeparator.top
-        anchors.top: settingsModeSelection.bottom
+        anchors.top: globalProfileRow.bottom
         anchors.topMargin: UM.Theme.getSize("default_margin").height
         anchors.left: base.left
         anchors.right: base.right
@@ -581,14 +557,10 @@ Rectangle
         })
         sidebarContents.push({ "item": modesListModel.get(base.currentModeIndex).item, "immediate": true });
 
-        toggleLeftText.text = modesListModel.get(0).text;
-        toggleRightText.text = modesListModel.get(1).text;
-
-        var index = parseInt(UM.Preferences.getValue("cura/active_mode"));
-        if (index)
+        var index = parseInt(UM.Preferences.getValue("cura/active_mode"))
+        if(index)
         {
             currentModeIndex = index;
-            modeToggleSwitch.checked = index > 0;
         }
     }
 
