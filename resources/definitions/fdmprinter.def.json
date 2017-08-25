@@ -1229,9 +1229,7 @@
                         "back": "User Specified",
                         "shortest": "Shortest",
                         "random": "Random",
-                        "most_curvature_convex":  "Most Convex Region",
-                        "most_curvature_concave": "Most Concave Region",
-                        "most_curvature":         "Most Curved Region"
+                        "sharpest_corner": "Sharpest Corner"
                     },
                     "default_value": "shortest",
                     "limit_to_extruder": "wall_0_extruder_nr",
@@ -1258,6 +1256,23 @@
                     "default_value": 100.0,
                     "value": "machine_depth * 3",
                     "enabled": "z_seam_type == 'back'",
+                    "limit_to_extruder": "wall_0_extruder_nr",
+                    "settable_per_mesh": true
+                },
+                "z_seam_corner":
+                {
+                    "label": "Seam Corner Preference",
+                    "description": "Control whether corners on the model outline influence the position of the seam.",
+                    "type": "enum",
+                    "options":
+                    {
+                        "z_seam_corner_none":  "Ignore Corners",
+                        "z_seam_corner_inner": "Inner Corners",
+                        "z_seam_corner_outer": "Outer Corners",
+                        "z_seam_corner_any":   "Any Corner"
+                    },
+                    "default_value": "z_seam_corner_inner",
+                    "enabled": "z_seam_type != 'random'",
                     "limit_to_extruder": "wall_0_extruder_nr",
                     "settable_per_mesh": true
                 },
