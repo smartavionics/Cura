@@ -6,7 +6,7 @@
     {
         "type": "machine",
         "author": "Ultimaker",
-        "category": "Ultimaker",
+        "category": "Other",
         "manufacturer": "Unknown",
         "setting_version": 1,
         "file_formats": "text/x-gcode;application/x-stl-ascii;application/x-stl-binary;application/x-wavefront-obj;application/x3g",
@@ -1228,7 +1228,10 @@
                     {
                         "back": "User Specified",
                         "shortest": "Shortest",
-                        "random": "Random"
+                        "random": "Random",
+                        "most_curvature_convex":  "Most Convex Region",
+                        "most_curvature_concave": "Most Concave Region",
+                        "most_curvature":         "Most Curved Region"
                     },
                     "default_value": "shortest",
                     "limit_to_extruder": "wall_0_extruder_nr",
@@ -4722,7 +4725,7 @@
                     "unit": "mm³",
                     "default_value": 0,
                     "minimum_value": "0",
-                    "maximum_value_warning": "0.5",
+                    "maximum_value_warning": "1",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
