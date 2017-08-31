@@ -89,6 +89,7 @@ Rectangle
     SidebarHeader {
         id: header
         width: parent.width
+        visible: machineExtruderCount.properties.value > 1 || Cura.MachineManager.hasMaterials || Cura.MachineManager.hasVariants
 
         onShowTooltip: base.showTooltip(item, location, text)
         onHideTooltip: base.hideTooltip()
@@ -97,7 +98,7 @@ Rectangle
     Rectangle {
         id: headerSeparator
         width: parent.width
-        visible: !monitoringPrint && !hideSettings
+        visible: settingsModeSelection.visible && header.visible
         height: visible ? UM.Theme.getSize("sidebar_lining").height : 0
         color: UM.Theme.getColor("sidebar_lining")
         anchors.top: header.bottom
