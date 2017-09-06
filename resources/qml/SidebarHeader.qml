@@ -17,7 +17,7 @@ Column
     property int currentExtruderIndex: ExtruderManager.activeExtruderIndex;
     property bool currentExtruderVisible: extrudersList.visible;
 
-    spacing: UM.Theme.getSize("sidebar_margin").height / 2
+    spacing: UM.Theme.getSize("sidebar_margin").width * 0.9
 
     signal showTooltip(Item item, point location, string text)
     signal hideTooltip()
@@ -58,10 +58,10 @@ Column
         anchors
         {
             left: parent.left
-            leftMargin: UM.Theme.getSize("default_margin").width * 1.4
+            leftMargin: UM.Theme.getSize("sidebar_margin").width * 0.7
             right: parent.right
-            rightMargin: UM.Theme.getSize("default_margin").width * 1.4
-            topMargin: UM.Theme.getSize("default_margin").height
+            rightMargin: UM.Theme.getSize("sidebar_margin").width * 0.7
+            topMargin: UM.Theme.getSize("sidebar_margin").height
         }
 
         ListView
@@ -357,6 +357,22 @@ Column
             anchors.right: parent.right
             width: parent.width * 0.7 + UM.Theme.getSize("sidebar_margin").width
 
+            UM.RecolorImage
+            {
+                id: warningImage
+                anchors.right: materialInfoLabel.left
+                anchors.rightMargin: UM.Theme.getSize("default_margin").width
+                anchors.verticalCenter: parent.Bottom
+                source: UM.Theme.getIcon("warning")
+                width: UM.Theme.getSize("section_icon").width
+                height: UM.Theme.getSize("section_icon").height
+                //sourceSize.width: width + 5
+                //sourceSize.height: width + 5
+
+                color: UM.Theme.getColor("setting_validation_warning")
+                visible: !Cura.MachineManager.isCurrentSetupSupported
+            }
+
             Text
             {
                 id: materialInfoLabel
@@ -394,21 +410,6 @@ Column
                     }
                     onExited: base.hideTooltip();
                 }
-            }
-
-            UM.RecolorImage
-            {
-                id: warningImage
-                anchors.right: parent.right
-                anchors.verticalCenter: parent.Bottom
-                source: UM.Theme.getIcon("warning")
-                width: UM.Theme.getSize("section_icon").width
-                height: UM.Theme.getSize("section_icon").height
-                //sourceSize.width: width + 5
-                //sourceSize.height: width + 5
-
-                color: UM.Theme.getColor("setting_validation_warning")
-                visible: !Cura.MachineManager.isCurrentSetupSupported
             }
         }
     }
