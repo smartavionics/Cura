@@ -196,4 +196,56 @@ Rectangle
 
         menu: PrinterMenu { }
     }
+
+    ComboBox
+    {
+        id: viewModeButton
+        anchors
+        {
+            verticalCenter: parent.verticalCenter
+            right: parent.right
+            rightMargin: UM.Theme.getSize("sidebar").width + UM.Theme.getSize("default_margin").width
+        }
+        style: UM.Theme.styles.combobox
+
+        model: UM.ViewModel { }
+        textRole: "name"
+        onCurrentIndexChanged:
+        {
+            UM.Controller.setActiveView(model.getItem(currentIndex).id);
+            // Update the active flag
+            for (var i = 0; i < model.rowCount; ++i)
+            {
+                const is_active = i == currentIndex;
+                model.getItem(i).active = is_active;
+            }
+        }
+        currentIndex:
+        {
+            for (var i = 0; i < model.rowCount; ++i)
+            {
+                if (model.getItem(i).active)
+                {
+                    return i;
+                }
+            }
+            return 0;
+        }
+    }
+
+    Loader
+    {
+        id: view_panel
+
+        anchors.top: viewModeButton.bottom
+        anchors.topMargin: UM.Theme.getSize("default_margin").height
+        anchors.right: viewModeButton.right
+
+        property var buttonTarget: Qt.point(viewModeButton.x + viewModeButton.width / 2, viewModeButton.y + viewModeButton.height / 2)
+
+        height: childrenRect.height;
+
+        source: UM.ActiveView.valid ? UM.ActiveView.activeViewPanel : "";
+    }
+
 }
