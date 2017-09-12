@@ -1,6 +1,6 @@
 {
     "metadata": {
-        "name": "Light"
+        "name": "Ultimaker"
     },
 
     "fonts": {
@@ -166,7 +166,7 @@
 
         "setting_control": [255, 255, 255, 255],
         "setting_control_selected": [24, 41, 77, 255],
-        "setting_control_highlight": [255, 255, 255, 0],
+        "setting_control_highlight": [255, 255, 255, 255],
         "setting_control_border": [127, 127, 127, 255],
         "setting_control_border_highlight": [12, 169, 227, 255],
         "setting_control_text": [27, 27, 27, 255],
@@ -219,6 +219,7 @@
 
         "message_background": [255, 255, 255, 255],
         "message_shadow": [0, 0, 0, 120],
+        "message_border": [127, 127, 127, 255],
         "message_text": [0, 0, 0, 255],
         "message_button": [12, 169, 227, 255],
         "message_button_hover": [12, 169, 227, 255],
@@ -247,9 +248,8 @@
         "viewport_background": [245, 245, 245, 255],
         "volume_outline": [12, 169, 227, 255],
         "buildplate": [244, 244, 244, 255],
-        "buildplate_alt": [204, 204, 204, 255],
         "buildplate_grid": [129, 131, 134, 255],
-        "buildplate_grid_minor": [129, 131, 134, 31],
+        "buildplate_grid_minor": [230, 230, 231, 255],
 
         "convex_hull": [35, 35, 35, 127],
         "disallowed_area": [0, 0, 0, 40],
@@ -357,7 +357,6 @@
         "tooltip_margins": [1.0, 1.0],
         "tooltip_arrow_margins": [2.0, 2.0],
 
-
         "save_button_text_margin": [0.3, 0.6],
         "save_button_save_to_button": [0.3, 2.7],
         "save_button_specs_icons": [1.4, 1.4],
@@ -371,6 +370,7 @@
         "message_button": [6.0, 1.8],
         "message_shadow": [0, 0],
         "message_margin": [0, 1.0],
+        "message_inner_margin": [1.5, 1.5],
 
         "infill_button_margin": [0.5, 0.5],
 
