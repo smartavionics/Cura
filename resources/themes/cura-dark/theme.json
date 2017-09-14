@@ -3,8 +3,8 @@
         "name": "Ultimaker Dark",
         "inherits": "cura-light"
     },
-    "colors": {
 
+    "colors": {
         "sidebar": [39, 44, 48, 255],
         "lining": [64, 69, 72, 255],
         "viewport_overlay": [0, 6, 9, 222],
@@ -14,6 +14,13 @@
         "primary_text": [255, 255, 255, 204],
         "border": [127, 127, 127, 255],
         "secondary": [241, 242, 242, 255],
+
+        "topbar_background_color": [0, 0, 0, 0],
+        "topbar_background_color_monitoring": [0, 0, 0, 255],
+
+        "topbar_button_text_active": [255, 255, 255, 255],
+        "topbar_button_text_inactive": [128, 128, 128, 255],
+        "topbar_button_text_hovered": [255, 255, 255, 255],
 
         "text": [255, 255, 255, 204],
         "text_detail": [255, 255, 255, 172],
@@ -96,15 +103,15 @@
         "setting_category_active_hover_text": [255, 255, 255, 204],
         "setting_category_border": [39, 44, 48, 0],
         "setting_category_disabled_border": [39, 44, 48, 0],
-        "setting_category_hover_border": [39, 44, 48, 0],
+        "setting_category_hover_border": [12, 169, 227, 255],
         "setting_category_active_border": [39, 44, 48, 0],
-        "setting_category_active_hover_border": [39, 44, 48, 0],
+        "setting_category_active_hover_border": [12, 169, 227, 255],
 
         "setting_control": [43, 48, 52, 255],
         "setting_control_selected": [34, 39, 42, 38],
         "setting_control_highlight": [255, 255, 255, 0],
         "setting_control_border": [255, 255, 255, 38],
-        "setting_control_border_highlight": [255, 255, 255, 38],
+        "setting_control_border_highlight": [12, 169, 227, 255],
         "setting_control_text": [255, 255, 255, 181],
         "setting_control_button": [255, 255, 255, 127],
         "setting_control_button_hover": [255, 255, 255, 204],
@@ -141,6 +148,8 @@
 
         "tool_panel_background": [39, 44, 48, 255],
 
+        "tool_button_border": [255, 255, 255, 38],
+
         "status_offline": [0, 0, 0, 255],
         "status_ready": [0, 205, 0, 255],
         "status_busy": [12, 169, 227, 255],
@@ -150,16 +159,15 @@
 
         "disabled_axis": [127, 127, 127, 255],
         "x_axis": [255, 0, 0, 255],
-        "y_axis": [0, 0, 255, 255],
+        "y_axis": [96, 96, 255, 255],
         "z_axis": [0, 255, 0, 255],
         "all_axis": [255, 255, 255, 255],
 
         "viewport_background": [31, 36, 39, 255],
-        "volume_outline": [1, 168, 230, 255],
-        "buildplate": [252, 252, 252, 255],
-        "buildplate_alt": [204, 204, 204, 255],
+        "volume_outline": [12, 169, 227, 128],
+        "buildplate": [169, 169, 169, 255],
         "buildplate_grid": [129, 131, 134, 255],
-        "buildplate_grid_minor": [129, 131, 134, 31],
+        "buildplate_grid_minor": [154, 154, 155, 255],
 
         "convex_hull": [35, 35, 35, 127],
         "disallowed_area": [0, 0, 0, 52],
