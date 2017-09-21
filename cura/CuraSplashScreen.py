@@ -3,7 +3,7 @@
 
 from threading import Thread, Event
 
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, QCoreApplication, QTimer
 from PyQt5.QtGui import QPixmap, QColor, QFont, QPen, QPainter
 from PyQt5.QtWidgets import QSplashScreen
 
@@ -24,11 +24,15 @@ class CuraSplashScreen(QSplashScreen):
         self._loading_image_rotation_angle = 0
 
         self._to_stop = False
-        self._loading_tick_thread = LoadingTickThread(self)
+        self._change_timer = QTimer()
+        self._change_timer.setInterval(50)
+        self._change_timer.setSingleShot(False)
+        #self.timeoutSignal.connect(self._onTimeout)
+        self._change_timer.timeout.connect(self.updateLoadingImage)
 
     def show(self):
         super().show()
-        self._loading_tick_thread.start()
+        self._change_timer.start()
 
     def updateLoadingImage(self):
         if self._to_stop:
@@ -91,31 +95,13 @@ class CuraSplashScreen(QSplashScreen):
 
         self._current_message = message
         self.messageChanged.emit(message)
+        QCoreApplication.flush()
+        self.repaint()
 
     def close(self):
         # set stop flags
         self._to_stop = True
-        self._loading_tick_thread.setToStop()
+        self._change_timer.stop()
         super().close()
 
 
-class LoadingTickThread(Thread):
-
-    def __init__(self, splash):
-        super().__init__(daemon = True)
-        self._splash = splash
-        self._to_stop = False
-        self._time_interval = 0.05
-        self._event = Event()
-
-    def setToStop(self):
-        self._to_stop = True
-        self._event.set()
-
-    def run(self):
-        while not self._to_stop:
-            self._event.wait(self._time_interval)
-            if self._event.is_set():
-                break
-
-            self._splash.updateLoadingImage()
