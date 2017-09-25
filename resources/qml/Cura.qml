@@ -23,14 +23,10 @@ UM.MainWindow
     Connections
     {
         target: Printer
-        onShowPrintMonitor:
-        {
-            if (show)
-            {
+        onShowPrintMonitor: {
+            if (show) {
                 topbar.startMonitoringPrint()
-            }
-            else
-            {
+            } else {
                 topbar.stopMonitoringPrint()
             }
         }

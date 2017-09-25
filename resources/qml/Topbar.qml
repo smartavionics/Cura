@@ -23,8 +23,20 @@ Rectangle
     property bool printerConnected: Cura.MachineManager.printerOutputDevices.length != 0
     property bool printerAcceptsCommands: printerConnected && Cura.MachineManager.printerOutputDevices[0].acceptsCommands
     property bool monitoringPrint: false
+
+    // outgoing signal
     signal startMonitoringPrint()
     signal stopMonitoringPrint()
+
+    // update monitoring status when event was triggered outside topbar
+    Component.onCompleted: {
+        startMonitoringPrint.connect(function () {
+            base.monitoringPrint = true
+        })
+        stopMonitoringPrint.connect(function () {
+            base.monitoringPrint = false
+        })
+    }
 
     UM.I18nCatalog
     {
@@ -59,15 +71,25 @@ Rectangle
         {
             id: showSettings
             height: UM.Theme.getSize("sidebar_header").height
-            onClicked: base.stopMonitoringPrint()
-            property color overlayColor: "transparent"
-            property string overlayIconSource: ""
             text: catalog.i18nc("@title:tab", "Prepare")
             checkable: true
-            checked: !base.monitoringPrint
+            checked: isChecked()
             exclusiveGroup: sidebarHeaderBarGroup
-
             style: UM.Theme.styles.topbar_header_tab
+
+            // We use a Qt.binding to re-bind the checkbox state after manually setting it
+            // https://stackoverflow.com/questions/38798450/qt-5-7-qml-why-are-my-checkbox-property-bindings-disappearing
+            onClicked: {
+                base.stopMonitoringPrint()
+                checked = Qt.binding(isChecked)
+            }
+
+            function isChecked () {
+                return !base.monitoringPrint
+            }
+
+            property color overlayColor: "transparent"
+            property string overlayIconSource: ""
         }
 
         Button
@@ -75,8 +97,23 @@ Rectangle
             id: showMonitor
             width: UM.Theme.getSize("topbar_button").width
             height: UM.Theme.getSize("sidebar_header").height
-            onClicked: base.startMonitoringPrint()
             text: catalog.i18nc("@title:tab", "Monitor")
+            checkable: true
+            checked: isChecked()
+            exclusiveGroup: sidebarHeaderBarGroup
+            style: UM.Theme.styles.topbar_header_tab_no_overlay
+
+            // We use a Qt.binding to re-bind the checkbox state after manually setting it
+            // https://stackoverflow.com/questions/38798450/qt-5-7-qml-why-are-my-checkbox-property-bindings-disappearing
+            onClicked: {
+                base.startMonitoringPrint()
+                checked = Qt.binding(isChecked)
+            }
+
+            function isChecked () {
+                return base.monitoringPrint
+            }
+
             property string iconSource:
             {
                 if (!printerConnected)
@@ -113,12 +150,6 @@ Rectangle
                         return UM.Theme.getIcon("tab_status_unknown")
                 }
             }
-
-            checkable: true
-            checked: base.monitoringPrint
-            exclusiveGroup: sidebarHeaderBarGroup
-
-            style: UM.Theme.styles.topbar_header_tab_no_overlay
         }
 
         ExclusiveGroup { id: sidebarHeaderBarGroup }
