@@ -3495,46 +3495,6 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
-                "support_skip_some_zags": {
-                    "label": "Break Up Support In Chunks",
-                    "description": "Skip some support line connections to make the support structure easier to break away. This setting is applicable to the Zig Zag support infill pattern.",
-                    "type": "bool",
-                    "default_value": false,
-                    "enabled": "support_enable and (support_pattern == 'zigzag')",
-                    "limit_to_extruder": "support_infill_extruder_nr",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": true,
-                    "children": {
-                        "support_skip_zag_per_mm": {
-                            "label": "Support Chunk Size",
-                            "description": "Leave out a connection between support lines once every N millimeter to make the support structure easier to break away.",
-                            "type": "float",
-                            "unit": "mm",
-                            "default_value": 20,
-                            "minimum_value": "0",
-                            "minimum_value_warning": "support_line_distance",
-                            "enabled": "support_enable and (support_pattern == 'zigzag') and support_skip_some_zags",
-                            "limit_to_extruder": "support_infill_extruder_nr",
-                            "settable_per_mesh": false,
-                            "settable_per_extruder": true,
-                            "children": {
-                                "support_zag_skip_count": {
-                                    "label": "Support Chunk Line Count",
-                                    "description": "Skip one in every N connection lines to make the support structure easier to break away.",
-                                    "type": "int",
-                                    "default_value": 5,
-                                    "value": "round(support_skip_zag_per_mm / support_line_distance)",
-                                    "minimum_value": "1",
-                                    "minimum_value_warning": "3",
-                                    "enabled": "support_enable and (support_pattern == 'zigzag') and support_skip_some_zags",
-                                    "limit_to_extruder": "support_infill_extruder_nr",
-                                    "settable_per_mesh": false,
-                                    "settable_per_extruder": true
-                                }
-                            }
-                        }
-                    }
-                },
                 "support_infill_rate":
                 {
                     "label": "Support Density",
@@ -4130,7 +4090,7 @@
                 "skirt_gap":
                 {
                     "label": "Skirt Distance",
-                    "description": "The horizontal distance between the skirt and the first layer of the print.\nThis is the minimum distance, multiple skirt lines will extend outwards from this distance.",
+                    "description": "The horizontal distance between the skirt and the first layer of the print.\nThis is the minimum distance. Multiple skirt lines will extend outwards from this distance.",
                     "unit": "mm",
                     "type": "float",
                     "default_value": 3,
@@ -4214,7 +4174,7 @@
                 "raft_smoothing":
                 {
                     "label": "Raft Smoothing",
-                    "description": "This setting control how much inner corners in the raft outline are rounded. Inward corners are rounded to a semi circle with a radius equal to the value given here. This setting also removes holes in the raft outline which are smaller than such a circle.",
+                    "description": "This setting controls how much inner corners in the raft outline are rounded. Inward corners are rounded to a semi circle with a radius equal to the value given here. This setting also removes holes in the raft outline which are smaller than such a circle.",
                     "unit": "mm",
                     "type": "float",
                     "default_value": 5,
@@ -5129,6 +5089,46 @@
                     "type": "bool",
                     "default_value": false,
                     "settable_per_mesh": true
+                },
+                "support_skip_some_zags": {
+                    "label": "Break Up Support In Chunks",
+                    "description": "Skip some support line connections to make the support structure easier to break away. This setting is applicable to the Zig Zag support infill pattern.",
+                    "type": "bool",
+                    "default_value": false,
+                    "enabled": "support_enable and (support_pattern == 'zigzag')",
+                    "limit_to_extruder": "support_infill_extruder_nr",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true,
+                    "children": {
+                        "support_skip_zag_per_mm": {
+                            "label": "Support Chunk Size",
+                            "description": "Leave out a connection between support lines once every N millimeter to make the support structure easier to break away.",
+                            "type": "float",
+                            "unit": "mm",
+                            "default_value": 20,
+                            "minimum_value": "0",
+                            "minimum_value_warning": "support_line_distance",
+                            "enabled": "support_enable and (support_pattern == 'zigzag') and support_skip_some_zags",
+                            "limit_to_extruder": "support_infill_extruder_nr",
+                            "settable_per_mesh": false,
+                            "settable_per_extruder": true,
+                            "children": {
+                                "support_zag_skip_count": {
+                                    "label": "Support Chunk Line Count",
+                                    "description": "Skip one in every N connection lines to make the support structure easier to break away.",
+                                    "type": "int",
+                                    "default_value": 5,
+                                    "value": "round(support_skip_zag_per_mm / support_line_distance)",
+                                    "minimum_value": "1",
+                                    "minimum_value_warning": "3",
+                                    "enabled": "support_enable and (support_pattern == 'zigzag') and support_skip_some_zags",
+                                    "limit_to_extruder": "support_infill_extruder_nr",
+                                    "settable_per_mesh": false,
+                                    "settable_per_extruder": true
+                                }
+                            }
+                        }
+                    }
                 },
                 "draft_shield_enabled":
                 {
