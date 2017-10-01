@@ -1,5 +1,5 @@
 // Copyright (c) 2017 Ultimaker B.V.
-// Cura is released under the terms of the AGPLv3 or higher.
+// Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.2
 import QtQuick.Controls 1.1
@@ -66,6 +66,7 @@ Item
                 {
                     target: Cura.MachineManager
                     onActiveQualityChanged: qualityModel.update()
+                    onActiveMaterialChanged: qualityModel.update()
                 }
 
                 ListModel
@@ -186,7 +187,10 @@ Item
 
                             x: {
                                 // Make sure the text aligns correctly with each tick
-                                if (index == 0) {
+                                if (qualityModel.totalTicks == 0) {
+                                    // If there is only one tick, align it centrally
+                                    return ((base.width * 0.55) - width) / 2
+                                } else if (index == 0) {
                                     return (base.width * 0.55 / qualityModel.totalTicks) * index
                                 } else if (index == qualityModel.totalTicks) {
                                     return (base.width * 0.55 / qualityModel.totalTicks) * index - width
@@ -223,7 +227,7 @@ Item
                     Repeater
                     {
                         id: qualityRepeater
-                        model: qualityModel
+                        model: qualityModel.totalTicks > 0 ? qualityModel : 0
 
                         Rectangle
                         {
@@ -236,6 +240,15 @@ Item
                         }
                     }
 
+                    Rectangle {
+                        id: disabledHandleButton
+                        visible: !qualitySlider.visible
+                        anchors.centerIn: parent
+                        color: UM.Theme.getColor("quality_slider_unavailable")
+                        implicitWidth: 10 * screenScaleFactor
+                        implicitHeight: implicitWidth
+                        radius: width / 2
+                    }
 
                     Slider
                     {
@@ -243,6 +256,7 @@ Item
                         height: UM.Theme.getSize("sidebar_margin").height
                         anchors.bottom: speedSlider.bottom
                         enabled: qualityModel.availableTotalTicks > 0
+                        visible: qualityModel.totalTicks > 0
                         updateValueWhileDragging : false
 
                         minimumValue: qualityModel.qualitySliderAvailableMin >= 0 ? qualityModel.qualitySliderAvailableMin : 0
@@ -262,16 +276,16 @@ Item
                             groove: Rectangle {
                                 implicitHeight: 2 * screenScaleFactor
                                 color: UM.Theme.getColor("quality_slider_available")
-                                radius: 1 * screenScaleFactor
+                                radius: height / 2
                             }
                             handle: Item {
                                 Rectangle {
                                     id: qualityhandleButton
                                     anchors.centerIn: parent
-                                    color: control.enabled ? UM.Theme.getColor("quality_slider_available") : UM.Theme.getColor("quality_slider_unavailable")
+                                    color: UM.Theme.getColor("quality_slider_available")
                                     implicitWidth: 10 * screenScaleFactor
-                                    implicitHeight: 10 * screenScaleFactor
-                                    radius: 10 * screenScaleFactor
+                                    implicitHeight: implicitWidth
+                                    radius: implicitWidth / 2
                                 }
                             }
                         }
@@ -358,7 +372,7 @@ Item
             {
                 id: infillCellRight
 
-                height: infillSlider.height + enableGradualInfillCheckBox.height + (UM.Theme.getSize("sidebar_margin").height * 2)
+                height: infillSlider.height + UM.Theme.getSize("sidebar_margin").height + enableGradualInfillCheckBox.visible * (enableGradualInfillCheckBox.height + UM.Theme.getSize("sidebar_margin").height)
                 width: UM.Theme.getSize("sidebar").width * .55
 
                 anchors.left: infillCellLeft.right
@@ -518,6 +532,7 @@ Item
 
                     style: UM.Theme.styles.checkbox
                     enabled: base.settingsEnabled
+                    visible: infillSteps.properties.enabled == "True"
                     checked: parseInt(infillSteps.properties.value) > 0
 
                     MouseArea {
@@ -860,7 +875,7 @@ Item
                 id: infillSteps
                 containerStackId: Cura.MachineManager.activeStackId
                 key: "gradual_infill_steps"
-                watchedProperties: ["value"]
+                watchedProperties: ["value", "enabled"]
                 storeIndex: 0
             }
 

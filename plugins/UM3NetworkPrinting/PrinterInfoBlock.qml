@@ -61,7 +61,7 @@ Rectangle
         anchors.fill:parent
         onClicked: OutputDevice.selectPrinter(printer.unique_name, printer.friendly_name)
         hoverEnabled: true;
-        
+
         // Only clickable if no printer is selected
         enabled: OutputDevice.selectedPrinterName == ""
     }
@@ -137,7 +137,7 @@ Rectangle
             Rectangle   // Camera icon
             {
                 id: showCameraIcon
-                width: 40
+                width: 40 * screenScaleFactor
                 height: width
                 radius: width
                 anchors.right: printProgressArea.left
@@ -161,7 +161,7 @@ Rectangle
 
                 width: parent.width / 2 - UM.Theme.getSize("default_margin").width
                 height: childrenRect.height
-                spacing: 10
+                spacing: 10 * screenScaleFactor
 
                 PrintCoreConfiguration
                 {
@@ -173,7 +173,7 @@ Rectangle
                 Rectangle
                 {
                     id: extruderSeperator
-                    width: 1
+                    width: 1 * screenScaleFactor
                     height: parent.height
                     color: lineColor
                 }
@@ -199,10 +199,10 @@ Rectangle
                 property var showExtended: {
                     if(printJob!= null)
                     {
-                        var extendStates = ["sent_to_printer", "wait_for_configuration", "printing", "pre_print", "post_print", "wait_cleanup"];
+                        var extendStates = ["sent_to_printer", "wait_for_configuration", "printing", "pre_print", "post_print", "wait_cleanup", "queued"];
                         return extendStates.indexOf(printJob.status) !== -1;
                     }
-                    return false
+                    return ! printer.enabled;
                 }
                 visible:
                 {
@@ -215,7 +215,7 @@ Rectangle
                     width: parent.width
                     //border.width: UM.Theme.getSize("default_lining").width
                     //border.color: lineColor
-                    height: 40
+                    height: 40 * screenScaleFactor
                     anchors.left: parent.left
 
                     Label
@@ -227,30 +227,46 @@ Rectangle
                         anchors.right: progressText.left
                         anchors.rightMargin: UM.Theme.getSize("default_margin").width
                         text: {
+                            if ( ! printer.enabled)
+                            {
+                                return catalog.i18nc("@label:status", "Disabled");
+                            }
+
                             if(printJob != null)
                             {
-                                if(printJob.status == "printing" || printJob.status == "post_print")
+                                switch (printJob.status)
                                 {
-                                    return catalog.i18nc("@label:status", "Printing")
-                                }
-                                else if(printJob.status == "wait_for_configuration")
-                                {
-                                    return catalog.i18nc("@label:status", "Reserved")
-                                }
-                                else if(printJob.status == "wait_cleanup")
-                                {
-                                    return catalog.i18nc("@label:status", "Finished")
-                                }
-                                else if (printJob.status == "pre_print" || printJob.status == "sent_to_printer")
-                                {
-                                    return catalog.i18nc("@label:status", "Preparing")
-                                }
-                                else
-                                {
-                                    return ""
+                                    case "printing":
+                                    case "post_print":
+                                        return catalog.i18nc("@label:status", "Printing")
+                                    case "wait_for_configuration":
+                                        return catalog.i18nc("@label:status", "Reserved")
+                                    case "wait_cleanup":
+                                        return catalog.i18nc("@label:status", "Finished")
+                                    case "pre_print":
+                                    case "sent_to_printer":
+                                        return catalog.i18nc("@label", "Preparing to print")
+                                    case "queued":
+                                        if (printJob.configuration_changes_required != null && printJob.configuration_changes_required.length !== 0)
+                                        {
+                                            return catalog.i18nc("@label:status", "Action required");
+                                        }
+                                        else
+                                        {
+                                            return "";
+                                        }
+                                    case "pausing":
+                                    case "paused":
+                                        return catalog.i18nc("@label:status", "Paused");
+                                    case "resuming":
+                                        return catalog.i18nc("@label:status", "Resuming");
+                                    case "aborted":
+                                        return catalog.i18nc("@label:status", "Print aborted");
+                                    default:
+                                        return "";
                                 }
                             }
-                            return catalog.i18nc("@label:status", "Available")
+                            return catalog.i18nc("@label:status", "Available");
                         }
 
                         elide: Text.ElideRight
@@ -292,32 +308,41 @@ Rectangle
 
                     width: parent.width - 2 * UM.Theme.getSize("default_margin").width
 
-                    visible: printJob != null && (["wait_cleanup", "printing", "pre_print", "wait_for_configuration"].indexOf(printJob.status) !== -1)
+                    visible: showExtended
 
                     Label   // Status detail
                     {
                         text:
                         {
+                            if ( ! printer.enabled)
+                            {
+                                return catalog.i18nc("@label", "Not accepting print jobs");
+                            }
+
                             if(printJob != null)
                             {
-                                if(printJob.status == "printing" )
+                                switch (printJob.status)
                                 {
+                                case "printing":
+                                case "post_print":
                                     return catalog.i18nc("@label", "Finishes at: ") + OutputDevice.getTimeCompleted(printJob.time_total - printJob.time_elapsed)
-                                }
-                                if(printJob.status == "wait_cleanup")
-                                {
+                                case "wait_cleanup":
                                     return catalog.i18nc("@label", "Clear build plate")
-                                }
-                                if(printJob.status == "sent_to_printer" || printJob.status == "pre_print")
-                                {
+                                case "sent_to_printer":
+                                case "pre_print":
                                     return catalog.i18nc("@label", "Preparing to print")
-                                }
-                                if(printJob.status == "wait_for_configuration")
-                                {
+                                case "wait_for_configuration":
                                     return catalog.i18nc("@label", "Not accepting print jobs")
+                                case "queued":
+                                    if (printJob.configuration_changes_required != undefined)
+                                    {
+                                        return catalog.i18nc("@label", "Waiting for configuration change");
+                                    }
+                                default:
+                                    return "";
                                 }
                             }
-                            return ""
+                            return "";
                         }
                         elide: Text.ElideRight
                         font: UM.Theme.getFont("default")
@@ -327,7 +352,7 @@ Rectangle
                     {
                         text: {
                           if(printJob != null) {
-                              if(printJob.status == "printing" )
+                              if(printJob.status == "printing" || printJob.status == "post_print")
                               {
                                   return OutputDevice.getDateCompleted(printJob.time_total - printJob.time_elapsed)
                               }
