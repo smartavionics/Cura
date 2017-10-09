@@ -17,10 +17,6 @@
             "size": 1.15,
             "family": "Open Sans"
         },
-        "default_little_big": {
-            "size": 1.17,
-            "family": "Open Sans"
-        },
         "default_bold": {
             "size": 1.15,
             "bold": true,
@@ -68,7 +64,7 @@
         "secondary": [245, 245, 245, 255],
 
         "topbar_background_color": [255, 255, 255, 0],
-        "topbar_background_color_monitoring": [255, 255, 255, 0],
+        "topbar_background_color_monitoring": [255, 255, 255, 255],
 
         "topbar_button_text_active": [0, 0, 0, 255],
         "topbar_button_text_inactive": [128, 128, 128, 255],
