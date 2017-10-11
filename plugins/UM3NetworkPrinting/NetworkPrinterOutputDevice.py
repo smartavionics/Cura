@@ -23,15 +23,13 @@ from PyQt5.QtWidgets import QMessageBox
 import json
 import os
 import gzip
-import zlib
 
 from time import time
-from time import sleep
+
 from time import gmtime
+from enum import IntEnum
 
 i18n_catalog = i18nCatalog("cura")
-
-from enum import IntEnum
 
 class AuthState(IntEnum):
     NotAuthenticated = 1
@@ -336,12 +334,15 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
 
         if self._image_reply:
             try:
+                # disconnect the signal
                 try:
                     self._image_reply.downloadProgress.disconnect(self._onStreamDownloadProgress)
-                except TypeError:
-                    pass #The signal was never connected.
-                self._image_reply.abort()
-            except RuntimeError:
+                except Exception:
+                    pass
+                # abort the request if it's not finished
+                if not self._image_reply.isFinished():
+                    self._image_reply.close()
+            except Exception as e: #RuntimeError
                 pass  # It can happen that the wrapped c++ object is already deleted.
             self._image_reply = None
             self._image_request = None
@@ -528,6 +529,9 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
         self._last_request_time = time()
 
     def _finalizePostReply(self):
+        # Indicate uploading was finished (so another file can be send)
+        self._write_finished = True
+
         if self._post_reply is None:
             return
 
@@ -836,6 +840,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
             Logger.log("d", "User aborted sending print to remote.")
             self._progress_message.hide()
             self._compressing_print = False
+            self._write_finished = True  # post_reply does not always exist, so make sure we unblock writing
             if self._post_reply:
                 self._finalizePostReply()
             Application.getInstance().showPrintMonitor.emit(False)
@@ -1203,6 +1208,7 @@ class NetworkPrinterOutputDevice(PrinterOutputDevice):
                 # Remove cached post request items.
                 del self._material_post_objects[id(reply)]
             elif "print_job" in reply_url:
+                self._onUploadFinished()  # Make sure the upload flag is reset as reply.finished is not always triggered
                 try:
                     reply.uploadProgress.disconnect(self._onUploadProgress)
                 except:

@@ -51,7 +51,7 @@ Rectangle
     property var printer
 
     border.width: UM.Theme.getSize("default_lining").width
-    border.color: mouse.containsMouse ? UM.Theme.getColor("setting_control_border_highlight") : lineColor
+    border.color: mouse.containsMouse ? emphasisColor : lineColor
     z: mouse.containsMouse ? 1 : 0  // Push this item up a bit on mouse over to ensure that the highlighted bottom border is visible.
 
     property var printJob:
@@ -189,7 +189,7 @@ Rectangle
                 PrintCoreConfiguration
                 {
                     id: leftExtruderInfo
-                    width: (parent.width - extruderSeperator.width) / 2
+                    width: Math.floor((parent.width - extruderSeperator.width) / 2)
                     printCoreConfiguration: printer.configuration[0]
                 }
 
@@ -204,7 +204,7 @@ Rectangle
                 PrintCoreConfiguration
                 {
                     id: rightExtruderInfo
-                    width: (parent.width - extruderSeperator.width) / 2
+                    width: Math.floor((parent.width - extruderSeperator.width) / 2)
                     printCoreConfiguration: printer.configuration[1]
                 }
             }
@@ -404,6 +404,8 @@ Rectangle
                         anchors.left: parent.left
                         anchors.right: parent.right
                         elide: Text.ElideRight
+                        wrapMode: Text.Wrap
+
                         font: UM.Theme.getFont("default")
                     }
 
