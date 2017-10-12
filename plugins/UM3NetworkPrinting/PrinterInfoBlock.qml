@@ -39,7 +39,8 @@ Rectangle
                 return catalog.i18nc("@label:status", "Printing");
             case "idle":
                 return catalog.i18nc("@label:status", "Available");
-            case "unreachable":  // TODO: new string
+            case "unreachable":
+                return catalog.i18nc("@label:MonitorStatus", "Lost connection with the printer");
             case "maintenance":  // TODO: new string
             case "unknown":
             default:
@@ -72,7 +73,7 @@ Rectangle
         hoverEnabled: true;
 
         // Only clickable if no printer is selected
-        enabled: OutputDevice.selectedPrinterName == ""
+        enabled: OutputDevice.selectedPrinterName == "" && printer.status !== "unreachable"
     }
 
     Row
@@ -165,6 +166,7 @@ Rectangle
                 anchors.right: printProgressArea.left
                 anchors.rightMargin: UM.Theme.getSize("default_margin").width
                 color: emphasisColor
+                opacity: printer != null && printer.status === "unreachable" ? 0.3 : 1
 
                 Image
                 {
@@ -255,6 +257,11 @@ Rectangle
                                 return catalog.i18nc("@label:status", "Disabled");
                             }
 
+                            if (printer.status === "unreachable")
+                            {
+                                return printerStatusText(printer);
+                            }
+
                             if (printJob != null)
                             {
                                 switch (printJob.status)
@@ -325,6 +332,12 @@ Rectangle
                             {
                                 return "blocked-icon.svg";
                             }
+
+                            if (printer.status === "unreachable")
+                            {
+                                return "";
+                            }
+
                             if (printJob != null)
                             {
                                 if(printJob.status === "queued")
@@ -374,6 +387,11 @@ Rectangle
                             if (!printer.enabled)
                             {
                                 return catalog.i18nc("@label", "Not accepting print jobs");
+                            }
+
+                            if (printer.status === "unreachable")
+                            {
+                                return "";
                             }
 
                             if(printJob != null)
