@@ -76,12 +76,13 @@ Item
 
                     property var totalTicks: 0
                     property var availableTotalTicks: 0
-                    property var activeQualityIndex: 0
+                    property var existingQualityProfile: 0
 
+                    property var qualitySliderActiveIndex: 0
                     property var qualitySliderStepWidth: 0
-                    property var qualitySliderAvailableMin : 0
-                    property var qualitySliderAvailableMax : 0
-                    property var qualitySliderMarginRight : 0
+                    property var qualitySliderAvailableMin: 0
+                    property var qualitySliderAvailableMax: 0
+                    property var qualitySliderMarginRight: 0
 
                     function update () {
                         reset()
@@ -97,7 +98,15 @@ Item
 
                             // Set selected value
                             if (Cura.MachineManager.activeQualityType == qualityItem.metadata.quality_type) {
-                                qualityModel.activeQualityIndex = i
+
+                                // set to -1 when switching to user created profile so all ticks are clickable
+                                if (Cura.SimpleModeSettingsManager.isProfileUserCreated) {
+                                    qualityModel.qualitySliderActiveIndex = -1
+                                } else {
+                                     qualityModel.qualitySliderActiveIndex = i
+                                }
+
+                                 qualityModel.existingQualityProfile = 1
                             }
 
                             // Set min available
@@ -141,6 +150,7 @@ Item
                     function reset () {
                         qualityModel.clear()
                         qualityModel.availableTotalTicks = -1
+                        qualityModel.existingQualityProfile = 0
 
                         // check, the ticks count cannot be less than zero
                         qualityModel.totalTicks = Math.max(0, Cura.ProfilesModel.rowCount() - 1)
@@ -261,7 +271,7 @@ Item
                         maximumValue: qualityModel.qualitySliderAvailableMax >= 0 ? qualityModel.qualitySliderAvailableMax : 0
                         stepSize: 1
 
-                        value: qualityModel.activeQualityIndex
+                        value: qualityModel.qualitySliderActiveIndex
 
                         width: qualityModel.qualitySliderStepWidth * qualityModel.availableTotalTicks
 
@@ -284,20 +294,18 @@ Item
                                     implicitWidth: 10 * screenScaleFactor
                                     implicitHeight: implicitWidth
                                     radius: implicitWidth / 2
-                                    visible: !Cura.SimpleModeSettingsManager.isProfileCustomized && !Cura.SimpleModeSettingsManager.isProfileUserCreated
+                                    visible: !Cura.SimpleModeSettingsManager.isProfileCustomized && !Cura.SimpleModeSettingsManager.isProfileUserCreated && qualityModel.existingQualityProfile
                                 }
                             }
                         }
 
                         onValueChanged: {
-                            // Only change if an active machine is set and the slider is visible at all.
-                            if(Cura.MachineManager.activeMachine != null && visible)
-                            {
-                                //Prevent updating during view initializing. Trigger only if the value changed by user
-                                if(qualitySlider.value != qualityModel.activeQualityIndex)
-                                {
-                                    //start updating with short delay
-                                    qualitySliderChangeTimer.start();
+                            // only change if an active machine is set and the slider is visible at all.
+                            if (Cura.MachineManager.activeMachine != null && visible) {
+                                // prevent updating during view initializing. Trigger only if the value changed by user
+                                if (qualitySlider.value != qualityModel.qualitySliderActiveIndex) {
+                                    // start updating with short delay
+                                    qualitySliderChangeTimer.start()
                                 }
                             }
                         }
