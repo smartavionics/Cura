@@ -14,9 +14,9 @@ import "."
 Item {
     id: base;
 
-    height: UM.Theme.getSize("section").height;
+    height: UM.Theme.getSize("section").height
 
-    property alias contents: controlContainer.children;
+    property alias contents: controlContainer.children
     property alias hovered: mouse.containsMouse
 
     property var showRevertButton: true
@@ -181,8 +181,8 @@ Item {
                 onClicked: {
                     revertButton.focus = true
 
-                    if (resetHandler) {
-                        resetHandler(propertyProvider.key)
+                    if (externalResetHandler) {
+                        externalResetHandler(propertyProvider.key)
                     } else {
                         Cura.MachineManager.clearUserSettingAllCurrentStacks(propertyProvider.key)
                     }
