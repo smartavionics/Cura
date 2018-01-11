@@ -238,6 +238,8 @@ class CuraEngineBackend(QObject, Backend):
         self._slicing = True
         self.slicingStarted.emit()
 
+        self.determineAutoSlicing()  # Switch timer on or off if appropriate
+
         slice_message = self._socket.createMessage("cura.proto.Slice")
         self._start_slice_job = StartSliceJob.StartSliceJob(slice_message)
         self._start_slice_job_build_plate = build_plate_to_be_sliced
@@ -458,6 +460,7 @@ class CuraEngineBackend(QObject, Backend):
         for build_plate_number in build_plate_changed:
             if build_plate_number not in self._build_plates_to_be_sliced:
                 self._build_plates_to_be_sliced.append(build_plate_number)
+            self.printDurationMessage.emit(source_build_plate_number, {}, [])
         self.processingProgress.emit(0.0)
         self.backendStateChange.emit(BackendState.NotStarted)
         # if not self._use_timer:
@@ -520,7 +523,7 @@ class CuraEngineBackend(QObject, Backend):
 
     def _onStackErrorCheckFinished(self):
         self._is_error_check_scheduled = False
-        if not self._slicing and self._build_plates_to_be_sliced:  #self._need_slicing:
+        if not self._slicing and self._build_plates_to_be_sliced:
             self.needsSlicing()
             self._onChanged()
 
@@ -583,8 +586,10 @@ class CuraEngineBackend(QObject, Backend):
         Logger.log("d", "See if there is more to slice...")
         # Somehow this results in an Arcus Error
         # self.slice()
-        # Testing call slice again, allow backend to restart by using the timer
-        self._invokeSlice()
+        # Call slice again using the timer, allowing the backend to restart
+        if self._build_plates_to_be_sliced:
+            self.enableTimer()  # manually enable timer to be able to invoke slice, also when in manual slice mode
+            self._invokeSlice()
 
     ##  Called when a g-code message is received from the engine.
     #
