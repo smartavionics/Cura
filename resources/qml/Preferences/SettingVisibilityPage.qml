@@ -79,7 +79,13 @@ UM.PreferencesPage
                     }
 
                     // After change set "Custom" option
-                    visibilityPreset.currentIndex = visibilityPreset.model.count - 1
+
+                    // If already "Custom" then don't do nothing
+                    if (visibilityPreset.currentIndex != visibilityPreset.model.count - 1)
+                    {
+                        visibilityPreset.currentIndex = visibilityPreset.model.count - 1
+                        UM.Preferences.setValue("general/preset_setting_visibility_choice", visibilityPreset.model.get(visibilityPreset.currentIndex).text)
+                    }
                 }
             }
         }
@@ -173,8 +179,10 @@ UM.PreferencesPage
             onActivated:
             {
                 // TODO What to do if user is selected "Custom from Combobox" ?
-                if (model.get(index).text == "Custom")
+                if (model.get(index).text == "Custom"){
+                    UM.Preferences.setValue("general/preset_setting_visibility_choice", model.get(index).text)
                     return
+                }
 
                 var newVisibleSettings = CuraApplication.getVisibilitySettingPreset(model.get(index).text)
                 UM.Preferences.setValue("general/visible_settings", newVisibleSettings)
@@ -260,6 +268,7 @@ UM.PreferencesPage
                     if (visibilityPreset.currentIndex != visibilityPreset.model.count - 1)
                     {
                         visibilityPreset.currentIndex = visibilityPreset.model.count - 1
+                        UM.Preferences.setValue("general/preset_setting_visibility_choice", visibilityPreset.model.get(visibilityPreset.currentIndex).text)
                     }
                 }
             }
