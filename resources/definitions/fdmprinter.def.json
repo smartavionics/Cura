@@ -6306,6 +6306,18 @@
                     "enabled": "bridge_settings_enabled",
                     "settable_per_mesh": true
                 },
+                "bridge_wall_coast":
+                {
+                    "label": "Bridge Wall Coasting",
+                    "description": "This controls the distance the extruder should coast immediately before a bridge wall begins. Coasting before the bridge starts can reduce the pressure in the nozzle and may produce a flatter bridge.",
+                    "unit": "%",
+                    "default_value": 100,
+                    "type": "float",
+                    "minimum_value": "0",
+                    "maximum_value": "500",
+                    "enabled": "bridge_settings_enabled",
+                    "settable_per_mesh": false
+                },
                 "bridge_skin_speed":
                 {
                     "label": "Bridge Skin Speed",
@@ -6339,7 +6351,7 @@
                     "label": "Bridge Skin Flow",
                     "description": "Flow compensation: the amount of material extruded when bridging skin is multiplied by this value.",
                     "unit": "%",
-                    "default_value": 100,
+                    "default_value": 50,
                     "type": "float",
                     "minimum_value": "5",
                     "minimum_value_warning": "50",
@@ -6352,7 +6364,7 @@
                     "label": "Bridge Wall Flow",
                     "description": "Flow compensation: the amount of material extruded when bridging walls is multiplied by this value.",
                     "unit": "%",
-                    "default_value": 100,
+                    "default_value": 50,
                     "type": "float",
                     "minimum_value": "5",
                     "minimum_value_warning": "50",
