@@ -6309,6 +6309,18 @@
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
                 },
+                "bridge_wall_min_length":
+                {
+                    "label": "Minimum Bridge Wall Length",
+                    "description": "Unsupported walls shorter than this will be printed using the normal wall settings. Longer unsupported walls will be printed using the bridge wall settings.",
+                    "unit": "mm",
+                    "type": "float",
+                    "minimum_value": "0",
+                    "default_value": 5,
+                    "enabled": "bridge_settings_enabled",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
                 "bridge_skin_support_threshold":
                 {
                     "label": "Bridge Skin Support Threshold",
@@ -6321,9 +6333,9 @@
                     "enabled": "bridge_settings_enabled",
                     "settable_per_mesh": true
                 },
-                "bridge_wall_max_air_gap":
+                "bridge_wall_max_overhang":
                 {
-                    "label": "Bridge Wall Max Air Gap",
+                    "label": "Bridge Wall Max Overhang",
                     "description": "The maximum allowed width of the region of air below a wall line before the wall is printed using bridge settings. Expressed as a percentage of the wall line width. When the air gap is wider than this, the wall line is printed using the bridge settings. Otherwise, the wall line is printed using the normal settings. The lower the value, the more likely it is that overhung wall lines will be printed using bridge settings.",
                     "unit": "%",
                     "default_value": 100,
