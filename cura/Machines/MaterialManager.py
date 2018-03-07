@@ -102,6 +102,13 @@ class MaterialManager(QObject):
         #    GUID -> material group list
         self._guid_material_groups_map = defaultdict(list)
         for root_material_id, material_group in self._material_group_map.items():
+            # This can happen when we are updating with incomplete data.
+            if material_group.root_material_node is None:
+                Logger.log("e", "Missing root material node for [%s]. Probably caused by update using incomplete data."
+                           " Check all related signals for further debugging.",
+                           material_group.name)
+                self._update_timer.start()
+                return
             guid = material_group.root_material_node.metadata["GUID"]
             self._guid_material_groups_map[guid].append(material_group)
 
@@ -210,6 +217,7 @@ class MaterialManager(QObject):
         self.materialsUpdated.emit()
 
     def _updateMaps(self):
+        Logger.log("i", "Updating material lookup data ...")
         self.initialize()
 
     def _onContainerMetadataChanged(self, container):
@@ -363,6 +371,16 @@ class MaterialManager(QObject):
                                         material_diameter, root_material_id)
         return node
 
+    def removeMaterialByRootId(self, root_material_id: str):
+        material_group = self.getMaterialGroup(root_material_id)
+        if not material_group:
+            Logger.log("i", "Unable to remove the material with id %s, because it doesn't exist.", root_material_id)
+            return
+
+        nodes_to_remove = [material_group.root_material_node] + material_group.derived_material_node_list
+        for node in nodes_to_remove:
+            self._container_registry.removeContainer(node.metadata["id"])
+
     #
     # Methods for GUI
     #
@@ -386,14 +404,7 @@ class MaterialManager(QObject):
     @pyqtSlot("QVariant")
     def removeMaterial(self, material_node: "MaterialNode"):
         root_material_id = material_node.metadata["base_file"]
-        material_group = self.getMaterialGroup(root_material_id)
-        if not material_group:
-            Logger.log("d", "Unable to remove the material with id %s, because it doesn't exist.", root_material_id)
-            return
-
-        nodes_to_remove = [material_group.root_material_node] + material_group.derived_material_node_list
-        for node in nodes_to_remove:
-            self._container_registry.removeContainer(node.metadata["id"])
+        self.removeMaterialByRootId(root_material_id)
 
     #
     # Creates a duplicate of a material, which has the same GUID and base_file metadata.
