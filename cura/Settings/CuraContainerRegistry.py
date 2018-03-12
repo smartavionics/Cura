@@ -29,6 +29,7 @@ from .ExtruderManager import ExtruderManager
 
 from cura.CuraApplication import CuraApplication
 from cura.Machines.QualityManager import getMachineDefinitionIDForQualitySearch
+from cura.ProfileReader import NoProfileException
 
 from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
@@ -185,6 +186,8 @@ class CuraContainerRegistry(ContainerRegistry):
             profile_reader = plugin_registry.getPluginObject(plugin_id)
             try:
                 profile_or_list = profile_reader.read(file_name)  # Try to open the file with the profile reader.
+            except NoProfileException:
+                return { "status": "ok", "message": catalog.i18nc("@info:status Don't translate the XML tags <filename> or <message>!", "No custom profile to import in file <filename>{0}</filename>", file_name)}
             except Exception as e:
                 # Note that this will fail quickly. That is, if any profile reader throws an exception, it will stop reading. It will only continue reading if the reader returned None.
                 Logger.log("e", "Failed to import profile from %s: %s while using profile reader. Got exception %s", file_name,profile_reader.getPluginId(), str(e))
@@ -238,7 +241,7 @@ class CuraContainerRegistry(ContainerRegistry):
                         profile.addMetaDataEntry("type", "quality_changes")
                         profile.addMetaDataEntry("definition", global_profile.getMetaDataEntry("definition"))
                         profile.addMetaDataEntry("quality_type", global_profile.getMetaDataEntry("quality_type"))
-                        profile.addMetaDataEntry("extruder", extruder.getId())
+                        profile.addMetaDataEntry("position", "0")
                         profile.setDirty(True)
                         if idx == 0:
                             # move all per-extruder settings to the first extruder's quality_changes
@@ -270,10 +273,11 @@ class CuraContainerRegistry(ContainerRegistry):
                     elif profile_index < len(machine_extruders) + 1:
                         # This is assumed to be an extruder profile
                         extruder_id = machine_extruders[profile_index - 1].definition.getId()
-                        if not profile.getMetaDataEntry("extruder"):
-                            profile.addMetaDataEntry("extruder", extruder_id)
+                        extuder_position = str(profile_index - 1)
+                        if not profile.getMetaDataEntry("position"):
+                            profile.addMetaDataEntry("position", extuder_position)
                         else:
-                            profile.setMetaDataEntry("extruder", extruder_id)
+                            profile.setMetaDataEntry("position", extuder_position)
                         profile_id = (extruder_id + "_" + name_seed).lower().replace(" ", "_")
 
                     else: #More extruders in the imported file than in the machine.
