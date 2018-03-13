@@ -125,6 +125,7 @@ class MachineManager(QObject):
         # When the materials lookup table gets updated, it can mean that a material has its name changed, which should
         # be reflected on the GUI. This signal emission makes sure that it happens.
         self._material_manager.materialsUpdated.connect(self.rootMaterialChanged)
+        self.rootMaterialChanged.connect(self._onRootMaterialChanged)
 
     activeQualityGroupChanged = pyqtSignal()
     activeQualityChangesGroupChanged = pyqtSignal()
@@ -872,27 +873,32 @@ class MachineManager(QObject):
             container = extruder.userChanges
             container.setProperty(setting_name, property_name, property_value)
 
-    @pyqtProperty("QVariantList", notify = rootMaterialChanged)
+    @pyqtProperty("QVariantList", notify = globalContainerChanged)
     def currentExtruderPositions(self):
-        return sorted(list(self._current_root_material_id.keys()))
+        if self._global_container_stack is None:
+            return []
+        return sorted(list(self._global_container_stack.extruders.keys()))
 
-    @pyqtProperty("QVariant", notify = rootMaterialChanged)
-    def currentRootMaterialId(self):
-        # initial filling the current_root_material_id
+    ##  Update _current_root_material_id and _current_root_material_name when
+    #   the current root material was changed.
+    def _onRootMaterialChanged(self):
         self._current_root_material_id = {}
-        for position in self._global_container_stack.extruders:
-            self._current_root_material_id[position] = self._global_container_stack.extruders[position].material.getMetaDataEntry("base_file")
-        return self._current_root_material_id
 
-    @pyqtProperty("QVariant", notify = rootMaterialChanged)
-    def currentRootMaterialName(self):
-        # initial filling the current_root_material_name
         if self._global_container_stack:
+            for position in self._global_container_stack.extruders:
+                self._current_root_material_id[position] = self._global_container_stack.extruders[position].material.getMetaDataEntry("base_file")
             self._current_root_material_name = {}
             for position in self._global_container_stack.extruders:
                 if position not in self._current_root_material_name:
                     material = self._global_container_stack.extruders[position].material
                     self._current_root_material_name[position] = material.getName()
+
+    @pyqtProperty("QVariant", notify = rootMaterialChanged)
+    def currentRootMaterialId(self):
+        return self._current_root_material_id
+
+    @pyqtProperty("QVariant", notify = rootMaterialChanged)
+    def currentRootMaterialName(self):
         return self._current_root_material_name
 
     ##  Return the variant names in the extruder stack(s).
@@ -939,9 +945,9 @@ class MachineManager(QObject):
 
         # Set quality and quality_changes for each ExtruderStack
         for position, node in quality_group.nodes_for_extruders.items():
-            self._global_container_stack.extruders[position].quality = node.getContainer()
+            self._global_container_stack.extruders[str(position)].quality = node.getContainer()
             if empty_quality_changes:
-                self._global_container_stack.extruders[position].qualityChanges = self._empty_quality_changes_container
+                self._global_container_stack.extruders[str(position)].qualityChanges = self._empty_quality_changes_container
 
         self.activeQualityGroupChanged.emit()
         self.activeQualityChangesGroupChanged.emit()
