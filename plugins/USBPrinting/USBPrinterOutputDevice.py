@@ -10,9 +10,9 @@ from UM.PluginRegistry import PluginRegistry
 from cura.PrinterOutputDevice import PrinterOutputDevice, ConnectionState
 from cura.PrinterOutput.PrinterOutputModel import PrinterOutputModel
 from cura.PrinterOutput.PrintJobOutputModel import PrintJobOutputModel
+from cura.PrinterOutput.GenericOutputController import GenericOutputController
 
 from .AutoDetectBaudJob import AutoDetectBaudJob
-from .USBPrinterOutputController import USBPrinterOutputController
 from .avr_isp import stk500v2, intelHex
 
 from PyQt5.QtCore import pyqtSlot, pyqtSignal, pyqtProperty
@@ -116,7 +116,8 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
 
     @pyqtSlot(str)
     def updateFirmware(self, file):
-        self._firmware_location = file
+        # the file path is qurl encoded.
+        self._firmware_location = file.replace("file://", "")
         self.showFirmwareInterface()
         self.setFirmwareUpdateState(FirmwareUpdateState.updating)
         self._update_firmware_thread.start()
@@ -126,9 +127,11 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         if self._connection_state != ConnectionState.closed:
             self.close()
 
-        hex_file = intelHex.readHex(self._firmware_location)
-        if len(hex_file) == 0:
-            Logger.log("e", "Unable to read provided hex file. Could not update firmware")
+        try:
+            hex_file = intelHex.readHex(self._firmware_location)
+            assert len(hex_file) > 0
+        except (FileNotFoundError, AssertionError):
+            Logger.log("e", "Unable to read provided hex file. Could not update firmware.")
             self.setFirmwareUpdateState(FirmwareUpdateState.firmware_not_found_error)
             return
 
@@ -237,7 +240,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         container_stack = Application.getInstance().getGlobalContainerStack()
         num_extruders = container_stack.getProperty("machine_extruder_count", "value")
         # Ensure that a printer is created.
-        self._printers = [PrinterOutputModel(output_controller=USBPrinterOutputController(self), number_of_extruders=num_extruders)]
+        self._printers = [PrinterOutputModel(output_controller=GenericOutputController(self), number_of_extruders=num_extruders)]
         self._printers[0].updateName(container_stack.getName())
         self.setConnectionState(ConnectionState.connected)
         self._update_thread.start()
@@ -369,7 +372,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         elapsed_time = int(time() - self._print_start_time)
         print_job = self._printers[0].activePrintJob
         if print_job is None:
-            print_job = PrintJobOutputModel(output_controller = USBPrinterOutputController(self), name= Application.getInstance().getPrintInformation().jobName)
+            print_job = PrintJobOutputModel(output_controller = GenericOutputController(self), name= Application.getInstance().getPrintInformation().jobName)
             print_job.updateState("printing")
             self._printers[0].updateActivePrintJob(print_job)
 
