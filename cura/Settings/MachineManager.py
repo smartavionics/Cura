@@ -738,22 +738,6 @@ class MachineManager(QObject):
 
         return result
 
-    ##  Property to indicate if a machine has "specialized" material profiles.
-    #   Some machines have their own material profiles that "override" the default catch all profiles.
-    @pyqtProperty(bool, notify = globalContainerChanged)
-    def filterMaterialsByMachine(self) -> bool:
-        if self._global_container_stack:
-            return Util.parseBool(self._global_container_stack.getMetaDataEntry("has_machine_materials", False))
-        return False
-
-    ##  Property to indicate if a machine has "specialized" quality profiles.
-    #   Some machines have their own quality profiles that "override" the default catch all profiles.
-    @pyqtProperty(bool, notify = globalContainerChanged)
-    def filterQualityByMachine(self) -> bool:
-        if self._global_container_stack:
-            return Util.parseBool(self._global_container_stack.getMetaDataEntry("has_machine_quality", False))
-        return False
-
     ##  Get the Definition ID of a machine (specified by ID)
     #   \param machine_id string machine id to get the definition ID of
     #   \returns DefinitionID (string) if found, None otherwise
@@ -1125,7 +1109,7 @@ class MachineManager(QObject):
             from cura.Settings.CuraContainerStack import _ContainerIndexes
             context = PropertyEvaluationContext(extruder)
             context.context["evaluate_from_container_index"] = _ContainerIndexes.DefinitionChanges
-            material_diameter = self._global_container_stack.getProperty("material_diameter", "value", context)
+            material_diameter = extruder.getProperty("material_diameter", "value", context)
             candidate_materials = self._material_manager.getAvailableMaterials(
                 self._global_container_stack.definition.getId(),
                 current_variant_name,
@@ -1224,9 +1208,7 @@ class MachineManager(QObject):
     def existNetworkInstances(self, network_key: str) -> bool:
         metadata_filter = {"um_network_key": network_key}
         containers = ContainerRegistry.getInstance().findContainerStacks(type = "machine", **metadata_filter)
-        if containers:
-            return True
-        return False
+        return bool(containers)
 
     @pyqtSlot("QVariant")
     def setGlobalVariant(self, container_node):
