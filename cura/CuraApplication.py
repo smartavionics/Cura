@@ -209,6 +209,7 @@ class CuraApplication(QtApplication):
                 ("preferences", Preferences.Version * 1000000 + self.SettingVersion):              (Resources.Preferences, "application/x-uranium-preferences"),
                 ("user", InstanceContainer.Version * 1000000 + self.SettingVersion):               (self.ResourceTypes.UserInstanceContainer, "application/x-uranium-instancecontainer"),
                 ("definition_changes", InstanceContainer.Version * 1000000 + self.SettingVersion): (self.ResourceTypes.DefinitionChangesContainer, "application/x-uranium-instancecontainer"),
+                ("variant", InstanceContainer.Version * 1000000 + self.SettingVersion):            (self.ResourceTypes.VariantInstanceContainer, "application/x-uranium-instancecontainer"),
             }
         )
 
@@ -742,7 +743,7 @@ class CuraApplication(QtApplication):
         # Initialize camera tool
         camera_tool = controller.getTool("CameraTool")
         camera_tool.setOrigin(Vector(0, 100, 0))
-        camera_tool.setZoomRange(0.1, 200000)
+        camera_tool.setZoomRange(0.1, 2000)
 
         # Initialize camera animations
         self._camera_animation = CameraAnimation.CameraAnimation()
@@ -1625,8 +1626,13 @@ class CuraApplication(QtApplication):
             node.setName(os.path.basename(filename))
             self.getBuildVolume().checkBoundsAndUpdate(node)
 
-            extension = os.path.splitext(filename)[1]
-            if extension.lower() in self._non_sliceable_extensions:
+            is_non_sliceable = False
+            filename_lower = filename.lower()
+            for extension in self._non_sliceable_extensions:
+                if filename_lower.endswith(extension):
+                    is_non_sliceable = True
+                    break
+            if is_non_sliceable:
                 self.callLater(lambda: self.getController().setActiveView("SimulationView"))
 
                 block_slicing_decorator = BlockSlicingDecorator()
@@ -1693,7 +1699,7 @@ class CuraApplication(QtApplication):
             result = workspace_reader.preRead(file_path, show_dialog=False)
             return result == WorkspaceReader.PreReadResult.accepted
         except Exception as e:
-            Logger.logException("e", "Could not check file %s: %s", file_url)
+            Logger.logException("e", "Could not check file %s", file_url)
             return False
 
     def _onContextMenuRequested(self, x: float, y: float) -> None:
