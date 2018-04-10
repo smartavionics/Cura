@@ -700,7 +700,7 @@ class CuraApplication(QtApplication):
         # initialized, for example opening files because they may show dialogs which can be closed due to incomplete
         # GUI initialization.
         self._post_start_timer = QTimer(self)
-        self._post_start_timer.setInterval(700)
+        self._post_start_timer.setInterval(1000)
         self._post_start_timer.setSingleShot(True)
         self._post_start_timer.timeout.connect(self._onPostStart)
         self._post_start_timer.start()
@@ -1562,8 +1562,8 @@ class CuraApplication(QtApplication):
 
     openProjectFile = pyqtSignal(QUrl, arguments = ["project_file"])  # Emitted when a project file is about to open.
 
-    @pyqtSlot(QUrl)
-    def readLocalFile(self, file):
+    @pyqtSlot(QUrl, bool)
+    def readLocalFile(self, file, skip_project_file_check = False):
         if not file.isValid():
             return
 
@@ -1574,7 +1574,7 @@ class CuraApplication(QtApplication):
                 self.deleteAll()
                 break
 
-        if self.checkIsValidProjectFile(file):
+        if not skip_project_file_check and self.checkIsValidProjectFile(file):
             self.callLater(self.openProjectFile.emit, file)
             return
 
