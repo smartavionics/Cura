@@ -3346,7 +3346,7 @@
                     {
                         "off": "Off",
                         "all": "All",
-                        "noskin": "No Skin"
+                        "noskin": "Not in Skin"
                     },
                     "default_value": "all",
                     "resolve": "'noskin' if 'noskin' in extruderValues('retraction_combing') else ('all' if 'all' in extruderValues('retraction_combing') else 'off')",
@@ -6417,9 +6417,10 @@
                 "adaptive_layer_height_variation":
                 {
                     "label": "Adaptive layers maximum variation",
-                    "description": "The maximum allowed height different from the base layer height in mm.",
+                    "description": "The maximum allowed height different from the base layer height.",
                     "type": "float",
                     "enabled": "adaptive_layer_height_enabled",
+                    "unit": "mm",
                     "default_value": 0.1,
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
@@ -6432,6 +6433,7 @@
                     "type": "float",
                     "enabled": "adaptive_layer_height_enabled",
                     "default_value": 0.01,
+                    "unit": "mm",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
