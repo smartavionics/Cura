@@ -32,6 +32,7 @@ class CuraPackageManager(QObject):
             candidate_bundled_path = os.path.join(search_path, "bundled_packages.json")
             if os.path.exists(candidate_bundled_path):
                 self._bundled_package_management_file_path = candidate_bundled_path
+        for search_path in (Resources.getDataStoragePath(), Resources.getConfigStoragePath()):
             candidate_user_path = os.path.join(search_path, "packages.json")
             if os.path.exists(candidate_user_path):
                 self._user_package_management_file_path = candidate_user_path
@@ -337,13 +338,7 @@ class CuraPackageManager(QObject):
         with zipfile.ZipFile(filename) as archive:
             # Go through all the files and use the first successful read as the result
             for file_info in archive.infolist():
-                is_dir = lambda file_info: file_info.filename.endswith('/')
-                if is_dir or not file_info.filename.startswith("files/"):
-                    continue
-
-                filename_parts = os.path.basename(file_info.filename.lower()).split(".")
-                stripped_filename = filename_parts[0]
-                if stripped_filename in ("license", "licence"):
+                if file_info.filename.endswith("LICENSE"):
                     Logger.log("d", "Found potential license file '%s'", file_info.filename)
                     try:
                         with archive.open(file_info.filename, "r") as f:
