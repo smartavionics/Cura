@@ -27,8 +27,8 @@ class CuraPackageManager(QObject):
         self._plugin_registry = self._application.getPluginRegistry()
 
         #JSON files that keep track of all installed packages.
-        self._user_package_management_file_path = None
-        self._bundled_package_management_file_path = None
+        self._user_package_management_file_path = None #type: str
+        self._bundled_package_management_file_path = None #type: str
         for search_path in Resources.getSearchPaths():
             candidate_bundled_path = os.path.join(search_path, "bundled_packages.json")
             if os.path.exists(candidate_bundled_path):
@@ -105,7 +105,6 @@ class CuraPackageManager(QObject):
         while self._to_install_package_dict:
             package_id, package_info = list(self._to_install_package_dict.items())[0]
             self._installPackage(package_info)
-            self._installed_package_dict[package_id] = self._to_install_package_dict[package_id]
             del self._to_install_package_dict[package_id]
             self._saveManagementData()
 
@@ -134,7 +133,7 @@ class CuraPackageManager(QObject):
 
         return None
 
-    def getAllInstalledPackagesInfo(self) -> dict:
+    def getAllInstalledPackageIDs(self) -> set:
         # Add bundled, installed, and to-install packages to the set of installed package IDs
         all_installed_ids = set()
 
@@ -147,6 +146,12 @@ class CuraPackageManager(QObject):
         if self._to_install_package_dict.keys():
             all_installed_ids = all_installed_ids.union(set(self._to_install_package_dict.keys()))
 
+        return all_installed_ids
+
+    def getAllInstalledPackagesInfo(self) -> dict:
+
+        all_installed_ids = self.getAllInstalledPackageIDs()
+
         # map of <package_type> -> <package_id> -> <package_info>
         installed_packages_dict = {}
         for package_id in all_installed_ids:
@@ -158,14 +163,17 @@ class CuraPackageManager(QObject):
             # Add bundled plugins
             if package_id in self._bundled_package_dict:
                 package_info = self._bundled_package_dict[package_id]["package_info"]
+                package_info["is_installed"] = True
 
             # Add installed plugins
             if package_id in self._installed_package_dict:
                 package_info = self._installed_package_dict[package_id]["package_info"]
+                package_info["is_installed"] = True
 
             # Add to install plugins
             if package_id in self._to_install_package_dict:
                 package_info = self._to_install_package_dict[package_id]["package_info"]
+                package_info["is_installed"] = False
 
             if package_info is None:
                 continue
@@ -298,9 +306,8 @@ class CuraPackageManager(QObject):
 
         Logger.log("i", "Installing package [%s] from file [%s]", package_id, filename)
 
-        # If it's installed, remove it first and then install
-        if package_id in self._installed_package_dict:
-            self._purgePackage(package_id)
+        # remove it first and then install
+        self._purgePackage(package_id)
 
         # Install the package
         with zipfile.ZipFile(filename, "r") as archive:
@@ -325,6 +332,8 @@ class CuraPackageManager(QObject):
 
         # Remove the file
         os.remove(filename)
+        # Move the info to the installed list of packages only when it succeeds
+        self._installed_package_dict[package_id] = self._to_install_package_dict[package_id]
 
     def __installPackageFiles(self, package_id: str, src_dir: str, dst_dir: str) -> None:
         Logger.log("i", "Moving package {package_id} from {src_dir} to {dst_dir}".format(package_id=package_id, src_dir=src_dir, dst_dir=dst_dir))
