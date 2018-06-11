@@ -225,6 +225,8 @@ class CuraApplication(QtApplication):
 
         from cura.Settings.CuraContainerRegistry import CuraContainerRegistry
         self._container_registry_class = CuraContainerRegistry
+        from cura.CuraPackageManager import CuraPackageManager
+        self._package_manager_class = CuraPackageManager
 
     # Adds command line options to the command line parser. This should be called after the application is created and
     # before the pre-start.
@@ -260,19 +262,15 @@ class CuraApplication(QtApplication):
             self._files_to_open.append(os.path.abspath(filename))
 
     def initialize(self) -> None:
+        self.__addExpectedResourceDirsAndSearchPaths()  # Must be added before init of super
+
         super().initialize()
 
         self.__sendCommandToSingleInstance()
-        self.__addExpectedResourceDirsAndSearchPaths()
         self.__initializeSettingDefinitionsAndFunctions()
         self.__addAllResourcesAndContainerResources()
         self.__addAllEmptyContainers()
         self.__setLatestResouceVersionsForVersionUpgrade()
-
-        # Initialize the package manager to remove and install scheduled packages.
-        from cura.CuraPackageManager import CuraPackageManager
-        self._cura_package_manager = CuraPackageManager(self)
-        self._cura_package_manager.initialize()
 
         self._machine_action_manager = MachineActionManager.MachineActionManager(self)
         self._machine_action_manager.initialize()
@@ -324,6 +322,7 @@ class CuraApplication(QtApplication):
         SettingFunction.registerOperator("extruderValues", ExtruderManager.getExtruderValues)
         SettingFunction.registerOperator("extruderValue", ExtruderManager.getExtruderValue)
         SettingFunction.registerOperator("resolveOrValue", ExtruderManager.getResolveOrValue)
+        SettingFunction.registerOperator("defaultExtruderPosition", ExtruderManager.getDefaultExtruderPosition)
 
     # Adds all resources and container related resources.
     def __addAllResourcesAndContainerResources(self) -> None:
@@ -407,6 +406,43 @@ class CuraApplication(QtApplication):
             }
         )
 
+        """
+        self._currently_loading_files = []
+        self._non_sliceable_extensions = []
+
+        self._machine_action_manager = MachineActionManager.MachineActionManager()
+        self._machine_manager = None    # This is initialized on demand.
+        self._extruder_manager = None
+        self._material_manager = None
+        self._quality_manager = None
+        self._object_manager = None
+        self._build_plate_model = None
+        self._multi_build_plate_model = None
+        self._setting_visibility_presets_model = None
+        self._setting_inheritance_manager = None
+        self._simple_mode_settings_manager = None
+        self._cura_scene_controller = None
+        self._machine_error_checker = None
+        self._auto_save = None
+        self._save_data_enabled = True
+
+        self._additional_components = {} # Components to add to certain areas in the interface
+
+        super().__init__(name = "cura",
+                         version = CuraVersion,
+                         buildtype = CuraBuildType,
+                         is_debug_mode = CuraDebugMode,
+                         tray_icon_name = "cura-icon-32.png",
+                         **kwargs)
+
+        # FOR TESTING ONLY
+        if kwargs["parsed_command_line"].get("trigger_early_crash", False):
+            assert not "This crash is triggered by the trigger_early_crash command line argument."
+
+        self._variant_manager = None
+
+        self.default_theme = "cura-light"
+        """
     # Runs preparations that needs to be done before the starting process.
     def startSplashWindowPhase(self):
         super().startSplashWindowPhase()
@@ -786,10 +822,6 @@ class CuraApplication(QtApplication):
         if self._extruder_manager is None:
             self._extruder_manager = ExtruderManager()
         return self._extruder_manager
-
-    @pyqtSlot(result = QObject)
-    def getCuraPackageManager(self, *args):
-        return self._cura_package_manager
 
     def getVariantManager(self, *args):
         return self._variant_manager

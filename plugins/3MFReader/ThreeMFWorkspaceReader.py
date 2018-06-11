@@ -13,6 +13,7 @@ from UM.Workspace.WorkspaceReader import WorkspaceReader
 from UM.Application import Application
 
 from UM.Logger import Logger
+from UM.Message import Message
 from UM.i18n import i18nCatalog
 from UM.Signal import postponeSignals, CompressTechnique
 from UM.Settings.ContainerFormatError import ContainerFormatError
@@ -86,7 +87,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
         MimeTypeDatabase.addMimeType(
             MimeType(
-                name="application/x-cura-project-file",
+                name="application/x-curaproject+xml",
                 comment="Cura Project File",
                 suffixes=["curaproject.3mf"]
             )
@@ -470,6 +471,20 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             Logger.log("w", "File %s is not a valid workspace.", file_name)
             return WorkspaceReader.PreReadResult.failed
 
+        # Check if the machine definition exists. If not, indicate failure because we do not import definition files.
+        def_results = self._container_registry.findDefinitionContainersMetadata(id = machine_definition_id)
+        if not def_results:
+            message = Message(i18n_catalog.i18nc("@info:status Don't translate the XML tags <filename> or <message>!",
+                                                 "Project file <filename>{0}</filename> contains an unknown machine type"
+                                                 " <message>{1}</message>. Cannot import the machine."
+                                                 " Models will be imported instead.", file_name, machine_definition_id),
+                                                 title = i18n_catalog.i18nc("@info:title", "Open Project File"))
+            message.show()
+
+            Logger.log("i", "Could unknown machine definition %s in project file %s, cannot import it.",
+                       self._machine_info.definition_id, file_name)
+            return WorkspaceReader.PreReadResult.failed
+
         # In case we use preRead() to check if a file is a valid project file, we don't want to show a dialog.
         if not show_dialog:
             return WorkspaceReader.PreReadResult.accepted
@@ -606,9 +621,10 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             machine_name = self._container_registry.uniqueName(self._machine_info.name)
 
             global_stack = CuraStackBuilder.createMachine(machine_name, self._machine_info.definition_id)
-            extruder_stack_dict = global_stack.extruders
+            if global_stack: #Only switch if creating the machine was successful.
+                extruder_stack_dict = global_stack.extruders
 
-            self._container_registry.addContainer(global_stack)
+                self._container_registry.addContainer(global_stack)
         else:
             # Find the machine
             global_stack = self._container_registry.findContainerStacks(name = self._machine_info.name, type = "machine")[0]
