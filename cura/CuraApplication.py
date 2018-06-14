@@ -123,7 +123,7 @@ class CuraApplication(QtApplication):
     # SettingVersion represents the set of settings available in the machine/extruder definitions.
     # You need to make sure that this version number needs to be increased if there is any non-backwards-compatible
     # changes of the settings.
-    SettingVersion = 4
+    SettingVersion = 5
 
     Created = False
 
@@ -513,7 +513,6 @@ class CuraApplication(QtApplication):
         preferences.addPreference("cura/asked_dialog_on_project_save", False)
         preferences.addPreference("cura/choice_on_profile_override", "always_ask")
         preferences.addPreference("cura/choice_on_open_project", "always_ask")
-        preferences.addPreference("cura/not_arrange_objects_on_load", False)
         preferences.addPreference("cura/use_multi_build_plate", False)
 
         preferences.addPreference("cura/currency", "€")
@@ -1603,9 +1602,7 @@ class CuraApplication(QtApplication):
         self._currently_loading_files.remove(filename)
 
         self.fileLoaded.emit(filename)
-        arrange_objects_on_load = (
-            not self.getPreferences().getValue("cura/use_multi_build_plate") or
-            not self.getPreferences().getValue("cura/not_arrange_objects_on_load"))
+        arrange_objects_on_load = not self.getPreferences().getValue("cura/use_multi_build_plate")
         target_build_plate = self.getMultiBuildPlateModel().activeBuildPlate if arrange_objects_on_load else -1
 
         root = self.getController().getScene().getRoot()
@@ -1678,7 +1675,7 @@ class CuraApplication(QtApplication):
                             return
 
                         # Step is for skipping tests to make it a lot faster. it also makes the outcome somewhat rougher
-                        node, _ = arranger.findNodePlacement(node, offset_shape_arr, hull_shape_arr, step = 10)
+                        arranger.findNodePlacement(node, offset_shape_arr, hull_shape_arr, step = 10)
 
             # This node is deep copied from some other node which already has a BuildPlateDecorator, but the deepcopy
             # of BuildPlateDecorator produces one that's associated with build plate -1. So, here we need to check if

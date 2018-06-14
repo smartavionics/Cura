@@ -313,7 +313,6 @@ class ContainerManager(QObject):
 
         self._machine_manager.blurSettings.emit()
 
-        global_stack = self._machine_manager.activeMachine
         current_quality_changes_name = global_stack.qualityChanges.getName()
         current_quality_type = global_stack.quality.getMetaDataEntry("quality_type")
         extruder_stacks = list(global_stack.extruders.values())
@@ -324,6 +323,7 @@ class ContainerManager(QObject):
             if quality_changes.getId() == "empty_quality_changes":
                 quality_changes = self._quality_manager._createQualityChanges(current_quality_type, current_quality_changes_name,
                                                                               global_stack, stack)
+                self._container_registry.addContainer(quality_changes)
                 stack.qualityChanges = quality_changes
 
             if not quality_changes or self._container_registry.isReadOnly(quality_changes.getId()):
