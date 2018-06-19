@@ -6577,18 +6577,6 @@
                     "enabled": "bridge_settings_enabled",
                     "settable_per_mesh": true
                 },
-                "bridge_wall_max_overhang":
-                {
-                    "label": "Bridge Wall Max Overhang",
-                    "description": "The maximum allowed width of the region of air below a wall line before the wall is printed using bridge settings. Expressed as a percentage of the wall line width. When the air gap is wider than this, the wall line is printed using the bridge settings. Otherwise, the wall line is printed using the normal settings. The lower the value, the more likely it is that overhung wall lines will be printed using bridge settings.",
-                    "unit": "%",
-                    "default_value": 100,
-                    "type": "float",
-                    "minimum_value": "0",
-                    "maximum_value": "100",
-                    "enabled": "bridge_settings_enabled",
-                    "settable_per_mesh": true
-                },
                 "bridge_wall_coast":
                 {
                     "label": "Bridge Wall Coasting",
@@ -6803,7 +6791,7 @@
                     "type": "float",
                     "minimum_value": "0",
                     "default_value": 0,
-                    "settable_per_mesh": true
+                    "settable_per_mesh": false
                 },
                 "small_feature_max_length":
                 {
@@ -6814,7 +6802,7 @@
                     "minimum_value": "0",
                     "default_value": 0,
                     "value": "small_hole_max_size * math.pi",
-                    "settable_per_mesh": true
+                    "settable_per_mesh": false
                 },
                 "small_feature_speed_factor":
                 {
@@ -6826,7 +6814,7 @@
                     "minimum_value": "10",
                     "minimum_value_warning": "25",
                     "maximum_value": "100",
-                    "settable_per_mesh": true
+                    "settable_per_mesh": false
                 },
                 "small_feature_speed_factor_0":
                 {
@@ -6839,7 +6827,7 @@
                     "minimum_value": "10",
                     "minimum_value_warning": "25",
                     "maximum_value": "100",
-                    "settable_per_mesh": true
+                    "settable_per_mesh": false
                 }
             }
         },
