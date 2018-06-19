@@ -6543,6 +6543,30 @@
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
                 },
+                "wall_overhang_angle":
+                {
+                    "label": "Overhanging Wall Angle",
+                    "description": "Walls that overhang more than this angle will be printed using overhanging wall settings.",
+                    "unit": "°",
+                    "type": "float",
+                    "minimum_value": "0",
+                    "minimum_value_warning": "2",
+                    "maximum_value": "80",
+                    "default_value": 40,
+                    "settable_per_mesh": true
+                },
+                "wall_overhang_speed_factor":
+                {
+                    "label": "Overhanging Wall Speed",
+                    "description": "Overhanging walls will be printed at this percentage of their normal print speed.",
+                    "unit": "%",
+                    "type": "float",
+                    "default_value": 50,
+                    "minimum_value": "10",
+                    "minimum_value_warning": "25",
+                    "maximum_value": "100",
+                    "settable_per_mesh": true
+                },
                 "bridge_settings_enabled":
                 {
                     "label": "Enable Bridge Settings",
@@ -6791,7 +6815,7 @@
                     "type": "float",
                     "minimum_value": "0",
                     "default_value": 0,
-                    "settable_per_mesh": false
+                    "settable_per_mesh": true
                 },
                 "small_feature_max_length":
                 {
@@ -6802,7 +6826,7 @@
                     "minimum_value": "0",
                     "default_value": 0,
                     "value": "small_hole_max_size * math.pi",
-                    "settable_per_mesh": false
+                    "settable_per_mesh": true
                 },
                 "small_feature_speed_factor":
                 {
@@ -6814,7 +6838,7 @@
                     "minimum_value": "10",
                     "minimum_value_warning": "25",
                     "maximum_value": "100",
-                    "settable_per_mesh": false
+                    "settable_per_mesh": true
                 },
                 "small_feature_speed_factor_0":
                 {
@@ -6827,7 +6851,7 @@
                     "minimum_value": "10",
                     "minimum_value_warning": "25",
                     "maximum_value": "100",
-                    "settable_per_mesh": false
+                    "settable_per_mesh": true
                 }
             }
         },
