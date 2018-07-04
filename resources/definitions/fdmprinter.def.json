@@ -2118,20 +2118,6 @@
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
                 },
-                "material_diameter":
-                {
-                    "label": "Diameter",
-                    "description": "Adjusts the diameter of the filament used. Match this value with the diameter of the used filament.",
-                    "unit": "mm",
-                    "type": "float",
-                    "default_value": 2.85,
-                    "minimum_value": "0.0001",
-                    "minimum_value_warning": "0.4",
-                    "maximum_value_warning": "3.5",
-                    "enabled": "machine_gcode_flavor != \"UltiGCode\"",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": true
-                },
                 "material_adhesion_tendency":
                 {
                     "label": "Adhesion Tendency",
@@ -3903,6 +3889,21 @@
                             "limit_to_extruder": "support_infill_extruder_nr",
                             "settable_per_mesh": false,
                             "settable_per_extruder": true
+                        },
+                        "support_initial_layer_line_distance":
+                        {
+                            "label": "Initial Layer Support Line Distance",
+                            "description": "Distance between the printed initial layer support structure lines. This setting is calculated by the support density.",
+                            "unit": "mm",
+                            "type": "float",
+                            "minimum_value": "0",
+                            "minimum_value_warning": "support_line_width",
+                            "default_value": 2.66,
+                            "enabled": "support_enable or support_tree_enable",
+                            "value": "support_line_distance",
+                            "limit_to_extruder": "support_infill_extruder_nr",
+                            "settable_per_mesh": false,
+                            "settable_per_extruder": true
                         }
                     }
                 },
@@ -5532,7 +5533,7 @@
                     "unit": "mm",
                     "type": "float",
                     "minimum_value": "0.001",
-                    "default_value": 4,
+                    "default_value": 1,
                     "limit_to_extruder": "support_infill_extruder_nr",
                     "enabled": "support_tree_enable",
                     "settable_per_mesh": true

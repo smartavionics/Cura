@@ -2,7 +2,6 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import copy
-import json
 import os
 import sys
 import time
@@ -14,7 +13,8 @@ from PyQt5.QtGui import QColor, QIcon
 from PyQt5.QtWidgets import QMessageBox
 from PyQt5.QtQml import qmlRegisterUncreatableType, qmlRegisterSingletonType, qmlRegisterType
 
-from UM.Qt.QtApplication import QtApplication
+from typing import cast, TYPE_CHECKING
+
 from UM.Scene.SceneNode import SceneNode
 from UM.Scene.Camera import Camera
 from UM.Math.Vector import Vector
@@ -28,6 +28,8 @@ from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Mesh.ReadMeshJob import ReadMeshJob
 from UM.Logger import Logger
 from UM.Preferences import Preferences
+from UM.Qt.QtApplication import QtApplication #The class we're inheriting from.
+from UM.View.SelectionPass import SelectionPass #For typing.
 from UM.Scene.Selection import Selection
 from UM.Scene.GroupDecorator import GroupDecorator
 from UM.Settings.ContainerStack import ContainerStack
@@ -82,6 +84,7 @@ from cura.Settings.SettingInheritanceManager import SettingInheritanceManager
 from cura.Settings.SimpleModeSettingsManager import SimpleModeSettingsManager
 
 from cura.Machines.VariantManager import VariantManager
+from plugins.SliceInfoPlugin.SliceInfo import SliceInfo
 
 from .SingleInstance import SingleInstance
 from .AutoSave import AutoSave
@@ -109,14 +112,12 @@ from UM.FlameProfiler import pyqtSlot
 
 numpy.seterr(all = "ignore")
 
-MYPY = False
-if not MYPY:
-    try:
-        from cura.CuraVersion import CuraVersion, CuraBuildType, CuraDebugMode
-    except ImportError:
-        CuraVersion = "master"  # [CodeStyle: Reflecting imported value]
-        CuraBuildType = ""
-        CuraDebugMode = False
+try:
+    from cura.CuraVersion import CuraVersion, CuraBuildType, CuraDebugMode
+except ImportError:
+    CuraVersion = "master"  # [CodeStyle: Reflecting imported value]
+    CuraBuildType = ""
+    CuraDebugMode = False
 
 
 class CuraApplication(QtApplication):
@@ -669,6 +670,7 @@ class CuraApplication(QtApplication):
         self._plugins_loaded = True
 
     def run(self):
+        super().run()
         container_registry = self._container_registry
 
         Logger.log("i", "Initializing variant manager")
@@ -1516,7 +1518,9 @@ class CuraApplication(QtApplication):
 
     @pyqtSlot("QSize")
     def setMinimumWindowSize(self, size):
-        self.getMainWindow().setMinimumSize(size)
+        main_window = self.getMainWindow()
+        if main_window:
+            main_window.setMinimumSize(size)
 
     def getBuildVolume(self):
         return self._volume
@@ -1719,13 +1723,15 @@ class CuraApplication(QtApplication):
     def _onContextMenuRequested(self, x: float, y: float) -> None:
         # Ensure we select the object if we request a context menu over an object without having a selection.
         if not Selection.hasSelection():
-            node = self.getController().getScene().findObject(self.getRenderer().getRenderPass("selection").getIdAtPosition(x, y))
+            node = self.getController().getScene().findObject(cast(SelectionPass, self.getRenderer().getRenderPass("selection")).getIdAtPosition(x, y))
             if node:
-                while(node.getParent() and node.getParent().callDecoration("isGroup")):
-                    node = node.getParent()
+                parent = node.getParent()
+                while(parent and parent.callDecoration("isGroup")):
+                    node = parent
+                    parent = node.getParent()
 
                 Selection.add(node)
 
     @pyqtSlot()
     def showMoreInformationDialogForAnonymousDataCollection(self):
-        self._plugin_registry.getPluginObject("SliceInfoPlugin").showMoreInfoDialog()
+        cast(SliceInfo, self._plugin_registry.getPluginObject("SliceInfoPlugin")).showMoreInfoDialog()

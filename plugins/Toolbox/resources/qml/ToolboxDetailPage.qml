@@ -9,9 +9,21 @@ import UM 1.1 as UM
 Item
 {
     id: page
-    property var details: base.selection
+    property var details: base.selection || dummy_details
     anchors.fill: parent
     width: parent.width
+
+    property var dummy_details: new Object({
+        name: '',
+        version: '',
+        last_updated: '',
+        author_email: '',
+        author_name: '',
+        website: '',
+        icon_url: '',
+        download_count: ''
+    })
+
     ToolboxBackColumn
     {
         id: sidebar
@@ -92,6 +104,12 @@ Item
                 font: UM.Theme.getFont("very_small")
                 color: UM.Theme.getColor("text_medium")
             }
+            Label
+            {
+                text: catalog.i18nc("@label", "Downloads") + ":"
+                font: UM.Theme.getFont("very_small")
+                color: UM.Theme.getColor("text_medium")
+            }
         }
         Column
         {
@@ -137,6 +155,12 @@ Item
                 color: UM.Theme.getColor("text")
                 linkColor: UM.Theme.getColor("text_link")
                 onLinkActivated: Qt.openUrlExternally(link)
+            }
+            Label
+            {
+                text: details.download_count || catalog.i18nc("@label", "Unknown")
+                font: UM.Theme.getFont("very_small")
+                color: UM.Theme.getColor("text")
             }
         }
         Rectangle

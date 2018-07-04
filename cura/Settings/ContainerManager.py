@@ -4,6 +4,7 @@
 import os
 import urllib.parse
 import uuid
+from typing import Any
 from typing import Dict, Union
 
 from PyQt5.QtCore import QObject, QUrl, QVariant
@@ -43,7 +44,7 @@ class ContainerManager(QObject):
         self._machine_manager = self._application.getMachineManager()
         self._material_manager = self._application.getMaterialManager()
         self._quality_manager = self._application.getQualityManager()
-        self._container_name_filters = {}
+        self._container_name_filters = {}   # type: Dict[str, Dict[str, Any]]
 
     @pyqtSlot(str, str, result=str)
     def getContainerMetaDataEntry(self, container_id, entry_name):
@@ -207,7 +208,6 @@ class ContainerManager(QObject):
         if not file_url:
             return {"status": "error", "message": "Invalid path"}
 
-        mime_type = None
         if file_type not in self._container_name_filters:
             try:
                 mime_type = MimeTypeDatabase.getMimeTypeForFile(file_url)
@@ -468,7 +468,7 @@ class ContainerManager(QObject):
         container_list = [n.getContainer() for n in quality_changes_group.getAllNodes() if n.getContainer() is not None]
         self._container_registry.exportQualityProfile(container_list, path, file_type)
 
-    __instance = None
+    __instance = None   # type: ContainerManager
 
     @classmethod
     def getInstance(cls, *args, **kwargs) -> "ContainerManager":
