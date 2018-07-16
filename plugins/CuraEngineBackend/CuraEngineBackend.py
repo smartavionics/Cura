@@ -488,7 +488,7 @@ class CuraEngineBackend(QObject, Backend):
             # we got a single scenenode
             if not source.callDecoration("isGroup"):
                 mesh_data = source.getMeshData()
-                if mesh_data and mesh_data.getVertices() is None:
+                if mesh_data is None or mesh_data.getVertices() is None:
                     return
 
             # There are some SceneNodes that do not have any build plate associated, then do not add to the list.
@@ -533,6 +533,11 @@ class CuraEngineBackend(QObject, Backend):
 
         if error.getErrorCode() not in [Arcus.ErrorCode.BindFailedError, Arcus.ErrorCode.ConnectionResetError, Arcus.ErrorCode.Debug]:
             Logger.log("w", "A socket error caused the connection to be reset")
+
+        # _terminate()' function sets the job status to 'cancel', after reconnecting to another Port the job status
+        # needs to be updated. Otherwise backendState is "Unable To Slice"
+        if error.getErrorCode() == Arcus.ErrorCode.BindFailedError and self._start_slice_job is not None:
+            self._start_slice_job.setIsCancelled(False)
 
     ##  Remove old layer data (if any)
     def _clearLayerData(self, build_plate_numbers: Set = None) -> None:
