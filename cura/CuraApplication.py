@@ -118,11 +118,12 @@ if TYPE_CHECKING:
 numpy.seterr(all = "ignore")
 
 try:
-    from cura.CuraVersion import CuraVersion, CuraBuildType, CuraDebugMode
+    from cura.CuraVersion import CuraVersion, CuraBuildType, CuraDebugMode, CuraSDKVersion
 except ImportError:
     CuraVersion = "master"  # [CodeStyle: Reflecting imported value]
     CuraBuildType = ""
     CuraDebugMode = False
+    CuraSDKVersion = ""
 
 
 class CuraApplication(QtApplication):
@@ -630,7 +631,7 @@ class CuraApplication(QtApplication):
     # Cura has multiple locations where instance containers need to be saved, so we need to handle this differently.
     def saveSettings(self):
         if not self.started or not self._save_data_enabled:
-            # Do not do saving during application start or when data should not be safed on quit.
+            # Do not do saving during application start or when data should not be saved on quit.
             return
         ContainerRegistry.getInstance().saveDirtyContainers()
         self.savePreferences()
@@ -913,6 +914,7 @@ class CuraApplication(QtApplication):
         engine.rootContext().setContextProperty("CuraApplication", self)
         engine.rootContext().setContextProperty("PrintInformation", self._print_information)
         engine.rootContext().setContextProperty("CuraActions", self._cura_actions)
+        engine.rootContext().setContextProperty("CuraSDKVersion", CuraSDKVersion)
 
         qmlRegisterUncreatableType(CuraApplication, "Cura", 1, 0, "ResourceTypes", "Just an Enum type")
 
