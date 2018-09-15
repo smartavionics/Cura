@@ -77,6 +77,20 @@
                     "type": "str",
                     "enabled": false
                 },
+                "material_diameter":
+                {
+                    "label": "Diameter",
+                    "description": "Adjusts the diameter of the filament used. Match this value with the diameter of the used filament.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default_value": 2.85,
+                    "minimum_value": "0.0001",
+                    "minimum_value_warning": "0.4",
+                    "maximum_value_warning": "3.5",
+                    "enabled": "machine_gcode_flavor != \"UltiGCode\"",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
                 "material_bed_temp_wait":
                 {
                     "label": "Wait for Build Plate Heatup",
@@ -1438,7 +1452,7 @@
                     "label": "Ignore Small Z Gaps",
                     "description": "When the model has small vertical gaps, about 5% extra computation time can be spent on generating top and bottom skin in these narrow spaces. In such case, disable the setting.",
                     "type": "bool",
-                    "default_value": true,
+                    "default_value": false,
                     "limit_to_extruder": "top_bottom_extruder_nr",
                     "settable_per_mesh": true
                 },
@@ -3871,7 +3885,8 @@
                     "value": "1 if (support_pattern == 'grid' or support_pattern == 'triangles' or support_pattern == 'concentric') else 0",
                     "enabled": "support_enable",
                     "limit_to_extruder": "support_infill_extruder_nr",
-                    "settable_per_mesh": true
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
                 },
                 "zig_zaggify_support":
                 {
