@@ -6680,9 +6680,8 @@
                     "unit": "%",
                     "type": "float",
                     "default_value": 100,
-                    "minimum_value": "10",
+                    "minimum_value": "0.001",
                     "minimum_value_warning": "25",
-                    "maximum_value": "100",
                     "settable_per_mesh": true
                 },
                 "bridge_settings_enabled":
