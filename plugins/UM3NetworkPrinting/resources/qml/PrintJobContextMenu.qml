@@ -25,7 +25,7 @@ Item {
         }
         contentItem: Label {
             color: UM.Theme.getColor("monitor_context_menu_dots");
-            font.pixelSize: 25 * screenScaleFactor;
+            font.pixelSize: 32 * screenScaleFactor;
             horizontalAlignment: Text.AlignHCenter;
             text: button.text;
             verticalAlignment: Text.AlignVCenter;
@@ -41,7 +41,7 @@ Item {
             var states = ["queued", "sent_to_printer", "pre_print", "printing", "pausing", "paused", "resuming"];
             return states.indexOf(printJob.state) !== -1;
         }
-        width: 35 * screenScaleFactor; // TODO: Theme!
+        width: 36 * screenScaleFactor; // TODO: Theme!
     }
 
     Popup {
@@ -182,7 +182,7 @@ Item {
                     abortConfirmationDialog.visible = true;
                     popup.close();
                 }
-                text: printJob.state == "aborting" ? catalog.i18nc("@label", "Aborting...") : catalog.i18nc("@label", "Abort");
+                text: printJob && printJob.state == "aborting" ? catalog.i18nc("@label", "Aborting...") : catalog.i18nc("@label", "Abort");
                 visible: {
                     if (!printJob) {
                         return false;

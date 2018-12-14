@@ -134,7 +134,7 @@ except ImportError:
     CuraVersion = "master"  # [CodeStyle: Reflecting imported value]
     CuraBuildType = ""
     CuraDebugMode = False
-    CuraSDKVersion = ""
+    CuraSDKVersion = "5.0.0"
 
 
 class CuraApplication(QtApplication):
@@ -164,6 +164,7 @@ class CuraApplication(QtApplication):
         super().__init__(name = "cura",
                          app_display_name = CuraAppDisplayName,
                          version = CuraVersion,
+                         api_version = CuraSDKVersion,
                          buildtype = CuraBuildType,
                          is_debug_mode = CuraDebugMode,
                          tray_icon_name = "cura-icon-32.png",
@@ -180,7 +181,6 @@ class CuraApplication(QtApplication):
         # Variables set from CLI
         self._files_to_open = []
         self._use_single_instance = False
-        self._trigger_early_crash = False  # For debug only
 
         self._single_instance = None
 
@@ -291,7 +291,10 @@ class CuraApplication(QtApplication):
             sys.exit(0)
 
         self._use_single_instance = self._cli_args.single_instance
-        self._trigger_early_crash = self._cli_args.trigger_early_crash
+        # FOR TESTING ONLY
+        if self._cli_args.trigger_early_crash:
+            assert not "This crash is triggered by the trigger_early_crash command line argument."
+
         for filename in self._cli_args.file:
             self._files_to_open.append(os.path.abspath(filename))
 
@@ -438,6 +441,7 @@ class CuraApplication(QtApplication):
             "XmlMaterialProfile", #Cura crashes without this one.
             "Toolbox", #This contains the interface to enable/disable plug-ins, so if you disable it you can't enable it back.
             "PrepareStage", #Cura is useless without this one since you can't load models.
+            "PreviewStage", #This shows the list of the plugin views that are installed in Cura.
             "MonitorStage", #Major part of Cura's functionality.
             "LocalFileOutputDevice", #Major part of Cura's functionality.
             "LocalContainerProvider", #Cura is useless without any profiles or setting definitions.
@@ -630,9 +634,7 @@ class CuraApplication(QtApplication):
             self._message_box_callback(button, *self._message_box_callback_arguments)
             self._message_box_callback = None
             self._message_box_callback_arguments = []
-
-    showPrintMonitor = pyqtSignal(bool, arguments = ["show"])
-
+            
     def setSaveDataEnabled(self, enabled: bool) -> None:
         self._save_data_enabled = enabled
 
@@ -1663,7 +1665,9 @@ class CuraApplication(QtApplication):
             is_non_sliceable = "." + file_extension in self._non_sliceable_extensions
 
             if is_non_sliceable:
-                self.callLater(lambda: self.getController().setActiveView("SimulationView"))
+                # Need to switch first to the preview stage and then to layer view
+                self.callLater(lambda: (self.getController().setActiveStage("PreviewStage"),
+                                        self.getController().setActiveView("SimulationView")))
 
                 block_slicing_decorator = BlockSlicingDecorator()
                 node.addDecorator(block_slicing_decorator)
