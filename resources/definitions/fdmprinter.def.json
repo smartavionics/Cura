@@ -3507,7 +3507,19 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
-                "travel_retract_before_outer_wall":
+                "retraction_combing_max_extra_distance":
+                {
+                    "label": "Max Comb Extra Distance",
+                    "description": "When non-zero, combing travel moves that exceed the straight line distance by this amount or more will be replaced with a straight line travel move.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default_value": 0,
+                    "minimum_value": "0",
+                    "enabled": "resolveOrValue('retraction_combing') != 'off'",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
+               "travel_retract_before_outer_wall":
                 {
                     "label": "Retract Before Outer Wall",
                     "description": "Always retract when moving to start an outer wall.",
