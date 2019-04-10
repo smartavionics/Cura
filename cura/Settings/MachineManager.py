@@ -362,13 +362,17 @@ class MachineManager(QObject):
             # Mark global stack as invalid
             ConfigurationErrorMessage.getInstance().addFaultyContainers(global_stack.getId())
             return  # We're done here
-        ExtruderManager.getInstance().setActiveExtruderIndex(0)  # Switch to first extruder
 
         self._global_container_stack = global_stack
         self._application.setGlobalContainerStack(global_stack)
         ExtruderManager.getInstance()._globalContainerStackChanged()
         self._initMachineState(global_stack)
         self._onGlobalContainerChanged()
+
+        # Switch to the first enabled extruder
+        self.updateDefaultExtruder()
+        default_extruder_position = int(self.defaultExtruderPosition)
+        ExtruderManager.getInstance().setActiveExtruderIndex(default_extruder_position)
 
         self.__emitChangedSignals()
 
@@ -682,11 +686,6 @@ class MachineManager(QObject):
                 if not Util.parseBool(container.getMetaDataEntry("supported", True)):
                     return False
         return True
-
-    ## Check if a container is read_only
-    @pyqtSlot(str, result = bool)
-    def isReadOnly(self, container_id: str) -> bool:
-        return CuraContainerRegistry.getInstance().isReadOnly(container_id)
 
     ## Copy the value of the setting of the current extruder to all other extruders as well as the global container.
     @pyqtSlot(str)
@@ -1064,9 +1063,6 @@ class MachineManager(QObject):
 
     def _onMaterialNameChanged(self) -> None:
         self.activeMaterialChanged.emit()
-
-    def _onQualityNameChanged(self) -> None:
-        self.activeQualityChanged.emit()
 
     def _getContainerChangedSignals(self) -> List[Signal]:
         if self._global_container_stack is None:
@@ -1463,31 +1459,6 @@ class MachineManager(QObject):
         if self.hasUserSettings and self._application.getPreferences().getValue("cura/active_mode") == 1:
             self._application.discardOrKeepProfileChanges()
 
-    ##  Find all container stacks that has the pair 'key = value' in its metadata and replaces the value with 'new_value'
-    def replaceContainersMetadata(self, key: str, value: str, new_value: str) -> None:
-        machines = CuraContainerRegistry.getInstance().findContainerStacks(type = "machine")
-        for machine in machines:
-            if machine.getMetaDataEntry(key) == value:
-                machine.setMetaDataEntry(key, new_value)
-
-    ##  This method checks if the name of the group stored in the definition container is correct.
-    #   After updating from 3.2 to 3.3 some group names may be temporary. If there is a mismatch in the name of the group
-    #   then all the container stacks are updated, both the current and the hidden ones.
-    def checkCorrectGroupName(self, device_id: str, group_name: str) -> None:
-        if self._global_container_stack and device_id == self.activeMachineNetworkKey():
-            # Check if the group_name is correct. If not, update all the containers connected to the same printer
-            if self.activeMachineNetworkGroupName != group_name:
-                metadata_filter = {"um_network_key": self.activeMachineNetworkKey()}
-                containers = CuraContainerRegistry.getInstance().findContainerStacks(type = "machine", **metadata_filter)
-                for container in containers:
-                    container.setMetaDataEntry("group_name", group_name)
-
-    ##  This method checks if there is an instance connected to the given network_key
-    def existNetworkInstances(self, network_key: str) -> bool:
-        metadata_filter = {"um_network_key": network_key}
-        containers = CuraContainerRegistry.getInstance().findContainerStacks(type = "machine", **metadata_filter)
-        return bool(containers)
-
     @pyqtSlot("QVariant")
     def setGlobalVariant(self, container_node: "ContainerNode") -> None:
         self.blurSettings.emit()
@@ -1659,6 +1630,7 @@ class MachineManager(QObject):
 
         return abbr_machine
 
+    @pyqtSlot(str, result = str)
     def getMachineTypeNameFromId(self, machine_type_id: str) -> str:
         machine_type_name = ""
         results = self._container_registry.findDefinitionContainersMetadata(id = machine_type_id)
