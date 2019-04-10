@@ -6925,6 +6925,33 @@
                     "enabled": "bridge_settings_enabled",
                     "settable_per_mesh": true
                 },
+                "bridge_wall_acceleration":
+                {
+                     "label": "Bridge Wall Acceleration",
+                     "description": "The acceleration with which all bridge walls are printed.",
+                     "unit": "mm/s²",
+                     "type": "float",
+                     "minimum_value": "0.1",
+                     "minimum_value_warning": "100",
+                     "maximum_value_warning": "10000",
+                     "default_value": 3000,
+                     "value": "acceleration_wall",
+                     "enabled": "bridge_settings_enabled and resolveOrValue('acceleration_enabled')",
+                     "settable_per_mesh": true
+                },
+                "bridge_wall_jerk":
+                {
+                    "label": "Bridge Wall Jerk",
+                     "description": "The maximum instantaneous velocity change with which all bridge walls are printed.",
+                     "unit": "mm/s",
+                     "type": "float",
+                     "minimum_value": "0",
+                     "maximum_value_warning": "50",
+                     "default_value": 20,
+                     "value": "jerk_wall",
+                     "enabled": "bridge_settings_enabled and resolveOrValue('jerk_enabled')",
+                     "settable_per_mesh": true
+                },
                 "bridge_wall_material_flow":
                 {
                     "label": "Bridge Wall Flow",
@@ -6951,6 +6978,33 @@
                     "value": "max(cool_min_speed, speed_topbottom / 2)",
                     "enabled": "bridge_settings_enabled",
                     "settable_per_mesh": true
+                },
+                "bridge_skin_acceleration":
+                {
+                     "label": "Bridge Skin Acceleration",
+                     "description": "The acceleration with which all bridge skins are printed.",
+                     "unit": "mm/s²",
+                     "type": "float",
+                     "minimum_value": "0.1",
+                     "minimum_value_warning": "100",
+                     "maximum_value_warning": "10000",
+                     "default_value": 3000,
+                     "value": "acceleration_topbottom",
+                     "enabled": "bridge_settings_enabled and resolveOrValue('acceleration_enabled')",
+                     "settable_per_mesh": true
+                },
+                "bridge_skin_jerk":
+                {
+                    "label": "Bridge Skin Jerk",
+                     "description": "The maximum instantaneous velocity change with which all bridge skins are printed.",
+                     "unit": "mm/s",
+                     "type": "float",
+                     "minimum_value": "0",
+                     "maximum_value_warning": "50",
+                     "default_value": 20,
+                     "value": "jerk_topbottom",
+                     "enabled": "bridge_settings_enabled and resolveOrValue('jerk_enabled')",
+                     "settable_per_mesh": true
                 },
                 "bridge_skin_material_flow":
                 {
