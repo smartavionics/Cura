@@ -6015,6 +6015,7 @@
                     "type": "float",
                     "unit": "mm",
                     "default_value": 0.5,
+                    "value": "meshfix_maximum_resolution * speed_travel / speed_print",
                     "minimum_value": "0.001",
                     "minimum_value_warning": "0.05",
                     "maximum_value_warning": "10",
