@@ -1456,10 +1456,11 @@
                     "type": "enum",
                     "options":
                     {
-                        "z_seam_corner_none":  "None",
-                        "z_seam_corner_inner": "Hide Seam",
-                        "z_seam_corner_outer": "Expose Seam",
-                        "z_seam_corner_any":   "Hide or Expose Seam"
+                        "z_seam_corner_none":     "None",
+                        "z_seam_corner_inner":    "Hide Seam",
+                        "z_seam_corner_outer":    "Expose Seam",
+                        "z_seam_corner_any":      "Hide or Expose Seam",
+                        "z_seam_corner_weighted": "Smart Hiding"
                     },
                     "default_value": "z_seam_corner_inner",
                     "enabled": "z_seam_type != 'random'",
@@ -5409,7 +5410,7 @@
                     "type": "bool",
                     "enabled": "extruders_enabled_count > 1",
                     "default_value": false,
-                    "resolve": "any(extruderValues('prime_tower_enable')) or (adhesion_type in ('none', 'skirt'))",
+                    "resolve": "(extruders_enabled_count > 1) and any(extruderValues('prime_tower_enable')) or (adhesion_type in ('none', 'skirt'))",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
                 },
