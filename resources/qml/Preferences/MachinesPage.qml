@@ -18,14 +18,14 @@ UM.ManagementPage
 
     sectionRole: "discoverySource"
 
-    activeId: Cura.MachineManager.activeMachineId
+    activeId: Cura.MachineManager.activeMachine !== null ? Cura.MachineManager.activeMachine.id: ""
     activeIndex: activeMachineIndex()
 
     function activeMachineIndex()
     {
         for(var i = 0; i < model.count; i++)
         {
-            if (model.getItem(i).id == Cura.MachineManager.activeMachineId)
+            if (model.getItem(i).id == base.activeId)
             {
                 return i;
             }
