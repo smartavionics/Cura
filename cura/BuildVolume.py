@@ -28,10 +28,12 @@ import numpy
 import math
 import copy
 
-from typing import List, Optional, TYPE_CHECKING, Any, Set, cast, Iterable
+from typing import List, Optional, TYPE_CHECKING, Any, Set, cast, Iterable, Dict
 
 if TYPE_CHECKING:
     from cura.CuraApplication import CuraApplication
+    from cura.Settings.ExtruderStack import ExtruderStack
+    from UM.Settings.ContainerStack import ContainerStack
 
 # Radius of disallowed area in mm around prime. I.e. how much distance to keep from prime position.
 PRIME_CLEARANCE = 6.5
@@ -70,6 +72,7 @@ class BuildVolume(SceneNode):
         self._disallowed_areas = []  # type: List[Polygon]
         self._disallowed_areas_no_brim = []  # type: List[Polygon]
         self._disallowed_area_mesh = None  # type: Optional[MeshData]
+        self._disallowed_area_size = 0.
 
         self._error_areas = []  # type: List[Polygon]
         self._error_mesh = None  # type: Optional[MeshData]
@@ -415,6 +418,67 @@ class BuildVolume(SceneNode):
         )
         return mb.build()
 
+    def _updateColors(self):
+        theme = self._application.getTheme()
+        if theme is None:
+            return
+        self._volume_outline_color = Color(*theme.getColor("volume_outline").getRgb())
+        self._x_axis_color = Color(*theme.getColor("x_axis").getRgb())
+        self._y_axis_color = Color(*theme.getColor("y_axis").getRgb())
+        self._z_axis_color = Color(*theme.getColor("z_axis").getRgb())
+        self._disallowed_area_color = Color(*theme.getColor("disallowed_area").getRgb())
+        self._error_area_color = Color(*theme.getColor("error_area").getRgb())
+
+    def _buildErrorMesh(self, min_w: float, max_w: float, min_h: float, max_h: float, min_d: float, max_d: float, disallowed_area_height: float) -> Optional[MeshData]:
+        if not self._error_areas:
+            return None
+        mb = MeshBuilder()
+        for error_area in self._error_areas:
+            color = self._error_area_color
+            points = error_area.getPoints()
+            first = Vector(self._clamp(points[0][0], min_w, max_w), disallowed_area_height,
+                           self._clamp(points[0][1], min_d, max_d))
+            previous_point = Vector(self._clamp(points[0][0], min_w, max_w), disallowed_area_height,
+                                    self._clamp(points[0][1], min_d, max_d))
+            for point in points:
+                new_point = Vector(self._clamp(point[0], min_w, max_w), disallowed_area_height,
+                                   self._clamp(point[1], min_d, max_d))
+                mb.addFace(first, previous_point, new_point, color=color)
+                previous_point = new_point
+        return mb.build()
+
+    def _buildDisallowedAreaMesh(self, min_w: float, max_w: float, min_h: float, max_h: float, min_d: float, max_d: float, disallowed_area_height: float) -> Optional[MeshData]:
+        if not self._disallowed_areas:
+            return None
+
+        mb = MeshBuilder()
+        color = self._disallowed_area_color
+        for polygon in self._disallowed_areas:
+            points = polygon.getPoints()
+            if len(points) == 0:
+                continue
+
+            first = Vector(self._clamp(points[0][0], min_w, max_w), disallowed_area_height,
+                           self._clamp(points[0][1], min_d, max_d))
+            previous_point = Vector(self._clamp(points[0][0], min_w, max_w), disallowed_area_height,
+                                    self._clamp(points[0][1], min_d, max_d))
+            for point in points:
+                new_point = Vector(self._clamp(point[0], min_w, max_w), disallowed_area_height,
+                                   self._clamp(point[1], min_d, max_d))
+                mb.addFace(first, previous_point, new_point, color=color)
+                previous_point = new_point
+
+            # Find the largest disallowed area to exclude it from the maximum scale bounds.
+            # This is a very nasty hack. This pretty much only works for UM machines.
+            # This disallowed area_size needs a -lot- of rework at some point in the future: TODO
+            if numpy.min(points[:,
+                         1]) >= 0:  # This filters out all areas that have points to the left of the centre. This is done to filter the skirt area.
+                size = abs(numpy.max(points[:, 1]) - numpy.min(points[:, 1]))
+            else:
+                size = 0
+            self._disallowed_area_size = max(size, self._disallowed_area_size)
+        return mb.build()
+
     ##  Recalculates the build volume & disallowed areas.
     def rebuild(self) -> None:
         if not self._width or not self._height or not self._depth:
@@ -427,15 +491,7 @@ class BuildVolume(SceneNode):
             return
 
         if not self._volume_outline_color:
-            theme = self._application.getTheme()
-            if theme is None:
-                return
-            self._volume_outline_color = Color(*theme.getColor("volume_outline").getRgb())
-            self._x_axis_color = Color(*theme.getColor("x_axis").getRgb())
-            self._y_axis_color = Color(*theme.getColor("y_axis").getRgb())
-            self._z_axis_color = Color(*theme.getColor("z_axis").getRgb())
-            self._disallowed_area_color = Color(*theme.getColor("disallowed_area").getRgb())
-            self._error_area_color = Color(*theme.getColor("error_area").getRgb())
+            self._updateColors()
 
         min_w = -self._width / 2
         max_w = self._width / 2
@@ -458,52 +514,10 @@ class BuildVolume(SceneNode):
         self._origin_mesh = self._buildOriginMesh(origin)
 
         disallowed_area_height = 0.1
-        disallowed_area_size = 0
-        if self._disallowed_areas:
-            mb = MeshBuilder()
-            color = self._disallowed_area_color
-            for polygon in self._disallowed_areas:
-                points = polygon.getPoints()
-                if len(points) == 0:
-                    continue
+        self._disallowed_area_size = 0.
+        self._disallowed_area_mesh = self._buildDisallowedAreaMesh(min_w, max_w, min_h, max_h, min_d, max_d, disallowed_area_height)
 
-                first = Vector(self._clamp(points[0][0], min_w, max_w), disallowed_area_height, self._clamp(points[0][1], min_d, max_d))
-                previous_point = Vector(self._clamp(points[0][0], min_w, max_w), disallowed_area_height, self._clamp(points[0][1], min_d, max_d))
-                for point in points:
-                    new_point = Vector(self._clamp(point[0], min_w, max_w), disallowed_area_height, self._clamp(point[1], min_d, max_d))
-                    mb.addFace(first, previous_point, new_point, color = color)
-                    previous_point = new_point
-
-                # Find the largest disallowed area to exclude it from the maximum scale bounds.
-                # This is a very nasty hack. This pretty much only works for UM machines.
-                # This disallowed area_size needs a -lot- of rework at some point in the future: TODO
-                if numpy.min(points[:, 1]) >= 0: # This filters out all areas that have points to the left of the centre. This is done to filter the skirt area.
-                    size = abs(numpy.max(points[:, 1]) - numpy.min(points[:, 1]))
-                else:
-                    size = 0
-                disallowed_area_size = max(size, disallowed_area_size)
-
-            self._disallowed_area_mesh = mb.build()
-        else:
-            self._disallowed_area_mesh = None
-
-        if self._error_areas:
-            mb = MeshBuilder()
-            for error_area in self._error_areas:
-                color = self._error_area_color
-                points = error_area.getPoints()
-                first = Vector(self._clamp(points[0][0], min_w, max_w), disallowed_area_height,
-                               self._clamp(points[0][1], min_d, max_d))
-                previous_point = Vector(self._clamp(points[0][0], min_w, max_w), disallowed_area_height,
-                                        self._clamp(points[0][1], min_d, max_d))
-                for point in points:
-                    new_point = Vector(self._clamp(point[0], min_w, max_w), disallowed_area_height,
-                                       self._clamp(point[1], min_d, max_d))
-                    mb.addFace(first, previous_point, new_point, color=color)
-                    previous_point = new_point
-            self._error_mesh = mb.build()
-        else:
-            self._error_mesh = None
+        self._error_mesh = self._buildErrorMesh(min_w, max_w, min_h, max_h, min_d, max_d, disallowed_area_height)
 
         self._volume_aabb = AxisAlignedBox(
             minimum = Vector(min_w, min_h - 1.0, min_d),
@@ -515,8 +529,8 @@ class BuildVolume(SceneNode):
         # This is probably wrong in all other cases. TODO!
         # The +1 and -1 is added as there is always a bit of extra room required to work properly.
         scale_to_max_bounds = AxisAlignedBox(
-            minimum = Vector(min_w + bed_adhesion_size + 1, min_h, min_d + disallowed_area_size - bed_adhesion_size + 1),
-            maximum = Vector(max_w - bed_adhesion_size - 1, max_h - self._raft_thickness - self._extra_z_clearance, max_d - disallowed_area_size + bed_adhesion_size - 1)
+            minimum = Vector(min_w + bed_adhesion_size + 1, min_h, min_d + self._disallowed_area_size - bed_adhesion_size + 1),
+            maximum = Vector(max_w - bed_adhesion_size - 1, max_h - self._raft_thickness - self._extra_z_clearance, max_d - self._disallowed_area_size + bed_adhesion_size - 1)
         )
 
         self._application.getController().getScene()._maximum_bounds = scale_to_max_bounds  # type: ignore
@@ -552,25 +566,17 @@ class BuildVolume(SceneNode):
             self.setPosition(Vector(0, -self._raft_thickness, 0), SceneNode.TransformSpace.World)
             self.raftThicknessChanged.emit()
 
-    def _updateExtraZClearance(self) -> None:
+    def _calculateExtraZClearance(self, extruders: List["ContainerStack"]) -> float:
         if not self._global_container_stack:
-            return
+            return 0
         
         extra_z = 0.0
-        extruders = ExtruderManager.getInstance().getUsedExtruderStacks()
-        use_extruders = False
         for extruder in extruders:
             if extruder.getProperty("retraction_hop_enabled", "value"):
                 retraction_hop = extruder.getProperty("retraction_hop", "value")
                 if extra_z is None or retraction_hop > extra_z:
                     extra_z = retraction_hop
-            use_extruders = True
-        if not use_extruders:
-            # If no extruders, take global value.
-            if self._global_container_stack.getProperty("retraction_hop_enabled", "value"):
-                extra_z = self._global_container_stack.getProperty("retraction_hop", "value")
-        if extra_z != self._extra_z_clearance:
-            self._extra_z_clearance = extra_z
+        return extra_z
 
     def _onStackChanged(self):
         self._stack_change_timer.start()
@@ -607,7 +613,7 @@ class BuildVolume(SceneNode):
 
             self._updateDisallowedAreas()
             self._updateRaftThickness()
-            self._updateExtraZClearance()
+            self._extra_z_clearance = self._calculateExtraZClearance(ExtruderManager.getInstance().getUsedExtruderStacks())
 
             if self._engine_ready:
                 self.rebuild()
@@ -645,33 +651,26 @@ class BuildVolume(SceneNode):
                     self._height = self._global_container_stack.getProperty("machine_height", "value")
                     self._build_volume_message.hide()
                 update_disallowed_areas = True
-                rebuild_me = True
 
             # sometimes the machine size or shape settings are adjusted on the active machine, we should reflect this
             if setting_key in self._machine_settings:
-                self._height = self._global_container_stack.getProperty("machine_height", "value")
-                self._width = self._global_container_stack.getProperty("machine_width", "value")
-                self._depth = self._global_container_stack.getProperty("machine_depth", "value")
-                self._shape = self._global_container_stack.getProperty("machine_shape", "value")
+                self._updateMachineSizeProperties()
                 update_extra_z_clearance = True
                 update_disallowed_areas = True
-                rebuild_me = True
 
-            if setting_key in self._skirt_settings + self._prime_settings + self._tower_settings + self._ooze_shield_settings + self._distance_settings + self._extruder_settings:
+            if setting_key in self._disallowed_area_settings:
                 update_disallowed_areas = True
-                rebuild_me = True
 
             if setting_key in self._raft_settings:
                 update_raft_thickness = True
-                rebuild_me = True
 
             if setting_key in self._extra_z_settings:
                 update_extra_z_clearance = True
-                rebuild_me = True
 
             if setting_key in self._limit_to_extruder_settings:
                 update_disallowed_areas = True
-                rebuild_me = True
+
+            rebuild_me = update_extra_z_clearance or update_disallowed_areas or update_raft_thickness
 
         # We only want to update all of them once.
         if update_disallowed_areas:
@@ -681,7 +680,7 @@ class BuildVolume(SceneNode):
             self._updateRaftThickness()
 
         if update_extra_z_clearance:
-            self._updateExtraZClearance()
+            self._extra_z_clearance = self._calculateExtraZClearance(ExtruderManager.getInstance().getUsedExtruderStacks())
 
         if rebuild_me:
             self.rebuild()
@@ -700,6 +699,14 @@ class BuildVolume(SceneNode):
     def hasErrors(self) -> bool:
         return self._has_errors
 
+    def _updateMachineSizeProperties(self) -> None:
+        if not self._global_container_stack:
+            return
+        self._height = self._global_container_stack.getProperty("machine_height", "value")
+        self._width = self._global_container_stack.getProperty("machine_width", "value")
+        self._depth = self._global_container_stack.getProperty("machine_depth", "value")
+        self._shape = self._global_container_stack.getProperty("machine_shape", "value")
+
     ##  Calls _updateDisallowedAreas and makes sure the changes appear in the
     #   scene.
     #
@@ -711,7 +718,7 @@ class BuildVolume(SceneNode):
     def _updateDisallowedAreasAndRebuild(self):
         self._updateDisallowedAreas()
         self._updateRaftThickness()
-        self._updateExtraZClearance()
+        self._extra_z_clearance = self._calculateExtraZClearance(ExtruderManager.getInstance().getUsedExtruderStacks())
         self.rebuild()
 
     def _updateDisallowedAreas(self) -> None:
@@ -868,9 +875,10 @@ class BuildVolume(SceneNode):
     #   \param used_extruders The extruder stacks to generate disallowed areas
     #   for.
     #   \return A dictionary with for each used extruder ID the prime areas.
-    def _computeDisallowedAreasPrimeBlob(self, border_size, used_extruders):
-        result = {}
-
+    def _computeDisallowedAreasPrimeBlob(self, border_size: float, used_extruders: List["ExtruderStack"]) -> Dict[str, List[Polygon]]:
+        result = {}  # type: Dict[str, List[Polygon]]
+        if not self._global_container_stack:
+            return result
         machine_width = self._global_container_stack.getProperty("machine_width", "value")
         machine_depth = self._global_container_stack.getProperty("machine_depth", "value")
         for extruder in used_extruders:
@@ -878,13 +886,13 @@ class BuildVolume(SceneNode):
             prime_x = extruder.getProperty("extruder_prime_pos_x", "value")
             prime_y = -extruder.getProperty("extruder_prime_pos_y", "value")
 
-            #Ignore extruder prime position if it is not set or if blob is disabled
+            # Ignore extruder prime position if it is not set or if blob is disabled
             if (prime_x == 0 and prime_y == 0) or not prime_blob_enabled:
                 result[extruder.getId()] = []
                 continue
 
             if not self._global_container_stack.getProperty("machine_center_is_zero", "value"):
-                prime_x = prime_x - machine_width / 2 #Offset by half machine_width and _depth to put the origin in the front-left.
+                prime_x = prime_x - machine_width / 2  # Offset by half machine_width and _depth to put the origin in the front-left.
                 prime_y = prime_y + machine_depth / 2
 
             prime_polygon = Polygon.approximatedCircle(PRIME_CLEARANCE)
@@ -1048,6 +1056,78 @@ class BuildVolume(SceneNode):
                 all_values[i] = 0
         return all_values
 
+    def _calculateBedAdhesionSize(self, used_extruders):
+        if self._global_container_stack is None:
+            return
+
+        container_stack = self._global_container_stack
+        adhesion_type = container_stack.getProperty("adhesion_type", "value")
+        skirt_brim_line_width = self._global_container_stack.getProperty("skirt_brim_line_width", "value")
+        initial_layer_line_width_factor = self._global_container_stack.getProperty("initial_layer_line_width_factor", "value")
+        # Use brim width if brim is enabled OR the prime tower has a brim.
+        if adhesion_type == "brim" or (self._global_container_stack.getProperty("prime_tower_brim_enable", "value") and adhesion_type != "raft"):
+            brim_line_count = self._global_container_stack.getProperty("brim_line_count", "value")
+            bed_adhesion_size = skirt_brim_line_width * brim_line_count * initial_layer_line_width_factor / 100.0
+
+            for extruder_stack in used_extruders:
+                bed_adhesion_size += extruder_stack.getProperty("skirt_brim_line_width", "value") * extruder_stack.getProperty("initial_layer_line_width_factor", "value") / 100.0
+
+            # We don't create an additional line for the extruder we're printing the brim with.
+            bed_adhesion_size -= skirt_brim_line_width * initial_layer_line_width_factor / 100.0
+        elif adhesion_type == "skirt":  # No brim? Also not on prime tower? Then use whatever the adhesion type is saying: Skirt, raft or none.
+            skirt_distance = self._global_container_stack.getProperty("skirt_gap", "value")
+            skirt_line_count = self._global_container_stack.getProperty("skirt_line_count", "value")
+
+            bed_adhesion_size = skirt_distance + (
+                        skirt_brim_line_width * skirt_line_count) * initial_layer_line_width_factor / 100.0
+
+            for extruder_stack in used_extruders:
+                bed_adhesion_size += extruder_stack.getProperty("skirt_brim_line_width", "value") * extruder_stack.getProperty("initial_layer_line_width_factor", "value") / 100.0
+
+            # We don't create an additional line for the extruder we're printing the skirt with.
+            bed_adhesion_size -= skirt_brim_line_width * initial_layer_line_width_factor / 100.0
+        elif adhesion_type == "raft":
+            bed_adhesion_size = self._global_container_stack.getProperty("raft_margin", "value")
+        elif adhesion_type == "none":
+            bed_adhesion_size = 0
+        else:
+            raise Exception("Unknown bed adhesion type. Did you forget to update the build volume calculations for your new bed adhesion type?")
+
+        max_length_available = 0.5 * min(
+            self._global_container_stack.getProperty("machine_width", "value"),
+            self._global_container_stack.getProperty("machine_depth", "value")
+        )
+        bed_adhesion_size = min(bed_adhesion_size, max_length_available)
+        return bed_adhesion_size
+
+    def _calculateFarthestShieldDistance(self, container_stack):
+        farthest_shield_distance = 0
+        if container_stack.getProperty("draft_shield_enabled", "value"):
+            farthest_shield_distance = max(farthest_shield_distance, container_stack.getProperty("draft_shield_dist", "value"))
+        if container_stack.getProperty("ooze_shield_enabled", "value"):
+            farthest_shield_distance = max(farthest_shield_distance,container_stack.getProperty("ooze_shield_dist", "value"))
+        return farthest_shield_distance
+
+    def _calculateSupportExpansion(self, container_stack):
+        support_expansion = 0
+        support_enabled = self._global_container_stack.getProperty("support_enable", "value")
+        support_offset = self._global_container_stack.getProperty("support_offset", "value")
+        if support_enabled and support_offset:
+            support_expansion += support_offset
+        return support_expansion
+
+    def _calculateMoveFromWallRadius(self, used_extruders):
+        move_from_wall_radius = 0  # Moves that start from outer wall.
+        all_values = [move_from_wall_radius]
+        all_values.extend(self._getSettingFromAllExtruders("infill_wipe_dist"))
+        move_from_wall_radius = max(all_values)
+        avoid_enabled_per_extruder = [stack.getProperty("travel_avoid_other_parts", "value") for stack in used_extruders]
+        travel_avoid_distance_per_extruder = [stack.getProperty("travel_avoid_distance", "value") for stack in used_extruders]
+        for avoid_other_parts_enabled, avoid_distance in zip(avoid_enabled_per_extruder, travel_avoid_distance_per_extruder):  # For each extruder (or just global).
+            if avoid_other_parts_enabled:
+                move_from_wall_radius = max(move_from_wall_radius, avoid_distance)
+        return move_from_wall_radius
+
     ##  Calculate the disallowed radius around the edge.
     #
     #   This disallowed radius is to allow for space around the models that is
@@ -1064,65 +1144,10 @@ class BuildVolume(SceneNode):
         if container_stack.getProperty("print_sequence", "value") == "one_at_a_time":
             return 0.1  # Return a very small value, so we do draw disallowed area's near the edges.
 
-        adhesion_type = container_stack.getProperty("adhesion_type", "value")
-        skirt_brim_line_width = self._global_container_stack.getProperty("skirt_brim_line_width", "value")
-        initial_layer_line_width_factor = self._global_container_stack.getProperty("initial_layer_line_width_factor", "value")
-        #Use brim width if brim is enabled OR the prime tower has a brim.
-        if adhesion_type == "brim" or (self._global_container_stack.getProperty("prime_tower_brim_enable", "value") and
-                                       adhesion_type != "raft"):
-            brim_line_count = self._global_container_stack.getProperty("brim_line_count", "value")
-            bed_adhesion_size = skirt_brim_line_width * brim_line_count * initial_layer_line_width_factor / 100.0
-
-            for extruder_stack in used_extruders:
-                bed_adhesion_size += extruder_stack.getProperty("skirt_brim_line_width", "value") * extruder_stack.getProperty("initial_layer_line_width_factor", "value") / 100.0
-
-            # We don't create an additional line for the extruder we're printing the brim with.
-            bed_adhesion_size -= skirt_brim_line_width * initial_layer_line_width_factor / 100.0
-        elif adhesion_type == "skirt": #No brim? Also not on prime tower? Then use whatever the adhesion type is saying: Skirt, raft or none.
-            skirt_distance = self._global_container_stack.getProperty("skirt_gap", "value")
-            skirt_line_count = self._global_container_stack.getProperty("skirt_line_count", "value")
-
-            bed_adhesion_size = skirt_distance + (skirt_brim_line_width * skirt_line_count) * initial_layer_line_width_factor / 100.0
-
-            for extruder_stack in used_extruders:
-                bed_adhesion_size += extruder_stack.getProperty("skirt_brim_line_width", "value") * extruder_stack.getProperty("initial_layer_line_width_factor", "value") / 100.0
-
-            # We don't create an additional line for the extruder we're printing the skirt with.
-            bed_adhesion_size -= skirt_brim_line_width * initial_layer_line_width_factor / 100.0
-        elif adhesion_type == "raft":
-            bed_adhesion_size = self._global_container_stack.getProperty("raft_margin", "value")
-
-        elif adhesion_type == "none":
-            bed_adhesion_size = 0
-
-        else:
-            raise Exception("Unknown bed adhesion type. Did you forget to update the build volume calculations for your new bed adhesion type?")
-
-        max_length_available = 0.5 * min(
-            self._global_container_stack.getProperty("machine_width", "value"),
-            self._global_container_stack.getProperty("machine_depth", "value")
-        )
-        bed_adhesion_size = min(bed_adhesion_size, max_length_available)
-
-        support_expansion = 0
-        support_enabled = self._global_container_stack.getProperty("support_enable", "value")
-        support_offset = self._global_container_stack.getProperty("support_offset", "value")
-        if support_enabled and support_offset:
-            support_expansion += support_offset
-
-        farthest_shield_distance = 0
-        if container_stack.getProperty("draft_shield_enabled", "value"):
-            farthest_shield_distance = max(farthest_shield_distance, container_stack.getProperty("draft_shield_dist", "value"))
-        if container_stack.getProperty("ooze_shield_enabled", "value"):
-            farthest_shield_distance = max(farthest_shield_distance, container_stack.getProperty("ooze_shield_dist", "value"))
-
-        move_from_wall_radius = 0  # Moves that start from outer wall.
-        move_from_wall_radius = max(move_from_wall_radius, max(self._getSettingFromAllExtruders("infill_wipe_dist")))
-        avoid_enabled_per_extruder = [stack.getProperty("travel_avoid_other_parts","value") for stack in used_extruders]
-        travel_avoid_distance_per_extruder = [stack.getProperty("travel_avoid_distance", "value") for stack in used_extruders]
-        for avoid_other_parts_enabled, avoid_distance in zip(avoid_enabled_per_extruder, travel_avoid_distance_per_extruder): #For each extruder (or just global).
-            if avoid_other_parts_enabled:
-                move_from_wall_radius = max(move_from_wall_radius, avoid_distance)
+        bed_adhesion_size = self._calculateBedAdhesionSize(used_extruders)
+        support_expansion = self._calculateSupportExpansion(self._global_container_stack)
+        farthest_shield_distance = self._calculateFarthestShieldDistance(self._global_container_stack)
+        move_from_wall_radius = self._calculateMoveFromWallRadius(used_extruders)
 
         # Now combine our different pieces of data to get the final border size.
         # Support expansion is added to the bed adhesion, since the bed adhesion goes around support.
@@ -1143,3 +1168,4 @@ class BuildVolume(SceneNode):
     _distance_settings = ["infill_wipe_dist", "travel_avoid_distance", "support_offset", "support_enable", "travel_avoid_other_parts", "travel_avoid_supports"]
     _extruder_settings = ["support_enable", "support_bottom_enable", "support_roof_enable", "support_infill_extruder_nr", "support_extruder_nr_layer_0", "support_bottom_extruder_nr", "support_roof_extruder_nr", "brim_line_count", "adhesion_extruder_nr", "adhesion_type"] #Settings that can affect which extruders are used.
     _limit_to_extruder_settings = ["wall_extruder_nr", "wall_0_extruder_nr", "wall_x_extruder_nr", "top_bottom_extruder_nr", "infill_extruder_nr", "support_infill_extruder_nr", "support_extruder_nr_layer_0", "support_bottom_extruder_nr", "support_roof_extruder_nr", "adhesion_extruder_nr"]
+    _disallowed_area_settings = _skirt_settings + _prime_settings + _tower_settings + _ooze_shield_settings + _distance_settings + _extruder_settings
