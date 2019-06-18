@@ -7,7 +7,7 @@
         "author": "Ultimaker",
         "category": "Other",
         "manufacturer": "Unknown",
-        "setting_version": 7,
+        "setting_version": 8,
         "file_formats": "text/x-gcode;application/x-stl-ascii;application/x-stl-binary;application/x-wavefront-obj;application/x3g",
         "visible": false,
         "has_materials": true,
@@ -4736,10 +4736,10 @@
                     "enabled": "support_enable and support_use_towers",
                     "settable_per_mesh": true
                 },
-                "support_minimal_diameter":
+                "support_tower_maximum_supported_diameter":
                 {
-                    "label": "Minimum Diameter",
-                    "description": "Minimum diameter in the X/Y directions of a small area which is to be supported by a specialized support tower.",
+                    "label": "Maximum Tower-Supported Diameter",
+                    "description": "Maximum diameter in the X/Y directions of a small area which is to be supported by a specialized support tower.",
                     "unit": "mm",
                     "type": "float",
                     "default_value": 3.0,
@@ -5451,17 +5451,6 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
                 },
-                "prime_tower_circular":
-                {
-                    "label": "Circular Prime Tower",
-                    "description": "Make the prime tower as a circular shape.",
-                    "type": "bool",
-                    "enabled": "resolveOrValue('prime_tower_enable')",
-                    "default_value": true,
-                    "resolve": "any(extruderValues('prime_tower_circular'))",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": false
-                },
                 "prime_tower_size":
                 {
                     "label": "Prime Tower Size",
@@ -5486,7 +5475,7 @@
                     "type": "float",
                     "default_value": 6,
                     "minimum_value": "0",
-                    "maximum_value_warning": "((resolveOrValue('prime_tower_size') * 0.5) ** 2 * 3.14159 * resolveOrValue('layer_height') if prime_tower_circular else resolveOrValue('prime_tower_size') ** 2 * resolveOrValue('layer_height')) - sum(extruderValues('prime_tower_min_volume')) + prime_tower_min_volume",
+                    "maximum_value_warning": "((resolveOrValue('prime_tower_size') * 0.5) ** 2 * 3.14159 * resolveOrValue('layer_height')",
                     "enabled": "resolveOrValue('prime_tower_enable')",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
