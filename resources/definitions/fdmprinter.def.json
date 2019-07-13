@@ -5588,7 +5588,7 @@
                 "extruder_min_volume":
                 {
                     "label": "Extruder Minimum Volume",
-                    "description": "The minimum volume to be extruded for each layer the extruder is used. It is the sum of the print volume and the prime tower volume.",
+                    "description": "The minimum volume to be extruded for each layer the extruder is used. The combined volume of the print and the prime tower will be greater or equal to this.",
                     "unit": "mm³",
                     "type": "float",
                     "default_value": 0,
