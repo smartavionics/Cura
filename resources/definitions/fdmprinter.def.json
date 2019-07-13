@@ -5626,6 +5626,16 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
                 },
+                "prime_outermost_extruder_always":
+                {
+                    "label": "Prime Outermost Extruder Every Layer",
+                    "description": "When enabled, the outermost extruder in the prime tower is always primed even if it was the last extruder used.",
+                    "type": "bool",
+                    "enabled": "resolveOrValue('prime_tower_enable')",
+                    "default_value": true,
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false
+                },
                 "prime_tower_wipe_enabled":
                 {
                     "label": "Wipe Inactive Nozzle on Prime Tower",
