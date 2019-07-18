@@ -5636,7 +5636,17 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
                 },
-                "prime_tower_wipe_enabled":
+                "prime_all_extruders_on_layer_0":
+                {
+                    "label": "Prime All Extruders On Initial Layer",
+                    "description": "When enabled, all extruders are primed on the initial layer. Otherwise, only the outermost extruder is primed.",
+                    "type": "bool",
+                    "enabled": "resolveOrValue('prime_tower_enable')",
+                    "default_value": false,
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false
+                },
+               "prime_tower_wipe_enabled":
                 {
                     "label": "Wipe Inactive Nozzle on Prime Tower",
                     "description": "After printing the prime tower with one nozzle, wipe the oozed material from the other nozzle off on the prime tower.",
