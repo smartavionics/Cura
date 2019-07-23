@@ -969,7 +969,7 @@ class XmlMaterialProfile(InstanceContainer):
                     machine_compatibility = cls._parseCompatibleValue(entry.text)
 
             for identifier in machine.iterfind("./um:machine_identifier", cls.__namespaces):
-                machine_id_list = product_id_map.get(identifier.get("product"), [])
+                machine_id_list = product_id_map.get(identifier.get("product", ""), [])
                 if not machine_id_list:
                     machine_id_list = cls.getPossibleDefinitionIDsFromName(identifier.get("product"))
 
@@ -1001,7 +1001,7 @@ class XmlMaterialProfile(InstanceContainer):
                     result_metadata.append(new_material_metadata)
 
                     buildplates = machine.iterfind("./um:buildplate", cls.__namespaces)
-                    buildplate_map = {} # type: Dict[str, Dict[str, bool]]
+                    buildplate_map = {}  # type: Dict[str, Dict[str, bool]]
                     buildplate_map["buildplate_compatible"] = {}
                     buildplate_map["buildplate_recommended"] = {}
                     for buildplate in buildplates:
@@ -1186,7 +1186,7 @@ class XmlMaterialProfile(InstanceContainer):
     def __str__(self):
         return "<XmlMaterialProfile '{my_id}' ('{name}') from base file '{base_file}'>".format(my_id = self.getId(), name = self.getName(), base_file = self.getMetaDataEntry("base_file"))
 
-    _metadata_tags_that_have_cura_namespace = ["pva_compatible", "breakaway_compatible"]
+    _metadata_tags_that_have_cura_namespace = {"pva_compatible", "breakaway_compatible"}
 
     # Map XML file setting names to internal names
     __material_settings_setting_map = {
