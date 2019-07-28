@@ -58,7 +58,10 @@ class CuraSplashScreen(QSplashScreen):
 
         # draw version text
         font = QFont()  # Using system-default font here
-        font.setPixelSize(37)
+        if len(version[0]) > 3:
+                font.setPixelSize(24)
+        else:
+                font.setPixelSize(37)
         painter.setFont(font)
         painter.drawText(215, 66, 330 * self._scale, 230 * self._scale, Qt.AlignLeft | Qt.AlignTop, version[0])
         if len(version) > 1:
