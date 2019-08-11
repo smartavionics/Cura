@@ -1435,29 +1435,53 @@
                     "limit_to_extruder": "wall_0_extruder_nr",
                     "settable_per_mesh": true
                 },
-                "z_seam_x":
+                "z_seam_position":
                 {
-                    "label": "Z Seam X",
-                    "description": "The X coordinate of the position near where to start printing each part in a layer.",
-                    "unit": "mm",
-                    "type": "float",
-                    "default_value": 100.0,
-                    "value": "machine_width / 2",
+                    "label": "Z Seam Position",
+                    "description": "The position near where to start printing each part in a layer.",
+                    "type": "enum",
+                    "options":
+                    {
+                        "backleft": "Back Left",
+                        "back": "Back",
+                        "backright": "Back Right",
+                        "right": "Right",
+                        "frontright": "Front Right",
+                        "front": "Front",
+                        "frontleft": "Front Left",
+                        "left": "Left"
+                    },
                     "enabled": "z_seam_type == 'back'",
+                    "default_value": "back",
                     "limit_to_extruder": "wall_0_extruder_nr",
-                    "settable_per_mesh": true
-                },
-                "z_seam_y":
-                {
-                    "label": "Z Seam Y",
-                    "description": "The Y coordinate of the position near where to start printing each part in a layer.",
-                    "unit": "mm",
-                    "type": "float",
-                    "default_value": 100.0,
-                    "value": "machine_depth * 3",
-                    "enabled": "z_seam_type == 'back'",
-                    "limit_to_extruder": "wall_0_extruder_nr",
-                    "settable_per_mesh": true
+                    "settable_per_mesh": true,
+                    "children":
+                    {
+                        "z_seam_x":
+                        {
+                            "label": "Z Seam X",
+                            "description": "The X coordinate of the position near where to start printing each part in a layer.",
+                            "unit": "mm",
+                            "type": "float",
+                            "default_value": 100.0,
+                            "value": "0 if (z_seam_position == 'frontleft' or z_seam_position == 'left' or z_seam_position == 'backleft') else machine_width/2 if (z_seam_position == 'front' or z_seam_position == 'back') else machine_width",
+                            "enabled": "z_seam_type == 'back'",
+                            "limit_to_extruder": "wall_0_extruder_nr",
+                            "settable_per_mesh": true
+                        },
+                        "z_seam_y":
+                        {
+                            "label": "Z Seam Y",
+                            "description": "The Y coordinate of the position near where to start printing each part in a layer.",
+                            "unit": "mm",
+                            "type": "float",
+                            "default_value": 100.0,
+                            "value": "0 if (z_seam_position == 'frontleft' or z_seam_position == 'front' or z_seam_position == 'frontright') else machine_depth/2 if (z_seam_position == 'left' or z_seam_position == 'right') else machine_depth",
+                            "enabled": "z_seam_type == 'back'",
+                            "limit_to_extruder": "wall_0_extruder_nr",
+                            "settable_per_mesh": true
+                        }
+                    }
                 },
                 "z_seam_corner":
                 {
@@ -1788,6 +1812,17 @@
                     "type": "float",
                     "default_value": 0,
                     "enabled": "infill_pattern == 'grid' or infill_pattern == 'lines' or infill_pattern == 'triangles' or infill_pattern == 'cubic' or infill_pattern == 'tetrahedral' or infill_pattern == 'quarter_cubic' or infill_pattern == 'zigzag'",
+                    "limit_to_extruder": "infill_extruder_nr",
+                    "settable_per_mesh": true
+                },
+                "infill_randomize_start_location":
+                {
+                    "label": "Randomize Infill Start",
+                    "description": "Randomize which infill line is printed first. This prevents one segment becoming the strongest, but it does so at the cost of an additional travel move.",
+                    "type": "bool",
+                    "default_value": false,
+                    "warning_value": "True if infill_pattern not in ('grid', 'triangles', 'trihexagon', 'cubic', 'cubicsubdiv', 'tetrahedral', 'quarter_cubic') else None",
+                    "enabled": "not ((infill_pattern == 'cross' and connect_infill_polygons) or infill_pattern == 'concentric')",
                     "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
                 },
@@ -2317,7 +2352,7 @@
                     "description": "How far the material needs to be retracted before it stops oozing.",
                     "type": "float",
                     "unit": "mm",
-                    "default_value": 4,
+                    "default_value": -4,
                     "enabled": false,
                     "minimum_value_warning": "-retraction_amount",
                     "maximum_value_warning": "0",
@@ -2343,7 +2378,7 @@
                     "description": "How far the filament can be stretched before it breaks, while heated.",
                     "type": "float",
                     "unit": "mm",
-                    "default_value": 16,
+                    "default_value": -16,
                     "enabled": false,
                     "minimum_value_warning": "-retraction_amount * 4",
                     "maximum_value_warning": "0",
@@ -2369,7 +2404,7 @@
                     "description": "How far to retract the filament in order to break it cleanly.",
                     "type": "float",
                     "unit": "mm",
-                    "default_value": 50,
+                    "default_value": -50,
                     "enabled": false,
                     "minimum_value_warning": "-100",
                     "maximum_value_warning": "0",
@@ -7799,7 +7834,7 @@
                     "unit": "%",
                     "type": "float",
                     "default_value": 50,
-                    "minimum_value": "10",
+                    "minimum_value": "1",
                     "minimum_value_warning": "25",
                     "maximum_value": "100",
                     "settable_per_mesh": true
@@ -7812,7 +7847,7 @@
                     "type": "float",
                     "default_value": 50,
                     "value": "small_feature_speed_factor",
-                    "minimum_value": "10",
+                    "minimum_value": "1",
                     "minimum_value_warning": "25",
                     "maximum_value": "100",
                     "settable_per_mesh": true

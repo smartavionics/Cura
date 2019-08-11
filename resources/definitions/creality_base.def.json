@@ -52,6 +52,7 @@
         "speed_prime_tower": { "value": "speed_topbottom" },
         "speed_support": { "value": "speed_wall_0" },
         "speed_support_interface": { "value": "speed_topbottom" },
+        "speed_z_hop": {"value": 5},
 
         "skirt_brim_speed": { "value": "speed_layer_0" },
 
@@ -153,7 +154,6 @@
         "has_materials": true,
         "has_variants": true,
         "has_machine_quality": true,
-        "has_machine_materials": true,
         "variants_name": "Nozzle Size",
 
         "preferred_variant_name": "0.4mm Nozzle",
