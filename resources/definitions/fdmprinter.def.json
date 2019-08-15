@@ -1826,7 +1826,28 @@
                     "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
                 },
-                "infill_multiplier":
+                "infill_fan_enable":
+                {
+                    "label": "Infill Fan Speed Override",
+                    "description": "When enabled, the print cooling fan speed is altered for the infill.",
+                    "type": "bool",
+                    "default_value": false,
+                    "enabled": "infill_sparse_density > 0",
+                    "settable_per_mesh": true
+                },
+                "infill_fan_speed":
+                {
+                    "label": "Infill Fan Speed",
+                    "description": "Percentage fan speed to use when printing infill. Using a reduced or even zero fan speed when printing infill can make the part stronger.",
+                    "unit": "%",
+                    "minimum_value": "0",
+                    "maximum_value": "100",
+                    "default_value": 0,
+                    "type": "float",
+                    "enabled": "infill_sparse_density > 0 and infill_fan_enable",
+                    "settable_per_mesh": true
+                },
+               "infill_multiplier":
                 {
                     "label": "Infill Line Multiplier",
                     "description": "Convert each infill line to this many lines. The extra lines do not cross over each other, but avoid each other. This makes the infill stiffer, but increases print time and material usage.",
