@@ -49,6 +49,7 @@ class UltimakerNetworkedPrinterOutputDevice(NetworkedPrinterOutputDevice):
 
     def __init__(self, device_id: str, address: str, properties: Dict[bytes, bytes], connection_type: ConnectionType,
                  parent=None) -> None:
+
         super().__init__(device_id=device_id, address=address, properties=properties, connection_type=connection_type,
                          parent=parent)
 
@@ -102,9 +103,9 @@ class UltimakerNetworkedPrinterOutputDevice(NetworkedPrinterOutputDevice):
         return [print_job for print_job in self._print_jobs if
                 print_job.assignedPrinter is not None and print_job.state not in self.QUEUED_PRINT_JOBS_STATES]
 
-    @pyqtProperty(bool, notify=printJobsChanged)
-    def receivedPrintJobs(self) -> bool:
-        return bool(self._print_jobs)
+    @pyqtProperty(bool, notify=_clusterPrintersChanged)
+    def receivedData(self) -> bool:
+        return self._has_received_printers
 
     # Get the amount of printers in the cluster.
     @pyqtProperty(int, notify=_clusterPrintersChanged)
@@ -298,6 +299,8 @@ class UltimakerNetworkedPrinterOutputDevice(NetworkedPrinterOutputDevice):
                 print_job_data.updateOutputModel(print_job)
                 if print_job_data.printer_uuid:
                     self._updateAssignedPrinter(print_job, print_job_data.printer_uuid)
+                if print_job_data.assigned_to:
+                    self._updateAssignedPrinter(print_job, print_job_data.assigned_to)
                 new_print_jobs.append(print_job)
 
         # Check which print job need to be removed (de-referenced).
@@ -316,6 +319,8 @@ class UltimakerNetworkedPrinterOutputDevice(NetworkedPrinterOutputDevice):
         model = remote_job.createOutputModel(ClusterOutputController(self))
         if remote_job.printer_uuid:
             self._updateAssignedPrinter(model, remote_job.printer_uuid)
+        if remote_job.assigned_to:
+            self._updateAssignedPrinter(model, remote_job.assigned_to)
         return model
 
     ## Updates the printer assignment for the given print job model.
