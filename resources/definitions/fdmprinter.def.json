@@ -5626,13 +5626,13 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
                 },
-                "prime_outermost_extruder_always":
+                "prime_tower_compact":
                 {
-                    "label": "Prime Outermost Extruder Every Layer",
-                    "description": "When enabled, the outermost extruder in the prime tower is always primed even if it was the last extruder used.",
+                    "label": "Compact Prime Tower",
+                    "description": "When enabled, all extruders share the same prime tower area rather than each extruder having its own area.",
                     "type": "bool",
                     "enabled": "resolveOrValue('prime_tower_enable')",
-                    "default_value": true,
+                    "default_value": false,
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
                 },
