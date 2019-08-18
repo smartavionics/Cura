@@ -5638,8 +5638,8 @@
                 },
                 "prime_all_extruders_on_layer_0":
                 {
-                    "label": "Prime All Extruders On Initial Layer",
-                    "description": "When enabled, all extruders are primed on the initial layer. Otherwise, only the outermost extruder is primed.",
+                    "label": "Prime All Extruders Used On Initial Layer",
+                    "description": "When enabled, all extruders used on the initial layer are primed. Otherwise, only the outermost extruder is primed.",
                     "type": "bool",
                     "enabled": "resolveOrValue('prime_tower_enable')",
                     "default_value": false,
