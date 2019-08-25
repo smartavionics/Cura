@@ -7390,6 +7390,18 @@
                     "settable_per_mesh": true,
                     "settable_per_extruder": false
                 },
+                "bridge_skin_min_area":
+                {
+                    "label": "Minimum Bridge Skin Area",
+                    "description": "Unsupported skin regions whose area is less than this will be printed using the normal skin settings. Larger unsupported skin regions will be printed using the bridge skin settings.",
+                    "unit": "mm²",
+                    "type": "float",
+                    "minimum_value": "0",
+                    "default_value": 0,
+                    "value": "bridge_wall_min_length * bridge_wall_min_length",
+                    "enabled": "bridge_settings_enabled",
+                    "settable_per_mesh": true
+                },
                 "bridge_sparse_infill_max_density":
                 {
                     "label": "Bridge Sparse Infill Max Density",
