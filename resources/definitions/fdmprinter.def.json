@@ -7686,6 +7686,44 @@
                     "enabled": "bridge_settings_enabled and bridge_enable_more_layers",
                     "settable_per_mesh": true
                 },
+                "mesh_temperature_delta":
+                {
+                    "label": "Mesh Temperature Delta",
+                    "description": "The nozzle temperature used for the current mesh is increased by this amount. Negative values reduce the nozzle temperature",
+                    "unit": "°C",
+                    "type": "float",
+                    "default_value": 0,
+                    "minimum_value_warning": "-50",
+                    "maximum_value_warning": "50",
+                    "enabled": true,
+                    "settable_per_extruder": false,
+                    "settable_per_mesh": true,
+                    "minimum_value": "-273.15"
+                },
+                "mesh_temperature_dawdle_speed":
+                {
+                    "label": "Mesh Dawdle Speed",
+                    "description": "Print speed used when waiting for the temperature to change at the start and end of the mesh.",
+                    "unit": "mm/s",
+                    "type": "float",
+                    "minimum_value": "cool_min_speed",
+                    "maximum_value": "math.sqrt(machine_max_feedrate_x ** 2 + machine_max_feedrate_y ** 2)",
+                    "maximum_value_warning": "300",
+                    "default_value": 10,
+                    "value": "cool_min_speed",
+                    "settable_per_mesh": true
+                },
+                "mesh_temperature_dawdle_time":
+                {
+                    "label": "Mesh Dawdle Time",
+                    "description": "The amount of time to print using Mesh Dawdle Speed when waiting for the temperature to change at the start and end of the mesh.",
+                    "unit": "s",
+                    "type": "float",
+                    "minimum_value": 0,
+                    "maximum_value": 100,
+                    "default_value": 0,
+                    "settable_per_mesh": true
+                },
                 "clean_between_layers":
                 {
                     "label": "Wipe Nozzle Between Layers",
