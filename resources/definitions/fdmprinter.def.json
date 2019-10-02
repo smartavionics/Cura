@@ -5092,45 +5092,6 @@
                     "enabled": "(support_enable or support_tree_enable) and support_fan_enable",
                     "settable_per_mesh": false
                 },
-                "support_supported_skin_speed":
-                {
-                    "label": "Supported Skin Speed",
-                    "description": "Print speed to use when printing the skin regions immediately above the support.",
-                    "unit": "mm/s",
-                    "type": "float",
-                    "minimum_value": "cool_min_speed",
-                    "maximum_value": "math.sqrt(machine_max_feedrate_x ** 2 + machine_max_feedrate_y ** 2)",
-                    "maximum_value_warning": "300",
-                    "default_value": 25,
-                    "value": "speed_topbottom",
-                    "settable_per_mesh": true
-                },
-                "support_supported_skin_flow":
-                {
-                    "label": "Supported Skin Flow",
-                    "description": "Flow to use when printing the skin regions immediately above the support, the amount of material extruded is multiplied by this value.",
-                    "unit": "%",
-                    "default_value": 100,
-                    "value": "skin_material_flow",
-                    "type": "float",
-                    "minimum_value": "5",
-                    "maximum_value": "500",
-                    "minimum_value_warning": "50",
-                    "maximum_value_warning": "150",
-                    "settable_per_mesh": true
-                },
-                "support_supported_skin_density":
-                {
-                    "label": "Supported Skin Density",
-                    "description": "The density of the skin regions immediately above the support. Values less than 100 will increase the gaps between the skin lines.",
-                    "unit": "%",
-                    "default_value": 100,
-                    "type": "float",
-                    "minimum_value": "5",
-                    "maximum_value": "100",
-                    "minimum_value_warning": "20",
-                    "settable_per_mesh": true
-                },
                 "support_use_towers":
                 {
                     "label": "Use Towers",
