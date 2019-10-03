@@ -7432,9 +7432,8 @@
                     "description": "Ignore any support so that bridges are created over support.",
                     "type": "bool",
                     "default_value": false,
-                    "settable_per_mesh": true,
-                    "settable_per_extruder": false,
-                    "settable_per_meshgroup": false
+                    "enabled": "bridge_settings_enabled",
+                    "settable_per_mesh": true
                 },
                 "bridge_wall_coast":
                 {
