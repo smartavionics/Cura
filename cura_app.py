@@ -11,6 +11,17 @@ import sys
 from UM.Platform import Platform
 from cura.ApplicationMetadata import CuraAppName
 
+if Platform.isWindows() and hasattr(sys, "frozen"):
+    FILE_NAME = sys.executable
+    DIR_NAME = os.path.dirname(sys.executable)
+
+    paths = os.environ.get("PATH", "").split(os.pathsep)
+
+    if DIR_NAME not in paths:
+        paths.insert(0, os.path.join(DIR_NAME, "lib"))
+        paths.insert(0, DIR_NAME)
+        os.environ["PATH"] = os.pathsep.join(paths)
+
 parser = argparse.ArgumentParser(prog = "cura",
                                  add_help = False)
 parser.add_argument("--debug",
