@@ -116,6 +116,9 @@ class StartSliceJob(Job):
 
     ##  Runs the job that initiates the slicing.
     def run(self) -> None:
+
+        then = time.time()
+
         if self._build_plate_number is None:
             self.setResult(StartJobResult.Error)
             return
@@ -134,9 +137,13 @@ class StartSliceJob(Job):
             self.setResult(StartJobResult.BuildPlateError)
             return
 
+        Logger.log("d", "Before error checker took %s seconds", time.time() - then)
+
         # Wait for error checker to be done.
+        then = time.time()
         while CuraApplication.getInstance().getMachineErrorChecker().needToWaitForResult:
             time.sleep(0.1)
+        Logger.log("d", "Error checker took %s seconds", time.time() - then)
 
         if CuraApplication.getInstance().getMachineErrorChecker().hasError:
             self.setResult(StartJobResult.SettingError)
@@ -158,6 +165,7 @@ class StartSliceJob(Job):
                     return
 
 
+        then = time.time()
         # Don't slice if there is a per object setting with an error value.
         for node in DepthFirstIterator(self._scene.getRoot()):
             if not isinstance(node, CuraSceneNode) or not node.isSelectable():
@@ -166,16 +174,20 @@ class StartSliceJob(Job):
             if self._checkStackForErrors(node.callDecoration("getStack")):
                 self.setResult(StartJobResult.ObjectSettingError)
                 return
+        Logger.log("d", "Per object check took %s seconds", time.time() - then)
 
         with self._scene.getSceneLock():
             # Remove old layer data.
+            then = time.time()
             for node in DepthFirstIterator(self._scene.getRoot()):
                 if node.callDecoration("getLayerData") and node.callDecoration("getBuildPlateNumber") == self._build_plate_number:
                     # Singe we walk through all nodes in the scene, they always have a parent.
                     cast(SceneNode, node.getParent()).removeChild(node)
                     break
+            Logger.log("d", "Remove layer old data took %s seconds", time.time() - then)
 
             # Get the objects in their groups to print.
+            then = time.time()
             object_groups = []
             if stack.getProperty("print_sequence", "value") == "one_at_a_time":
                 for node in OneAtATimeIterator(self._scene.getRoot()):
@@ -229,10 +241,12 @@ class StartSliceJob(Job):
 
                 if temp_list:
                     object_groups.append(temp_list)
+            Logger.log("d", "Grouping objects took %s seconds", time.time() - then)
 
             global_stack = CuraApplication.getInstance().getGlobalContainerStack()
             if not global_stack:
                 return
+            then = time.time()
             extruders_enabled = {position: stack.isEnabled for position, stack in global_stack.extruders.items()}
             filtered_object_groups = []
             has_model_with_disabled_extruders = False
@@ -263,6 +277,8 @@ class StartSliceJob(Job):
             if not filtered_object_groups:
                 self.setResult(StartJobResult.NothingToSlice)
                 return
+            Logger.log("d", "Filtering object groups took %s seconds", time.time() - then)
+            then = time.time()
 
             self._buildGlobalSettingsMessage(stack)
             self._buildGlobalInheritsStackMessage(stack)
@@ -270,6 +286,8 @@ class StartSliceJob(Job):
             # Build messages for extruder stacks
             for extruder_stack in global_stack.extruderList:
                 self._buildExtruderMessage(extruder_stack)
+            Logger.log("d", "Building setting stack messages took %s seconds", time.time() - then)
+            then = time.time()
 
             for group in filtered_object_groups:
                 group_message = self._slice_message.addRepeatedMessage("object_lists")
@@ -307,6 +325,7 @@ class StartSliceJob(Job):
                     self._handlePerObjectSettings(cast(CuraSceneNode, object), obj)
 
                     Job.yieldThread()
+            Logger.log("d", "Building object group messages took %s seconds", time.time() - then)
 
         self.setResult(StartJobResult.Finished)
 
