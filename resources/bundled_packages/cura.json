@@ -475,6 +475,23 @@
             }
         }
     },
+    "TrimeshReader": {
+        "package_info": {
+            "package_id": "TrimeshReader",
+            "package_type": "plugin",
+            "display_name": "Trimesh Reader",
+            "description": "Provides support for reading model files.",
+            "package_version": "1.0.0",
+            "sdk_version": "6.0.0",
+            "website": "https://ultimaker.com",
+            "author": {
+                "author_id": "UltimakerPackages",
+                "display_name": "Ultimaker B.V.",
+                "email": "plugins@ultimaker.com",
+                "website": "https://ultimaker.com"
+            }
+        }
+    },
     "Toolbox": {
         "package_info": {
             "package_id": "Toolbox",
@@ -787,6 +804,23 @@
             "package_type": "plugin",
             "display_name": "Version Upgrade 4.2 to 4.3",
             "description": "Upgrades configurations from Cura 4.2 to Cura 4.3.",
+            "package_version": "1.0.0",
+            "sdk_version": "6.0.0",
+            "website": "https://ultimaker.com",
+            "author": {
+                "author_id": "UltimakerPackages",
+                "display_name": "Ultimaker B.V.",
+                "email": "plugins@ultimaker.com",
+                "website": "https://ultimaker.com"
+            }
+        }
+    },
+    "VersionUpgrade43to44": {
+        "package_info": {
+            "package_id": "VersionUpgrade43to44",
+            "package_type": "plugin",
+            "display_name": "Version Upgrade 4.3 to 4.4",
+            "description": "Upgrades configurations from Cura 4.3 to Cura 4.4.",
             "package_version": "1.0.0",
             "sdk_version": "6.0.0",
             "website": "https://ultimaker.com",
