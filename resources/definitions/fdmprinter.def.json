@@ -4029,6 +4029,16 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
+                "retraction_hop_only_on_initial_layer":
+                {
+                    "label": "Z Hop Only On Initial Layer",
+                    "description": "Use Z Hop on just the initial layer. Reduces the chance of the initial layer lines coming away from the build plate.",
+                    "type": "bool",
+                    "default_value": false,
+                    "enabled": "retraction_enable and not retraction_hop_enabled",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
                 "retraction_hop_only_when_collides": {
                     "label": "Z Hop Only Over Printed Parts",
                     "description": "Only perform a Z Hop when moving over printed parts which cannot be avoided by horizontal motion by Avoid Printed Parts when Traveling.",
