@@ -3917,6 +3917,16 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
                 },
+                "travel_no_combing_on_initial_layer":
+                {
+                    "label": "Disable combing on the initial layer",
+                    "description": "Disabling combing on the initial layer can improve the adhesion of wall lines to the build plate.",
+                    "type": "bool",
+                    "default_value": false,
+                    "enabled": "resolveOrValue('retraction_combing') != 'off'",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
                 "retraction_combing_max_distance":
                 {
                     "label": "Max Comb Distance With No Retract",
