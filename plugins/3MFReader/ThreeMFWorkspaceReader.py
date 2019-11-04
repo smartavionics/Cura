@@ -383,10 +383,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         quality_container_id = parser["containers"][str(_ContainerIndexes.Quality)]
         quality_type = "empty_quality"
         if quality_container_id not in ("empty", "empty_quality"):
-            try:
-                quality_type = instance_container_info_dict[quality_container_id].parser["metadata"]["quality_type"]
-            except KeyError:
-                Logger.log("w", "Unknown quality container id %s.", quality_container_id)
+            quality_type = instance_container_info_dict[quality_container_id].parser["metadata"]["quality_type"]
 
         # Get machine info
         serialized = archive.open(global_stack_file).read().decode("utf-8")
