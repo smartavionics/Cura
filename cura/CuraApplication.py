@@ -1796,7 +1796,7 @@ class CuraApplication(QtApplication):
         try:
             result = workspace_reader.preRead(file_path, show_dialog=False)
             return result == WorkspaceReader.PreReadResult.accepted
-        except Exception as e:
+        except Exception:
             Logger.logException("e", "Could not check file %s", file_url)
             return False
 
@@ -1892,3 +1892,7 @@ class CuraApplication(QtApplication):
             op.push()
             from UM.Scene.Selection import Selection
             Selection.clear()
+
+    @classmethod
+    def getInstance(cls, *args, **kwargs) -> "CuraApplication":
+        return cast(CuraApplication, super().getInstance(**kwargs))
