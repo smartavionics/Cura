@@ -8,6 +8,7 @@ from cura.Machines.Models.IntentTranslations import intent_translations
 
 from cura.Machines.Models.IntentModel import IntentModel
 from cura.Settings.IntentManager import IntentManager
+from UM.Logger import Logger
 from UM.Qt.ListModel import ListModel
 from UM.Settings.ContainerRegistry import ContainerRegistry #To update the list if anything changes.
 from PyQt5.QtCore import pyqtProperty, pyqtSignal
@@ -98,15 +99,19 @@ class IntentCategoryModel(ListModel):
         available_categories = IntentManager.getInstance().currentAvailableIntentCategories()
         result = []
         for category in available_categories:
-            qualities = IntentModel()
-            qualities.setIntentCategory(category)
-            result.append({
-                "name": IntentCategoryModel.translation(category, "name", catalog.i18nc("@label", "Unknown")),
-                "description": IntentCategoryModel.translation(category, "description", None),
-                "intent_category": category,
-                "weight": list(IntentCategoryModel._get_translations().keys()).index(category),
-                "qualities": qualities
-            })
+            try:
+                qualities = IntentModel()
+                qualities.setIntentCategory(category)
+                result.append({
+                    "name": IntentCategoryModel.translation(category, "name", catalog.i18nc("@label", "Unknown")),
+                    "description": IntentCategoryModel.translation(category, "description", None),
+                    "intent_category": category,
+                    "weight": list(IntentCategoryModel._get_translations().keys()).index(category),
+                    "qualities": qualities
+                })
+            except:
+                Logger.log("e", "Unknown or bad intent category '%s'", category)
+
         result.sort(key = lambda k: k["weight"])
         self.setItems(result)
 
