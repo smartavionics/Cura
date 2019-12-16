@@ -5359,7 +5359,7 @@
                         }
                     }
                 },
-                "brim_gap":
+               "brim_gap":
                 {
                     "label": "Brim Distance",
                     "description": "The horizontal distance between the first brim line and the outline of the first layer of the print. A small gap can make the brim easier to remove while still providing the thermal benefits.",
