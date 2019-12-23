@@ -794,7 +794,10 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 if not global_stack.extruders:
                     ExtruderManager.getInstance().fixSingleExtrusionMachineExtruderDefinition(global_stack)
                 extruder_stack = global_stack.extruders["0"]
-                intent_category = quality_changes_intent_category_per_extruder["0"]
+                try:
+                    intent_category = quality_changes_intent_category_per_extruder["0"]
+                except KeyError:
+                    intent_category = None
 
                 container = self._createNewQualityChanges(quality_changes_quality_type, intent_category, quality_changes_name, global_stack, extruder_stack)
                 container_info.container = container
