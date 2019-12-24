@@ -2496,6 +2496,54 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
+                "material_flush_purge_speed":
+                {
+                    "label": "Flush Purge Speed",
+                    "description": "Material Station internal value",
+                    "type": "float",
+                    "default_value": 0.5,
+                    "enabled": false
+                },
+                "material_flush_purge_length":
+                {
+                    "label": "Flush Purge Length",
+                    "description": "Material Station internal value",
+                    "type": "float",
+                    "default_value": 60,
+                    "enabled": false
+                },
+                "material_end_of_filament_purge_speed":
+                {
+                    "label": "End Of Filament Purge Speed",
+                    "description": "Material Station internal value",
+                    "type": "float",
+                    "default_value": 0.5,
+                    "enabled": false
+                },
+                "material_end_of_filament_purge_length":
+                {
+                    "label": "End Of Filament Purge Length",
+                    "description": "Material Station internal value",
+                    "type": "float",
+                    "default_value": 20,
+                    "enabled": false
+                },
+                "material_maximum_park_duration":
+                {
+                    "label": "Maximum Park Duration",
+                    "description": "Material Station internal value",
+                    "type": "float",
+                    "default_value": 300,
+                    "enabled": false
+                },
+                "material_no_load_move_factor":
+                {
+                    "label": "No Load Move Factor",
+                    "description": "Material Station internal value",
+                    "type": "float",
+                    "default_value": 0.940860215,
+                    "enabled": false
+                },
                 "material_flow":
                 {
                     "label": "Flow",
@@ -4438,8 +4486,8 @@
                     "minimum_value_warning": "1 if support_pattern == 'concentric' else 0",
                     "maximum_value_warning": "3",
                     "type": "int",
-                    "value": "1 if (support_pattern == 'grid' or support_pattern == 'triangles' or support_pattern == 'concentric') else 0",
-                    "enabled": "support_enable",
+                    "value": "1 if support_tree_enable else (1 if (support_pattern == 'grid' or support_pattern == 'triangles' or support_pattern == 'concentric') else 0)",
+                    "enabled": "support_enable or support_tree_enable",
                     "limit_to_extruder": "support_infill_extruder_nr",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
@@ -6051,6 +6099,7 @@
                     "description": "Ignore the internal geometry arising from overlapping volumes within a mesh and print the volumes as one. This may cause unintended internal cavities to disappear.",
                     "type": "bool",
                     "default_value": true,
+                    "value": "magic_mesh_surface_mode != 'surface'",
                     "settable_per_mesh": true
                 },
                 "meshfix_union_all_remove_holes":
@@ -6451,38 +6500,6 @@
                     "enabled": "support_tree_enable and support_tree_branch_diameter_angle > 0",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
-                },
-                "support_tree_wall_thickness":
-                {
-                    "label": "Tree Support Wall Thickness",
-                    "description": "The thickness of the walls of the branches of tree support. Thicker walls take longer to print but don't fall over as easily.",
-                    "unit": "mm",
-                    "type": "float",
-                    "minimum_value": "0",
-                    "minimum_value_warning": "wall_line_width",
-                    "default_value": 0.8,
-                    "value": "support_line_width",
-                    "limit_to_extruder": "support_infill_extruder_nr",
-                    "enabled": "support_tree_enable",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": true,
-                    "children":
-                    {
-                        "support_tree_wall_count":
-                        {
-                            "label": "Tree Support Wall Line Count",
-                            "description": "The number of walls of the branches of tree support. Thicker walls take longer to print but don't fall over as easily.",
-                            "type": "int",
-                            "minimum_value": "0",
-                            "minimum_value_warning": "1",
-                            "default_value": 1,
-                            "value": "round(support_tree_wall_thickness / support_line_width)",
-                            "limit_to_extruder": "support_infill_extruder_nr",
-                            "enabled": "support_tree_enable",
-                            "settable_per_mesh": false,
-                            "settable_per_extruder": true
-                        }
-                    }
                 },
                 "slicing_tolerance":
                 {
