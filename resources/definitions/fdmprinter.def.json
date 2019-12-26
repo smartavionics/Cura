@@ -3939,6 +3939,17 @@
                     "enabled": "resolveOrValue('jerk_enabled') and (resolveOrValue('adhesion_type') == 'skirt' or resolveOrValue('adhesion_type') == 'brim' or resolveOrValue('draft_shield_enabled') or resolveOrValue('ooze_shield_enabled'))",
                     "settable_per_mesh": false,
                     "limit_to_extruder": "adhesion_extruder_nr"
+                },
+                "avoid_frequency":
+                {
+                    "label": "Avoid Frequency",
+                    "description": "When non-zero, this specifies a resonant frequency to be avoided when printing using the lines and zig zag patterns. To stop the print head oscillating at that frequency, the print speed is reduced where appropriate.",
+                    "unit": "Hz",
+                    "type": "float",
+                    "default_value": 0,
+                    "minimum_value": "0",
+                    "settable_per_extruder": true,
+                    "settable_per_mesh": false
                 }
             }
         },
