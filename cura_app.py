@@ -12,8 +12,6 @@ from UM.Platform import Platform
 from cura import ApplicationMetadata
 from cura.ApplicationMetadata import CuraAppName
 
-import sentry_sdk
-
 if Platform.isWindows() and hasattr(sys, "frozen"):
     DIR_NAME = os.path.dirname(sys.executable)
     # add DIR_NAME and DIR_NAME/lib to the path so DLLs can be found
@@ -22,6 +20,8 @@ if Platform.isWindows() and hasattr(sys, "frozen"):
         paths.insert(0, os.path.join(DIR_NAME, "lib"))
         paths.insert(0, DIR_NAME)
         os.environ["PATH"] = os.pathsep.join(paths)
+
+import sentry_sdk
 
 parser = argparse.ArgumentParser(prog = "cura",
                                  add_help = False)
