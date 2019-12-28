@@ -160,9 +160,9 @@ def exceptHook(hook_type, value, traceback):
 # Set exception hook to use the crash dialog handler
 sys.excepthook = exceptHook
 # Enable dumping traceback for all threads
-if sys.stderr:
+if sys.stderr and not sys.stderr.closed:
     faulthandler.enable(file = sys.stderr, all_threads = True)
-else:
+elif sys.stdout and not sys.stdout.closed:
     faulthandler.enable(file = sys.stdout, all_threads = True)
 
 # Workaround for a race condition on certain systems where there
