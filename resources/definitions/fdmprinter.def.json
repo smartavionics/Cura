@@ -8058,7 +8058,7 @@
                     "default_value": 50,
                     "minimum_value": "1",
                     "minimum_value_warning": "25",
-                    "maximum_value": "100",
+                    "maximum_value_warning": "100",
                     "settable_per_mesh": true
                 },
                 "small_feature_speed_factor_0":
@@ -8071,7 +8071,7 @@
                     "value": "small_feature_speed_factor",
                     "minimum_value": "1",
                     "minimum_value_warning": "25",
-                    "maximum_value": "100",
+                    "maximum_value_warning": "100",
                     "settable_per_mesh": true
                 }
             }
