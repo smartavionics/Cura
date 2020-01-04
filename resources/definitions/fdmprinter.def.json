@@ -4883,6 +4883,39 @@
                                 }
                             }
                         },
+                        "support_roof_top_layer_density":
+                        {
+                            "label": "Support Roof Top Layer Density",
+                            "description": "The density of the top layer of the roof of the support structure. A higher value results in better overhangs, but the supports are harder to remove.",
+                            "unit": "%",
+                            "type": "float",
+                            "default_value": "support_roof_density",
+                            "minimum_value": "0",
+                            "maximum_value": "100",
+                            "limit_to_extruder": "support_roof_extruder_nr",
+                            "enabled": "support_roof_enable and (support_enable or support_tree_enable)",
+                            "value": "extruderValue(support_roof_extruder_nr, 'support_interface_density')",
+                            "settable_per_mesh": false,
+                            "settable_per_extruder": true,
+                            "children":
+                            {
+                                "support_roof_top_layer_line_distance":
+                                {
+                                    "label": "Support Roof Top Layer Line Distance",
+                                    "description": "Distance between the printed support lines on the top roof layer. This setting is calculated by the Support Roof Top Layer Density, but can be adjusted separately.",
+                                    "unit": "mm",
+                                    "type": "float",
+                                    "default_value": 0.4,
+                                    "minimum_value": "0",
+                                    "minimum_value_warning": "support_roof_line_width - 0.0001",
+                                    "value": "0 if support_roof_top_layer_density == 0 else (support_roof_line_width * 100) / support_roof_top_layer_density * (2 if support_roof_pattern == 'grid' else (3 if support_roof_pattern == 'triangles' else 1))",
+                                    "limit_to_extruder": "support_roof_extruder_nr",
+                                    "enabled": "support_roof_enable and (support_enable or support_tree_enable)",
+                                    "settable_per_mesh": false,
+                                    "settable_per_extruder": true
+                                }
+                            }
+                        },
                         "support_bottom_density":
                         {
                             "label": "Support Floor Density",
