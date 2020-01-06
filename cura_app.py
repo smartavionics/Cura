@@ -21,7 +21,11 @@ if Platform.isWindows() and hasattr(sys, "frozen"):
         paths.insert(0, DIR_NAME)
         os.environ["PATH"] = os.pathsep.join(paths)
 
-import sentry_sdk
+try:
+    import sentry_sdk
+    with_sentry_sdk = True
+except ImportError:
+    with_sentry_sdk = False
 
 parser = argparse.ArgumentParser(prog = "cura",
                                  add_help = False)
@@ -33,21 +37,22 @@ parser.add_argument("--debug",
 
 known_args = vars(parser.parse_known_args()[0])
 
-sentry_env = "production"
-if ApplicationMetadata.CuraVersion == "master":
-    sentry_env = "development"
-try:
-    if ApplicationMetadata.CuraVersion.split(".")[2] == "99":
-        sentry_env = "nightly"
-except IndexError:
-    pass
-
-sentry_sdk.init("https://5034bf0054fb4b889f82896326e79b13@sentry.io/1821564",
-                environment = sentry_env,
-                release = "cura%s" % ApplicationMetadata.CuraVersion,
-                default_integrations = False,
-                max_breadcrumbs = 300,
-                server_name = "cura")
+if with_sentry_sdk:
+    sentry_env = "production"
+    if ApplicationMetadata.CuraVersion == "master":
+        sentry_env = "development"
+    try:
+        if ApplicationMetadata.CuraVersion.split(".")[2] == "99":
+            sentry_env = "nightly"
+    except IndexError:
+        pass
+    
+    sentry_sdk.init("https://5034bf0054fb4b889f82896326e79b13@sentry.io/1821564",
+                    environment = sentry_env,
+                    release = "cura%s" % ApplicationMetadata.CuraVersion,
+                    default_integrations = False,
+                    max_breadcrumbs = 300,
+                    server_name = "cura")
 
 if not known_args["debug"]:
     def get_cura_dir_path():
