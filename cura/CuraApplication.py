@@ -130,6 +130,8 @@ from . import CameraAnimation
 from . import CuraActions
 from . import PrintJobPreviewImageProvider
 
+from cura.TaskManagement.OnExitCallbackManager import OnExitCallbackManager
+
 from cura import ApplicationMetadata, UltimakerCloudAuthentication
 from cura.Settings.GlobalStack import GlobalStack
 
@@ -760,7 +762,7 @@ class CuraApplication(QtApplication):
 
         Logger.log("i", "Initializing machine manager")
         self._setLoadingHint(self._i18n_catalog.i18nc("@info:progress", "Initializing machine manager..."))
-        self._machine_manager = MachineManager(self, parent = self)
+        self.getMachineManager()
         self.processEvents()
 
         Logger.log("i", "Initializing container manager")
@@ -933,7 +935,7 @@ class CuraApplication(QtApplication):
 
     def getMachineManager(self, *args) -> MachineManager:
         if self._machine_manager is None:
-            self._machine_manager = MachineManager(self)
+            self._machine_manager = MachineManager(self, parent = self)
         return self._machine_manager
 
     def getExtruderManager(self, *args) -> ExtruderManager:
