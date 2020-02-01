@@ -2212,6 +2212,7 @@
                     "default_value": 210,
                     "minimum_value_warning": "0",
                     "maximum_value_warning": "285",
+                    "maximum_value": "365",
                     "enabled": false,
                     "settable_per_extruder": true,
                     "settable_per_mesh": false,
@@ -2243,6 +2244,7 @@
                     "minimum_value": "-273.15",
                     "minimum_value_warning": "0",
                     "maximum_value_warning": "285",
+                    "maximum_value": "365",
                     "enabled": "machine_nozzle_temp_enabled and not (material_flow_dependent_temperature)",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
@@ -2258,6 +2260,7 @@
                     "minimum_value": "-273.15",
                     "minimum_value_warning": "0",
                     "maximum_value_warning": "285",
+                    "maximum_value": "365",
                     "enabled": "machine_nozzle_temp_enabled",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
@@ -2273,6 +2276,7 @@
                     "minimum_value": "-273.15",
                     "minimum_value_warning": "material_standby_temperature",
                     "maximum_value_warning": "material_print_temperature",
+                    "maximum_value": "365",
                     "enabled": "machine_nozzle_temp_enabled and not machine_extruders_share_heater",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
@@ -2288,6 +2292,7 @@
                     "minimum_value": "-273.15",
                     "minimum_value_warning": "material_standby_temperature",
                     "maximum_value_warning": "material_print_temperature",
+                    "maximum_value": "365",
                     "enabled": "machine_nozzle_temp_enabled and not machine_extruders_share_heater",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
@@ -2317,6 +2322,7 @@
                     "minimum_value": "-273.15",
                     "minimum_value_warning": "build_volume_temperature",
                     "maximum_value_warning": "130",
+                    "maximum_value": "200",
                     "enabled": false,
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
@@ -2334,6 +2340,7 @@
                     "minimum_value": "-273.15",
                     "minimum_value_warning": "build_volume_temperature",
                     "maximum_value_warning": "130",
+                    "maximum_value": "200",
                     "enabled": "machine_heated_bed and machine_gcode_flavor != \"UltiGCode\"",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
@@ -2351,6 +2358,7 @@
                     "minimum_value": "-273.15",
                     "minimum_value_warning": "max(build_volume_temperature, max(extruderValues('material_bed_temperature')))",
                     "maximum_value_warning": "130",
+                    "maximum_value": "200",
                     "enabled": "machine_heated_bed and machine_gcode_flavor != \"UltiGCode\"",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
@@ -2467,6 +2475,7 @@
                     "enabled": false,
                     "minimum_value": "-273.15",
                     "maximum_value_warning": "300",
+                    "maximum_value": "365",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
@@ -2505,6 +2514,7 @@
                     "default_value": 50,
                     "enabled": false,
                     "minimum_value": "-273.15",
+                    "maximum_value": "365",
                     "maximum_value_warning": "300",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
@@ -2781,6 +2791,7 @@
                     "minimum_value": "-273.15",
                     "minimum_value_warning": "0",
                     "maximum_value_warning": "260",
+                    "maximum_value": "365",
                     "enabled": "extruders_enabled_count > 1 and machine_nozzle_temp_enabled",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
