@@ -7592,6 +7592,18 @@
                     "enabled": "bridge_settings_enabled",
                     "settable_per_mesh": true
                 },
+                "bridge_wall_end_boost":
+                {
+                    "label": "Bridge Wall End Boost",
+                    "description": "This controls the amount the extrusion rate is increased immediately after a bridge wall ends. Increasing the extrusion rate can stop under-extrusion occurring at the start of the following line.",
+                    "unit": "%",
+                    "default_value": 100,
+                    "type": "float",
+                    "minimum_value": "0",
+                    "maximum_value": "150",
+                    "enabled": "bridge_settings_enabled",
+                    "settable_per_mesh": true
+                },
                 "bridge_wall_speed":
                 {
                     "label": "Bridge Wall Speed",
