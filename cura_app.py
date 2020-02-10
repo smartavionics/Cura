@@ -180,6 +180,7 @@ elif sys.stdout and not sys.stdout.closed:
 # tries to create PyQt objects on a non-main thread.
 import Arcus #@UnusedImport
 import Savitar #@UnusedImport
+
 from cura.CuraApplication import CuraApplication
 
 

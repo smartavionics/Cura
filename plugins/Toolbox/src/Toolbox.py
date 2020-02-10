@@ -16,12 +16,12 @@ from UM.i18n import i18nCatalog
 from UM.Version import Version
 
 from cura import ApplicationMetadata
+
 from cura.CuraApplication import CuraApplication
 from cura.Machines.ContainerTree import ContainerTree
 
 from .CloudApiModel import CloudApiModel
 from .AuthorsModel import AuthorsModel
-from .CloudSync.CloudPackageManager import CloudPackageManager
 from .CloudSync.LicenseModel import LicenseModel
 from .PackagesModel import PackagesModel
 from .UltimakerCloudScope import UltimakerCloudScope
@@ -31,6 +31,13 @@ if TYPE_CHECKING:
     from cura.Settings.GlobalStack import GlobalStack
 
 i18n_catalog = i18nCatalog("cura")
+
+DEFAULT_MARKETPLACE_ROOT = "https://marketplace.ultimaker.com"  # type: str
+
+try:
+    from cura.CuraVersion import CuraMarketplaceRoot
+except ImportError:
+    CuraMarketplaceRoot = DEFAULT_MARKETPLACE_ROOT
 
 # todo Remove license and download dialog, use SyncOrchestrator instead
 
@@ -44,7 +51,6 @@ class Toolbox(QObject, Extension):
         self._sdk_version = ApplicationMetadata.CuraSDKVersion  # type: Union[str, int]
 
         # Network:
-        self._cloud_package_manager = CloudPackageManager(application)  # type: CloudPackageManager
         self._download_request_data = None  # type: Optional[HttpRequestData]
         self._download_progress = 0  # type: float
         self._is_downloading = False  # type: bool
@@ -146,10 +152,6 @@ class Toolbox(QObject, Extension):
         data = "{\"data\": {\"cura_version\": \"%s\", \"rating\": %i}}" % (Version(self._application.getVersion()), rating)
 
         self._application.getHttpRequestManager().put(url, data = data.encode(), scope = self._scope)
-
-    @pyqtSlot(str)
-    def subscribe(self, package_id: str) -> None:
-        self._cloud_package_manager.subscribe(package_id)
 
     def getLicenseDialogPluginFileLocation(self) -> str:
         return self._license_dialog_plugin_file_location
@@ -377,7 +379,6 @@ class Toolbox(QObject, Extension):
     def onLicenseAccepted(self):
         self.closeLicenseDialog.emit()
         package_id = self.install(self.getLicenseDialogPluginFileLocation())
-        self.subscribe(package_id)
 
 
     @pyqtSlot()
@@ -681,7 +682,6 @@ class Toolbox(QObject, Extension):
         installed_id = self.install(file_path)
         if installed_id != package_id:
             Logger.error("Installed package {} does not match {}".format(installed_id, package_id))
-        self.subscribe(installed_id)
 
     # Getter & Setters for Properties:
     # --------------------------------------------------------------------------
@@ -773,6 +773,13 @@ class Toolbox(QObject, Extension):
     @pyqtProperty(QObject, constant = True)
     def materialsGenericModel(self) -> PackagesModel:
         return self._materials_generic_model
+
+    @pyqtSlot(str, result = str)
+    def getWebMarketplaceUrl(self, page: str) -> str:
+        root = CuraMarketplaceRoot
+        if root == "":
+            root = DEFAULT_MARKETPLACE_ROOT
+        return root + "/app/cura/" + page
 
     # Filter Models:
     # --------------------------------------------------------------------------
