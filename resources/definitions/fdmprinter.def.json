@@ -6952,6 +6952,78 @@
                     "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
                 },
+                "gradient_infill_type":
+                {
+                    "label": "Gradient Infill Type",
+                    "description": "The type of gradient infill to use. 1D reduces the infill line width in proportion to the distance to the end of the infill line. At the ends of the line, the infill line flow will be gradient infill max flow. In the middle of the line, the infill line flow will be gradient infill min flow. 2D differs in that the distance is measured to the nearest wall on the same layer. 2D+ also takes into account the distance to the build plate and the top layer of the model. 3D uses the distance to the nearest wall on any layer.",
+                    "type": "enum",
+                    "options":
+                    {
+                        "none": "None",
+                        "linear_1d": "1D",
+                        "linear_2d": "2D",
+                        "linear_2d+": "2D+",
+                        "linear_3d": "3D"
+                    },
+                    "default_value": "none",
+                    "enabled": "infill_sparse_density > 0",
+                    "limit_to_extruder": "infill_extruder_nr",
+                    "settable_per_mesh": true
+                },
+                "gradient_infill_min_flow":
+                {
+                    "label": "Gradient Infill Min Flow",
+                    "description": "The minimum flow used when printing a gradient infill line. Expressed as a percentage of the normal infill line flow.",
+                    "unit": "%",
+                    "type": "float",
+                    "default_value": 50,
+                    "minimum_value_warning": "25",
+                    "minimum_value": "10",
+                    "maximum_value_warning": "100",
+                    "maximum_value": "gradient_infill_max_flow",
+                    "enabled": "infill_sparse_density > 0 and gradient_infill_type != 'none'",
+                    "limit_to_extruder": "infill_extruder_nr",
+                    "settable_per_mesh": true
+                },
+                "gradient_infill_max_flow":
+                {
+                    "label": "Gradient Infill Max Flow",
+                    "description": "The maximum flow used when printing a gradient infill line. Expressed as a percentage of the normal infill line flow.",
+                    "unit": "%",
+                    "type": "float",
+                    "default_value": 150,
+                    "minimum_value": "gradient_infill_min_flow",
+                    "maximum_value_warning": "200",
+                    "enabled": "infill_sparse_density > 0 and gradient_infill_type != 'none'",
+                    "limit_to_extruder": "infill_extruder_nr",
+                    "settable_per_mesh": true
+                },
+                "gradient_infill_speed_factor":
+                {
+                    "label": "Gradient Infill Speed Factor",
+                    "description": "Scales the infill speed depending on the flow.",
+                    "unit": "%",
+                    "type": "float",
+                    "default_value": 100,
+                    "minimum_value": "10",
+                    "maximum_value_warning": "200",
+                    "enabled": "infill_sparse_density > 0 and gradient_infill_type != 'none'",
+                    "limit_to_extruder": "infill_extruder_nr",
+                    "settable_per_mesh": true
+                },
+                "gradient_infill_dist":
+                {
+                    "label": "Gradient Infill Distance",
+                    "description": "The distance over which the infill flow is reduced from max to min.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default_value": 5.0,
+                    "value": "(infill_line_width * 400) / infill_sparse_density",
+                    "minimum_value": "0.1",
+                    "enabled": "infill_sparse_density > 0 and gradient_infill_type != 'none'",
+                    "limit_to_extruder": "infill_extruder_nr",
+                    "settable_per_mesh": true
+                },
                 "support_conical_enabled":
                 {
                     "label": "Enable Conical Support",
