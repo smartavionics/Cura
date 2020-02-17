@@ -7001,7 +7001,7 @@
                 "gradient_infill_speed_factor":
                 {
                     "label": "Gradient Infill Speed Factor",
-                    "description": "Scales the infill speed depending on the flow.",
+                    "description": "Scales the infill speed depending on the rate of change of the infill flow.",
                     "unit": "%",
                     "type": "float",
                     "default_value": 100,
