@@ -6955,7 +6955,7 @@
                 "gradient_infill_type":
                 {
                     "label": "Gradient Infill Type",
-                    "description": "The type of gradient infill to use. All types reduce the infill line width in proportion to the distance to the model outline. At the ends of the line, the infill line flow will be gradient infill max flow. In the middle of the line, the infill line flow will be gradient infill min flow. 1D simply measures to the nearest end of the current infill line. 2D differs in that the distance is measured to the nearest wall on the same layer. 2D+ also takes into account the distance to the build plate and the distance to the top layer of the model. 3D uses the distance to the nearest wall or skin on any layer.",
+                    "description": "The type of gradient infill to use. All types modify the infill line flow in proportion to the distance to the model outline. At the model outline, the infill line flow will be gradient infill max flow. Away from the model outline, the infill line flow will be gradient infill min flow. 1D simply uses the distance to the nearest end of the current infill line. 2D differs in that the distance is measured to the nearest wall on the same layer. 2D+ also takes into account the distance to the build plate and the distance to the top layer of the model. 3D uses the distance to the nearest wall or skin on any layer.",
                     "type": "enum",
                     "options":
                     {
