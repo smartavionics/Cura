@@ -7001,12 +7001,13 @@
                "gradient_infill_speed_scheme":
                 {
                     "label": "Gradient Infill Speed Scheme",
-                    "description": "The speed modification scheme to use when printing gradient infill. Constant extrusion rate alters the print speed to keep the extrusion rate constant. On flow change reduces the print speed where the infill flow is changing.",
+                    "description": "The speed modification scheme to use when printing gradient infill. Fast alters the print speed to keep the extrusion rate constant, the print speed can both increase and decrease. Slow is similar except the print speed can only decrease. On flow change reduces the print speed where the infill flow is changing.",
                     "type": "enum",
                     "options":
                     {
                         "none": "None",
-                        "constant": "Constant Extrusion Rate",
+                        "constant_fast": "Fast",
+                        "constant_slow": "Slow",
                         "flow_change": "On Flow Change"
                     },
                     "default_value": "none",
