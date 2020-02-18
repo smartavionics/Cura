@@ -6998,16 +6998,32 @@
                     "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
                 },
+               "gradient_infill_speed_scheme":
+                {
+                    "label": "Gradient Infill Speed Scheme",
+                    "description": "The speed modification scheme to use when printing gradient infill. Constant extrusion rate alters the print speed to keep the extrusion rate constant. On flow change reduces the print speed where the infill flow is changing.",
+                    "type": "enum",
+                    "options":
+                    {
+                        "none": "None",
+                        "constant": "Constant Extrusion Rate",
+                        "flow_change": "On Flow Change"
+                    },
+                    "default_value": "none",
+                    "enabled": "infill_sparse_density > 0 and gradient_infill_type != 'none'",
+                    "limit_to_extruder": "infill_extruder_nr",
+                    "settable_per_mesh": true
+                },
                 "gradient_infill_speed_factor":
                 {
                     "label": "Gradient Infill Speed Factor",
-                    "description": "Scales the infill speed depending on the rate of change of the infill flow.",
+                    "description": "Scales the effect the infill speed scheme has on the print speed.",
                     "unit": "%",
                     "type": "float",
                     "default_value": 100,
                     "minimum_value": "10",
                     "maximum_value_warning": "200",
-                    "enabled": "infill_sparse_density > 0 and gradient_infill_type != 'none'",
+                    "enabled": "infill_sparse_density > 0 and gradient_infill_type != 'none' and gradient_infill_speed_scheme != 'none'",
                     "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
                 },
