@@ -8,9 +8,17 @@ import faulthandler
 import os
 import sys
 
+# Workaround for a race condition on certain systems where there
+# is a race condition between Arcus and PyQt. Importing Arcus
+# first seems to prevent Sip from going into a state where it
+# tries to create PyQt objects on a non-main thread.
+import Arcus  # @UnusedImport
+import Savitar  # @UnusedImport
+
 from UM.Platform import Platform
 from cura import ApplicationMetadata
 from cura.ApplicationMetadata import CuraAppName
+from cura.CrashHandler import CrashHandler
 
 if Platform.isWindows() and hasattr(sys, "frozen"):
     DIR_NAME = os.path.dirname(sys.executable)
@@ -51,8 +59,9 @@ if with_sentry_sdk:
             sentry_env = "nightly"
     except IndexError:
         pass
-    
+
     sentry_sdk.init("https://5034bf0054fb4b889f82896326e79b13@sentry.io/1821564",
+                    before_send = CrashHandler.sentryBeforeSend,
                     environment = sentry_env,
                     release = "cura%s" % ApplicationMetadata.CuraVersion,
                     default_integrations = False,
@@ -174,13 +183,6 @@ if sys.stderr and not sys.stderr.closed:
     faulthandler.enable(file = sys.stderr, all_threads = True)
 elif sys.stdout and not sys.stdout.closed:
     faulthandler.enable(file = sys.stdout, all_threads = True)
-
-# Workaround for a race condition on certain systems where there
-# is a race condition between Arcus and PyQt. Importing Arcus
-# first seems to prevent Sip from going into a state where it
-# tries to create PyQt objects on a non-main thread.
-import Arcus #@UnusedImport
-import Savitar #@UnusedImport
 
 from cura.CuraApplication import CuraApplication
 
