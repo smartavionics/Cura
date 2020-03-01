@@ -17,6 +17,14 @@ vertex =
     }
 
 fragment =
+    #ifdef GL_ES
+        #extension GL_OES_standard_derivatives : enable
+        #ifdef GL_FRAGMENT_PRECISION_HIGH
+            precision highp float;
+        #else
+            precision mediump float;
+        #endif // GL_FRAGMENT_PRECISION_HIGH
+    #endif // GL_ES
     uniform highp vec3 u_viewPosition;
 
     varying highp vec3 v_vertex;
