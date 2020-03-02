@@ -7676,7 +7676,7 @@
                     "type": "bool",
                     "default_value": true,
                     "enabled": "bridge_settings_enabled",
-                    "settable_per_mesh": true,
+                    "settable_per_mesh": true
                 },
                 "bridge_wall_coast":
                 {
