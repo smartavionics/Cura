@@ -7669,6 +7669,15 @@
                     "enabled": "bridge_settings_enabled",
                     "settable_per_mesh": true
                 },
+                "bridge_extend_floating_walls":
+                {
+                    "label": "Bridge Extend Floating Walls",
+                    "description": "Extend bridge wall lines that start/end above air so that they are anchored to the part outline. The amount a line is extended is limited to twice the original length.",
+                    "type": "bool",
+                    "default_value": true,
+                    "enabled": "bridge_settings_enabled",
+                    "settable_per_mesh": true,
+                },
                 "bridge_wall_coast":
                 {
                     "label": "Bridge Wall Coasting",
