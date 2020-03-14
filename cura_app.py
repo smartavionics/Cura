@@ -9,8 +9,10 @@
 # code (e.g. in the user's home directory where AppImages by default run from).
 # See issue CURA-7081.
 import sys
-if "" in sys.path:
-    sys.path.remove("")
+import site
+for dir in ["", site.USER_SITE]:
+    if dir in sys.path:
+        sys.path.remove(dir)
 
 import argparse
 import faulthandler
