@@ -25,11 +25,7 @@ import os
 import Arcus  # @UnusedImport
 import Savitar  # @UnusedImport
 
-from PyQt5.QtNetwork import QSslConfiguration, QSslSocket
-
 from UM.Platform import Platform
-from cura import ApplicationMetadata
-from cura.ApplicationMetadata import CuraAppName
 
 if Platform.isWindows() and hasattr(sys, "frozen"):
     DIR_NAME = os.path.dirname(sys.executable)
@@ -40,6 +36,10 @@ if Platform.isWindows() and hasattr(sys, "frozen"):
         paths.insert(0, DIR_NAME)
         os.environ["PATH"] = os.pathsep.join(paths)
 
+from PyQt5.QtNetwork import QSslConfiguration, QSslSocket
+
+from cura import ApplicationMetadata
+from cura.ApplicationMetadata import CuraAppName
 from cura.CrashHandler import CrashHandler
 
 try:
