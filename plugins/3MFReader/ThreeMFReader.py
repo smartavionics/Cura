@@ -1,31 +1,28 @@
 # Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from typing import List, Optional, Union, TYPE_CHECKING
 import os.path
 import zipfile
-
-import numpy
+from typing import List, Optional, Union, TYPE_CHECKING
 
 import Savitar
+import numpy
 
 from UM.Logger import Logger
 from UM.Math.Matrix import Matrix
 from UM.Math.Vector import Vector
 from UM.Mesh.MeshBuilder import MeshBuilder
 from UM.Mesh.MeshReader import MeshReader
-from UM.Scene.GroupDecorator import GroupDecorator
-from UM.Scene.SceneNode import SceneNode #For typing.
 from UM.MimeTypeDatabase import MimeTypeDatabase, MimeType
-
+from UM.Scene.GroupDecorator import GroupDecorator
+from UM.Scene.SceneNode import SceneNode  # For typing.
 from cura.CuraApplication import CuraApplication
 from cura.Machines.ContainerTree import ContainerTree
-from cura.Settings.ExtruderManager import ExtruderManager
-from cura.Scene.CuraSceneNode import CuraSceneNode
 from cura.Scene.BuildPlateDecorator import BuildPlateDecorator
+from cura.Scene.CuraSceneNode import CuraSceneNode
 from cura.Scene.SliceableObjectDecorator import SliceableObjectDecorator
 from cura.Scene.ZOffsetDecorator import ZOffsetDecorator
-
+from cura.Settings.ExtruderManager import ExtruderManager
 
 try:
     if not TYPE_CHECKING:

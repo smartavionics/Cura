@@ -2,7 +2,6 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import os
-import re
 import sys
 import time
 from typing import cast, TYPE_CHECKING, Optional, Callable, List, Any, Dict
@@ -125,7 +124,7 @@ class CuraApplication(QtApplication):
     # SettingVersion represents the set of settings available in the machine/extruder definitions.
     # You need to make sure that this version number needs to be increased if there is any non-backwards-compatible
     # changes of the settings.
-    SettingVersion = 12
+    SettingVersion = 13
 
     Created = False
 
