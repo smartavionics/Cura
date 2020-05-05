@@ -4044,12 +4044,13 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
-                "retraction_hop_only_on_initial_layer":
+                "retraction_hop_initial_layers":
                 {
-                    "label": "Z Hop Only On Initial Layer",
-                    "description": "Use Z Hop on just the initial layer. Reduces the chance of the initial layer lines coming away from the build plate.",
-                    "type": "bool",
-                    "default_value": false,
+                    "label": "Z Hop Initial Layers",
+                    "description": "The number of initial layers that use Z Hop. A non-zero value reduces the chance of the initial layer lines coming away from the build plate.",
+                    "type": "int",
+                    "default_value": 0,
+                    "minimum_value": "0",
                     "enabled": "retraction_enable and not retraction_hop_enabled",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
