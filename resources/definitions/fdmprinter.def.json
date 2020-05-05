@@ -4060,7 +4060,7 @@
                     "default_value": 1,
                     "minimum_value_warning": "0",
                     "maximum_value_warning": "10",
-                    "enabled": "retraction_enable and retraction_hop_enabled",
+                    "enabled": "retraction_enable and (retraction_hop_enabled or retraction_hop_initial_layers > 0)",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
