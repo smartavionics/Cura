@@ -6175,6 +6175,14 @@
                     "default_value": false,
                     "settable_per_mesh": true
                 },
+                "meshfix_remove_holes_above_air":
+                {
+                    "label": "Remove Holes Above Air",
+                    "description": "Remove the holes in each layer that are not supported by the layer below. This blanks off the bottom of the hole and provides support for the hole's perimeter walls on the next layer.",
+                    "type": "bool",
+                    "default_value": false,
+                    "settable_per_mesh": true
+                },
                 "meshfix_extensive_stitching":
                 {
                     "label": "Extensive Stitching",
