@@ -7040,7 +7040,7 @@
                     "unit": "mm",
                     "type": "float",
                     "default_value": 5.0,
-                    "value": "(infill_line_width * 400) / infill_sparse_density",
+                    "value": "(infill_line_width * 400) / infill_sparse_density if infill_sparse_density > 0 else 5.0",
                     "minimum_value": "0.1",
                     "enabled": "infill_sparse_density > 0 and gradient_infill_type != 'none'",
                     "limit_to_extruder": "infill_extruder_nr",
