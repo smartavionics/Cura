@@ -45,12 +45,16 @@ class SimulationPass(RenderPass):
     def setSimulationView(self, layerview):
         self._layer_view = layerview
         self._compatibility_mode = layerview.getCompatibilityMode()
+        self._use_gles_shader = layerview._have_oes_geometry_shader
 
     def render(self):
         if not self._layer_shader:
             if self._compatibility_mode:
                 shader_filename = "layers.shader"
                 shadow_shader_filename = "layers_shadow.shader"
+            elif self._use_gles_shader:
+                shader_filename = "gles_layers3d.shader"
+                shadow_shader_filename = "gles_layers3d_shadow.shader"
             else:
                 shader_filename = "layers3d.shader"
                 shadow_shader_filename = "layers3d_shadow.shader"
@@ -70,6 +74,7 @@ class SimulationPass(RenderPass):
             self._layer_shader.setUniformValue("u_show_helpers", self._layer_view.getShowHelpers())
             self._layer_shader.setUniformValue("u_show_skin", self._layer_view.getShowSkin())
             self._layer_shader.setUniformValue("u_show_infill", self._layer_view.getShowInfill())
+            self._layer_shadow_shader.setUniformValue("u_show_infill", self._layer_view.getShowInfill())
         else:
             #defaults
             self._layer_shader.setUniformValue("u_max_feedrate", 1)
