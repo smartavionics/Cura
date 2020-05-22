@@ -31,16 +31,16 @@ vertex =
     in highp float a_thickness;
 
     out lowp vec4 v_color;
-    out highp vec3 v_vertex;
+    out lowp vec3 v_vertex;
     //out highp vec2 v_line_dim;
-    out highp float v_line_width;
-    out highp float v_line_height;
+    out lowp float v_line_width;
+    out lowp float v_line_height;
 
     //out highp mat4 v_view_projection_matrix;
 
     out lowp vec4 f_color;
-    out highp vec3 f_normal;
-    out highp vec3 f_vertex;
+    out lowp vec3 f_normal;
+    out lowp vec3 f_vertex;
 
     vec4 feedrateGradientColor(float abs_value, float min_value, float max_value)
     {
@@ -82,7 +82,7 @@ vertex =
                 v_color = a_material_color;
                 break;
             case 1:  // "Line type"
-                v_color = a_color;
+                v_color = vec4(vec3(a_color) * 2.0, a_color.a); // hack alert - compensate for 1/2 brightness used by ProcessSlicedLayersJob
                 break;
             case 2:  // "Speed", or technically 'Feedrate'
                 v_color = feedrateGradientColor(a_feedrate, u_min_feedrate, u_max_feedrate);
@@ -104,7 +104,7 @@ vertex =
             v_line_height = 0.0;
         }
         else {
-            v_line_width = (((a_line_type == 8.0) || (a_line_type == 9.0)) ? 0.2 : a_line_dim.x) * 0.5;
+            v_line_width = (((a_line_type == 8.0) || (a_line_type == 9.0)) ? 0.15 : a_line_dim.x) * 0.5;
             v_line_height = a_line_dim.y * 0.5;
         }
 
@@ -126,10 +126,8 @@ geometry =
 
     in lowp vec4 v_color[];
     in highp vec3 v_vertex[];
-    //in highp vec2 v_line_dim[];
-    in highp float v_line_width[];
-    in highp float v_line_height[];
-    //in highp mat4 v_view_projection_matrix[];
+    in lowp float v_line_width[];
+    in lowp float v_line_height[];
 
     out vec4 f_color;
     out vec3 f_normal;
@@ -169,12 +167,16 @@ geometry =
 
             myEmitVertex0(-g_vertex_normal_horz, -g_vertex_offset_horz);
             myEmitVertex1(-g_vertex_normal_horz, -g_vertex_offset_horz);
+
             //myEmitVertex0(g_vertex_normal_vert, g_vertex_offset_vert);
             //myEmitVertex1(g_vertex_normal_vert, g_vertex_offset_vert);
+
             myEmitVertex0(g_vertex_normal_horz, g_vertex_offset_horz);
             myEmitVertex1(g_vertex_normal_horz, g_vertex_offset_horz);
+
             //myEmitVertex0(-g_vertex_normal_vert, -g_vertex_offset_vert);
             //myEmitVertex1(-g_vertex_normal_vert, -g_vertex_offset_vert);
+
             myEmitVertex0(-g_vertex_normal_horz, -g_vertex_offset_horz);
             myEmitVertex1(-g_vertex_normal_horz, -g_vertex_offset_horz);
         }
@@ -190,8 +192,8 @@ fragment =
         #endif // GL_FRAGMENT_PRECISION_HIGH
     #endif // GL_ES
     in lowp vec4 f_color;
-    in highp vec3 f_normal;
-    in highp vec3 f_vertex;
+    in lowp vec3 f_normal;
+    in lowp vec3 f_vertex;
 
     out vec4 frag_color;
 
@@ -204,13 +206,13 @@ fragment =
         mediump vec4 finalColor = vec4(0.0);
         float alpha = f_color.a;
 
-        finalColor.rgb += f_color.rgb * 0.2 + u_minimumAlbedo.rgb;
+        finalColor.rgb += f_color.rgb * 0.5 + u_minimumAlbedo.rgb;
 
         highp vec3 normal = normalize(f_normal);
         highp vec3 light_dir = normalize(u_lightPosition - f_vertex);
 
         // Diffuse Component
-        highp float NdotL = clamp(dot(normal, light_dir), 0.0, 1.0);
+        highp float NdotL = clamp(dot(normal, light_dir), 0.0, 0.4);
         finalColor += (NdotL * f_color);
         finalColor.a = alpha;  // Do not change alpha in any way
 
