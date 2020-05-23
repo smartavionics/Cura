@@ -1,9 +1,7 @@
 [shaders]
 vertex =
     #version 320 es
-    uniform highp mat4 u_modelMatrix;
-    uniform highp mat4 u_viewMatrix;
-    uniform highp mat4 u_projectionMatrix;
+    uniform mediump mat4 u_modelMatrix;
 
     uniform lowp float u_active_extruder;
     uniform lowp float u_max_feedrate;
@@ -103,12 +101,14 @@ vertex =
             v_line_width = 0.0;
             v_line_height = 0.0;
         }
+        else if ((a_line_type == 8.0) || (a_line_type == 9.0)) {
+            v_line_width = 0.075;
+            v_line_height = 0.0;
+        }
         else {
-            v_line_width = (((a_line_type == 8.0) || (a_line_type == 9.0)) ? 0.15 : a_line_dim.x) * 0.5;
+            v_line_width = a_line_dim.x * 0.5;
             v_line_height = a_line_dim.y * 0.5;
         }
-
-        //v_view_projection_matrix = u_projectionMatrix * u_viewMatrix;
 
         // for testing without geometry shader
         f_color = v_color;
@@ -118,14 +118,14 @@ vertex =
 
 geometry =
     #version 320 es
-    uniform highp mat4 u_viewMatrix;
-    uniform highp mat4 u_projectionMatrix;
+    uniform mediump mat4 u_viewMatrix;
+    uniform mediump mat4 u_projectionMatrix;
 
     layout(lines) in;
     layout(triangle_strip, max_vertices = 10) out;
 
     in lowp vec4 v_color[];
-    in highp vec3 v_vertex[];
+    in lowp vec3 v_vertex[];
     in lowp float v_line_width[];
     in lowp float v_line_height[];
 
@@ -133,9 +133,9 @@ geometry =
     out vec3 f_normal;
     out vec3 f_vertex;
 
-    highp mat4 viewProjectionMatrix;
+    mediump mat4 viewProjectionMatrix;
 
-    void myEmitVertex0(vec3 normal, vec4 pos_offset)
+    void myEmitVertex0(const mediump vec3 normal, const mediump vec4 pos_offset)
     {
         f_vertex = v_vertex[0];
         f_color = v_color[0];
@@ -144,7 +144,7 @@ geometry =
         EmitVertex();
     }
 
-    void myEmitVertex1(vec3 normal, vec4 pos_offset)
+    void myEmitVertex1(const mediump vec3 normal, const mediump vec4 pos_offset)
     {
         f_vertex = v_vertex[1];
         f_color = v_color[1];
@@ -157,28 +157,56 @@ geometry =
     {
         if (v_line_width[1] != 0.0) {
 
+            #define HAVE_VERT 0
+
             viewProjectionMatrix = u_projectionMatrix * u_viewMatrix;
 
-            vec4 g_vertex_delta = gl_in[1].gl_Position - gl_in[0].gl_Position;
-            vec3 g_vertex_normal_horz = normalize(vec3(g_vertex_delta.z, g_vertex_delta.y, -g_vertex_delta.x));
-            vec4 g_vertex_offset_horz = vec4(g_vertex_normal_horz * v_line_width[1], 0.0);
-            //vec3 g_vertex_normal_vert = vec3(0.0, 1.0, 0.0);
-            //vec4 g_vertex_offset_vert = vec4(g_vertex_normal_vert * v_line_height[1], 0.0);
+            precise mediump vec4 g_vertex_delta = gl_in[1].gl_Position - gl_in[0].gl_Position;
+            precise mediump vec3 g_vertex_normal_horz = normalize(vec3(g_vertex_delta.z, g_vertex_delta.y, -g_vertex_delta.x));
 
-            myEmitVertex0(-g_vertex_normal_horz, -g_vertex_offset_horz);
-            myEmitVertex1(-g_vertex_normal_horz, -g_vertex_offset_horz);
+            #if HAVE_VERT
+            precise lowp vec3 g_vertex_normal_vert = vec3(0.0, 1.0, 0.0);
+            precise mediump vec4 g_vertex_offset_vert = vec4(g_vertex_normal_vert * v_line_height[1], 0.0);
+            #endif
 
-            //myEmitVertex0(g_vertex_normal_vert, g_vertex_offset_vert);
-            //myEmitVertex1(g_vertex_normal_vert, g_vertex_offset_vert);
+            {
+                precise mediump vec4 g_vertex_offset_horz = vec4(g_vertex_normal_horz * v_line_width[1], 0.0);
 
-            myEmitVertex0(g_vertex_normal_horz, g_vertex_offset_horz);
-            myEmitVertex1(g_vertex_normal_horz, g_vertex_offset_horz);
+                myEmitVertex0(-g_vertex_normal_horz, -g_vertex_offset_horz);
+                myEmitVertex1(-g_vertex_normal_horz, -g_vertex_offset_horz);
+            }
 
-            //myEmitVertex0(-g_vertex_normal_vert, -g_vertex_offset_vert);
-            //myEmitVertex1(-g_vertex_normal_vert, -g_vertex_offset_vert);
+            #if HAVE_VERT
+            {
+                precise mediump vec4 g_vertex_offset_vert = vec4(g_vertex_normal_vert * v_line_height[1], 0.0);
 
-            myEmitVertex0(-g_vertex_normal_horz, -g_vertex_offset_horz);
-            myEmitVertex1(-g_vertex_normal_horz, -g_vertex_offset_horz);
+                myEmitVertex0(g_vertex_normal_vert, g_vertex_offset_vert);
+                myEmitVertex1(g_vertex_normal_vert, g_vertex_offset_vert);
+            }
+            #endif
+
+            {
+                precise mediump vec4 g_vertex_offset_horz = vec4(g_vertex_normal_horz * v_line_width[1], 0.0);
+
+                myEmitVertex0(g_vertex_normal_horz, g_vertex_offset_horz);
+                myEmitVertex1(g_vertex_normal_horz, g_vertex_offset_horz);
+            }
+
+            #if HAVE_VERT
+            {
+                precise mediump vec4 g_vertex_offset_vert = vec4(g_vertex_normal_vert * v_line_height[1], 0.0);
+
+                myEmitVertex0(-g_vertex_normal_vert, -g_vertex_offset_vert);
+                myEmitVertex1(-g_vertex_normal_vert, -g_vertex_offset_vert);
+            }
+            #endif
+
+            {
+                precise mediump vec4 g_vertex_offset_horz = vec4(g_vertex_normal_horz * v_line_width[1], 0.0);
+
+                myEmitVertex0(-g_vertex_normal_horz, -g_vertex_offset_horz);
+                myEmitVertex1(-g_vertex_normal_horz, -g_vertex_offset_horz);
+            }
         }
     }
 
@@ -199,20 +227,20 @@ fragment =
 
     uniform mediump vec4 u_ambientColor;
     uniform mediump vec4 u_minimumAlbedo;
-    uniform highp vec3 u_lightPosition;
+    uniform mediump vec3 u_lightPosition;
 
     void main()
     {
         mediump vec4 finalColor = vec4(0.0);
         float alpha = f_color.a;
 
-        finalColor.rgb += f_color.rgb * 0.5 + u_minimumAlbedo.rgb;
+        finalColor.rgb += f_color.rgb * 0.8;// + u_minimumAlbedo.rgb;
 
         highp vec3 normal = normalize(f_normal);
         highp vec3 light_dir = normalize(u_lightPosition - f_vertex);
 
         // Diffuse Component
-        highp float NdotL = clamp(dot(normal, light_dir), 0.0, 0.4);
+        highp float NdotL = clamp(dot(normal, light_dir), 0.0, 0.2);
         finalColor += (NdotL * f_color);
         finalColor.a = alpha;  // Do not change alpha in any way
 
