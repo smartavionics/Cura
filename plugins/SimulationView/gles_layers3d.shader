@@ -156,7 +156,7 @@ geometry =
 
     void main()
     {
-        if (v_line_width[1] != 0.0) {
+        if (v_line_width[1] >= 0.05) {
 
             #define HAVE_FLIP 1
             #define HAVE_VERT 0
