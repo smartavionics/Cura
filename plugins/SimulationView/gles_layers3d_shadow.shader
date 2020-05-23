@@ -1,25 +1,21 @@
 [shaders]
 vertex =
     #version 320 es
-    #ifdef GL_ES
-        #ifdef GL_FRAGMENT_PRECISION_HIGH
-            precision highp float;
-        #else
-            precision mediump float;
-        #endif // GL_FRAGMENT_PRECISION_HIGH
-    #endif // GL_ES
-    uniform highp mat4 u_modelMatrix;
-    uniform highp mat4 u_viewMatrix;
-    uniform highp mat4 u_projectionMatrix;
+    uniform mediump mat4 u_modelMatrix;
 
     uniform lowp float u_active_extruder;
+
     uniform lowp vec4 u_extruder_opacity;  // currently only for max 4 extruders, others always visible
 
-    uniform highp mat4 u_normalMatrix;
+    //uniform highp mat4 u_normalMatrix;
+
+    uniform int u_show_travel_moves;
+    uniform int u_show_helpers;
+    uniform int u_show_skin;
+    uniform int u_show_infill;
 
     in highp vec4 a_vertex;
     in lowp vec4 a_color;
-    in lowp vec4 a_grayColor;
     in lowp vec4 a_material_color;
     in highp vec4 a_normal;
     in highp vec2 a_line_dim;  // line width and thickness
@@ -27,184 +23,170 @@ vertex =
     in highp float a_line_type;
 
     out lowp vec4 v_color;
+    out lowp vec3 v_vertex;
+    out lowp float v_line_width;
+    out lowp float v_line_height;
 
-    out highp vec3 v_vertex;
-    out highp vec3 v_normal;
-    out lowp vec2 v_line_dim;
-    out highp int v_extruder;
-    out highp vec4 v_extruder_opacity;
-    out float v_line_type;
+    //out highp mat4 v_view_projection_matrix;
 
     out lowp vec4 f_color;
-    out highp vec3 f_vertex;
-    out highp vec3 f_normal;
+    out lowp vec3 f_normal;
+    out lowp vec3 f_vertex;
 
     void main()
     {
         vec4 v1_vertex = a_vertex;
-        v1_vertex.y -= a_line_dim.y / 2.0;  // half layer down
+        v1_vertex.y -= a_line_dim.y * 0.5;  // half layer down
 
         vec4 world_space_vert = u_modelMatrix * v1_vertex;
         gl_Position = world_space_vert;
         // shade the color depending on the extruder index stored in the alpha component of the color
 
         v_color = vec4(0.4, 0.4, 0.4, 0.9);    // default color for not current layer
+
         v_vertex = world_space_vert.xyz;
-        v_normal = (u_normalMatrix * normalize(a_normal)).xyz;
-        v_line_dim = a_line_dim;
-        v_extruder = int(a_extruder);
-        v_line_type = a_line_type;
-        v_extruder_opacity = u_extruder_opacity;
+        //v_normal = (u_normalMatrix * normalize(a_normal)).xyz;
+
+        if ((u_extruder_opacity[int(a_extruder)] == 0.0) ||
+            ((u_show_travel_moves == 0) && ((a_line_type == 8.0) || (a_line_type == 9.0))) ||
+            ((u_show_helpers == 0) && ((a_line_type == 4.0) || (a_line_type == 5.0) || (a_line_type == 7.0) || (a_line_type == 10.0) || a_line_type == 11.0)) ||
+            ((u_show_skin == 0) && ((a_line_type == 1.0) || (a_line_type == 2.0) || (a_line_type == 3.0))) ||
+            ((u_show_infill == 0) && (a_line_type == 6.0))) {
+            v_line_width = 0.0;
+            v_line_height = 0.0;
+        }
+        else if ((a_line_type == 8.0) || (a_line_type == 9.0)) {
+            v_line_width = 0.075;
+            v_line_height = 0.075;
+        }
+        else {
+            v_line_width = a_line_dim.x * 0.5;
+            v_line_height = a_line_dim.y * 0.5;
+        }
 
         // for testing without geometry shader
         f_color = v_color;
         f_vertex = v_vertex;
-        f_normal = v_normal;
+        //f_normal = v_normal;
     }
 
 geometry =
     #version 320 es
-    #ifdef GL_ES
-        #ifdef GL_FRAGMENT_PRECISION_HIGH
-            precision highp float;
-        #else
-            precision mediump float;
-        #endif // GL_FRAGMENT_PRECISION_HIGH
-    #endif // GL_ES
-
-    uniform highp mat4 u_modelMatrix;
-    uniform highp mat4 u_viewMatrix;
-    uniform highp mat4 u_projectionMatrix;
-
-    uniform int u_show_travel_moves;
-    uniform int u_show_helpers;
-    uniform int u_show_skin;
-    uniform int u_show_infill;
+    uniform mediump mat4 u_viewMatrix;
+    uniform mediump mat4 u_projectionMatrix;
+    uniform mediump vec3 u_lightPosition;
 
     layout(lines) in;
-    layout(triangle_strip, max_vertices = 26) out;
+    layout(triangle_strip, max_vertices = 10) out;
 
-    in vec4 v_color[];
-    in vec3 v_vertex[];
-    in vec3 v_normal[];
-    in vec2 v_line_dim[];
-    in int v_extruder[];
-    in vec4 v_extruder_opacity[];
-    in float v_line_type[];
+    in lowp vec4 v_color[];
+    in lowp vec3 v_vertex[];
+    in lowp float v_line_width[];
+    in lowp float v_line_height[];
 
     out vec4 f_color;
     out vec3 f_normal;
     out vec3 f_vertex;
 
-    // Set the set of variables and EmitVertex
-    void myEmitVertex(vec3 vertex, vec4 color, vec3 normal, vec4 pos) {
-        f_vertex = vertex;
-        f_color = color;
+    mediump mat4 viewProjectionMatrix;
+
+    void myEmitVertex0(const mediump vec3 normal, const mediump vec4 pos_offset)
+    {
+        f_vertex = v_vertex[0];
+        f_color = v_color[0];
         f_normal = normal;
-        gl_Position = pos;
+        gl_Position = viewProjectionMatrix * (gl_in[0].gl_Position + pos_offset);
+        EmitVertex();
+    }
+
+    void myEmitVertex1(const mediump vec3 normal, const mediump vec4 pos_offset)
+    {
+        f_vertex = v_vertex[1];
+        f_color = v_color[1];
+        f_normal = normal;
+        gl_Position = viewProjectionMatrix * (gl_in[1].gl_Position + pos_offset);
         EmitVertex();
     }
 
     void main()
     {
-        highp mat4 viewProjectionMatrix = u_projectionMatrix * u_viewMatrix;
+        if (v_line_width[1] != 0.0) {
 
-        vec4 g_vertex_delta;
-        vec3 g_vertex_normal_horz;  // horizontal and vertical in respect to layers
-        vec4 g_vertex_offset_horz;  // vec4 to match gl_in[x].gl_Position
-        vec3 g_vertex_normal_vert;
-        vec4 g_vertex_offset_vert;
-        vec3 g_vertex_normal_horz_head;
-        vec4 g_vertex_offset_horz_head;
+            #define HAVE_FLIP 1
+            #define HAVE_VERT 0
 
-        float size_x;
-        float size_y;
+            viewProjectionMatrix = u_projectionMatrix * u_viewMatrix;
 
-        if ((v_extruder_opacity[0][v_extruder[0]] == 0.0) && (v_line_type[0] != 8.0) && (v_line_type[0] != 9.0)) {
-            return;
+            #if HAVE_FLIP
+            mediump vec3 vertex_normal;
+            mediump vec4 vertex_offset;
+            if (abs(normalize(u_lightPosition - (v_vertex[0] + v_vertex[1]) * 0.5).y) > 0.5) {
+                mediump vec4 vertex_delta = gl_in[1].gl_Position - gl_in[0].gl_Position;
+                vertex_normal = normalize(vec3(vertex_delta.z, vertex_delta.y, -vertex_delta.x));
+                vertex_offset = vec4(vertex_normal * v_line_width[1], 0.0);
+            }
+            else {
+                vertex_normal = vec3(0.0, 1.0, 0.0);
+                vertex_offset = vec4(vertex_normal * v_line_height[1], 0.0);
+            }
+
+            myEmitVertex0(-vertex_normal, -vertex_offset);
+            myEmitVertex1(-vertex_normal, -vertex_offset);
+            myEmitVertex0(vertex_normal, vertex_offset);
+            myEmitVertex1(vertex_normal, vertex_offset);
+            myEmitVertex0(-vertex_normal, -vertex_offset);
+            myEmitVertex1(-vertex_normal, -vertex_offset);
+
+            #else // !HAVE_FLIP
+
+            precise mediump vec4 g_vertex_delta = gl_in[1].gl_Position - gl_in[0].gl_Position;
+            precise mediump vec3 g_vertex_normal_horz = normalize(vec3(g_vertex_delta.z, g_vertex_delta.y, -g_vertex_delta.x));
+
+            #if HAVE_VERT
+            precise lowp vec3 g_vertex_normal_vert = vec3(0.0, 1.0, 0.0);
+            precise mediump vec4 g_vertex_offset_vert = vec4(g_vertex_normal_vert * v_line_height[1], 0.0);
+            #endif
+
+            {
+                precise mediump vec4 g_vertex_offset_horz = vec4(g_vertex_normal_horz * v_line_width[1], 0.0);
+
+                myEmitVertex0(-g_vertex_normal_horz, -g_vertex_offset_horz);
+                myEmitVertex1(-g_vertex_normal_horz, -g_vertex_offset_horz);
+            }
+
+            #if HAVE_VERT
+            {
+                precise mediump vec4 g_vertex_offset_vert = vec4(g_vertex_normal_vert * v_line_height[1], 0.0);
+
+                myEmitVertex0(g_vertex_normal_vert, g_vertex_offset_vert);
+                myEmitVertex1(g_vertex_normal_vert, g_vertex_offset_vert);
+            }
+            #endif
+
+            {
+                precise mediump vec4 g_vertex_offset_horz = vec4(g_vertex_normal_horz * v_line_width[1], 0.0);
+
+                myEmitVertex0(g_vertex_normal_horz, g_vertex_offset_horz);
+                myEmitVertex1(g_vertex_normal_horz, g_vertex_offset_horz);
+            }
+
+            #if HAVE_VERT
+            {
+                precise mediump vec4 g_vertex_offset_vert = vec4(g_vertex_normal_vert * v_line_height[1], 0.0);
+
+                myEmitVertex0(-g_vertex_normal_vert, -g_vertex_offset_vert);
+                myEmitVertex1(-g_vertex_normal_vert, -g_vertex_offset_vert);
+            }
+            #endif
+
+            {
+                precise mediump vec4 g_vertex_offset_horz = vec4(g_vertex_normal_horz * v_line_width[1], 0.0);
+
+                myEmitVertex0(-g_vertex_normal_horz, -g_vertex_offset_horz);
+                myEmitVertex1(-g_vertex_normal_horz, -g_vertex_offset_horz);
+            }
+            #endif // !HAVE_FLIP
         }
-        // See LayerPolygon; 8 is MoveCombingType, 9 is RetractionType
-        if ((v_line_type[0] == 8.0) || (v_line_type[0] == 9.0)) {
-            return;
-        }
-        if ((u_show_helpers == 0) && ((v_line_type[0] == 4.0) || (v_line_type[0] == 5.0) || (v_line_type[0] == 7.0) || (v_line_type[0] == 10.0))) {
-            return;
-        }
-        if ((u_show_skin == 0) && ((v_line_type[0] == 1.0) || (v_line_type[0] == 2.0) || (v_line_type[0] == 3.0))) {
-            return;
-        }
-        if ((u_show_infill == 0) && (v_line_type[0] == 6.0)) {
-            return;
-        }
-
-        size_x = v_line_dim[1].x / 2.0 + 0.01;  // radius, and make it nicely overlapping
-        size_y = v_line_dim[1].y / 2.0 + 0.01;
-
-        g_vertex_delta = gl_in[1].gl_Position - gl_in[0].gl_Position;
-        g_vertex_normal_horz_head = normalize(vec3(-g_vertex_delta.x, -g_vertex_delta.y, -g_vertex_delta.z));
-        g_vertex_offset_horz_head = vec4(g_vertex_normal_horz_head * size_x, 0.0);
-
-        g_vertex_normal_horz = normalize(vec3(g_vertex_delta.z, g_vertex_delta.y, -g_vertex_delta.x));
-
-        g_vertex_offset_horz = vec4(g_vertex_normal_horz * size_x, 0.0); //size * g_vertex_normal_horz;
-        g_vertex_normal_vert = vec3(0.0, 1.0, 0.0);
-        g_vertex_offset_vert = vec4(g_vertex_normal_vert * size_y, 0.0);
-
-        vec4 va_m_horz = viewProjectionMatrix * (gl_in[0].gl_Position - g_vertex_offset_horz);
-        vec4 vb_m_horz = viewProjectionMatrix * (gl_in[1].gl_Position - g_vertex_offset_horz);
-        //vec4 va_p_vert = viewProjectionMatrix * (gl_in[0].gl_Position + g_vertex_offset_vert);
-        //vec4 vb_p_vert = viewProjectionMatrix * (gl_in[1].gl_Position + g_vertex_offset_vert);
-        vec4 va_p_horz = viewProjectionMatrix * (gl_in[0].gl_Position + g_vertex_offset_horz);
-        vec4 vb_p_horz = viewProjectionMatrix * (gl_in[1].gl_Position + g_vertex_offset_horz);
-        //vec4 va_m_vert = viewProjectionMatrix * (gl_in[0].gl_Position - g_vertex_offset_vert);
-        //vec4 vb_m_vert = viewProjectionMatrix * (gl_in[1].gl_Position - g_vertex_offset_vert);
-        //vec4 va_head   = viewProjectionMatrix * (gl_in[0].gl_Position + g_vertex_offset_horz_head);
-        //vec4 vb_head   = viewProjectionMatrix * (gl_in[1].gl_Position - g_vertex_offset_horz_head);
-
-        // All normal lines are rendered as 3d tubes.
-        myEmitVertex(v_vertex[0], v_color[0], -g_vertex_normal_horz, va_m_horz);
-        myEmitVertex(v_vertex[1], v_color[1], -g_vertex_normal_horz, vb_m_horz);
-        //myEmitVertex(v_vertex[0], v_color[0], g_vertex_normal_vert, va_p_vert);
-        //myEmitVertex(v_vertex[1], v_color[1], g_vertex_normal_vert, vb_p_vert);
-        myEmitVertex(v_vertex[0], v_color[0], g_vertex_normal_horz, va_p_horz);
-        myEmitVertex(v_vertex[1], v_color[1], g_vertex_normal_horz, vb_p_horz);
-        //myEmitVertex(v_vertex[0], v_color[0], -g_vertex_normal_vert, va_m_vert);
-        //myEmitVertex(v_vertex[1], v_color[1], -g_vertex_normal_vert, vb_m_vert);
-        myEmitVertex(v_vertex[0], v_color[0], -g_vertex_normal_horz, va_m_horz);
-        myEmitVertex(v_vertex[1], v_color[1], -g_vertex_normal_horz, vb_m_horz);
-
-        EndPrimitive();
-        /*
-        // left side
-        myEmitVertex(v_vertex[0], v_color[0], -g_vertex_normal_horz, va_m_horz);
-        myEmitVertex(v_vertex[0], v_color[0], g_vertex_normal_vert, va_p_vert);
-        myEmitVertex(v_vertex[0], v_color[0], g_vertex_normal_horz_head, va_head);
-        myEmitVertex(v_vertex[0], v_color[0], g_vertex_normal_horz, va_p_horz);
-
-        EndPrimitive();
-
-        myEmitVertex(v_vertex[0], v_color[0], g_vertex_normal_horz, va_p_horz);
-        myEmitVertex(v_vertex[0], v_color[0], -g_vertex_normal_vert, va_m_vert);
-        myEmitVertex(v_vertex[0], v_color[0], g_vertex_normal_horz_head, va_head);
-        myEmitVertex(v_vertex[0], v_color[0], -g_vertex_normal_horz, va_m_horz);
-
-        EndPrimitive();
-
-        // right side
-        myEmitVertex(v_vertex[1], v_color[1], g_vertex_normal_horz, vb_p_horz);
-        myEmitVertex(v_vertex[1], v_color[1], g_vertex_normal_vert, vb_p_vert);
-        myEmitVertex(v_vertex[1], v_color[1], -g_vertex_normal_horz_head, vb_head);
-        myEmitVertex(v_vertex[1], v_color[1], -g_vertex_normal_horz, vb_m_horz);
-
-        EndPrimitive();
-
-        myEmitVertex(v_vertex[1], v_color[1], -g_vertex_normal_horz, vb_m_horz);
-        myEmitVertex(v_vertex[1], v_color[1], -g_vertex_normal_vert, vb_m_vert);
-        myEmitVertex(v_vertex[1], v_color[1], -g_vertex_normal_horz_head, vb_head);
-        myEmitVertex(v_vertex[1], v_color[1], g_vertex_normal_horz, vb_p_horz);
-
-        EndPrimitive();
-        */
     }
 
 fragment =
@@ -223,20 +205,20 @@ fragment =
     out vec4 frag_color;
 
     uniform mediump vec4 u_ambientColor;
-    uniform highp vec3 u_lightPosition;
+    uniform mediump vec3 u_lightPosition;
 
     void main()
     {
         mediump vec4 finalColor = vec4(0.0);
         float alpha = f_color.a;
 
-        finalColor.rgb += f_color.rgb * 0.3;
+        finalColor.rgb += f_color.rgb * 0.8;
 
         highp vec3 normal = normalize(f_normal);
         highp vec3 light_dir = normalize(u_lightPosition - f_vertex);
 
         // Diffuse Component
-        highp float NdotL = clamp(dot(normal, light_dir), 0.0, 1.0);
+        highp float NdotL = clamp(dot(normal, light_dir), 0.0, 0.2);
         finalColor += (NdotL * f_color);
         finalColor.a = alpha;  // Do not change alpha in any way
 
@@ -246,6 +228,7 @@ fragment =
 
 [defaults]
 u_active_extruder = 0.0
+u_layer_view_type = 0
 u_extruder_opacity = [1.0, 1.0, 1.0, 1.0]
 
 u_specularColor = [0.4, 0.4, 0.4, 1.0]
@@ -268,9 +251,9 @@ u_lightPosition = light_0_position
 [attributes]
 a_vertex = vertex
 a_color = color
-a_grayColor = vec4(0.87, 0.12, 0.45, 1.0)
 a_normal = normal
 a_line_dim = line_dim
 a_extruder = extruder
 a_material_color = material_color
 a_line_type = line_type
+
