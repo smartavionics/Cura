@@ -117,55 +117,41 @@ vertex =
 geometry =
     #version 320 es
 
-    #define HAVE_VERTEX 0
-
     uniform mediump mat4 u_viewMatrix;
     uniform mediump mat4 u_projectionMatrix;
 
+    uniform mediump vec3 u_lightPosition;
+
     layout(lines) in;
-    layout(triangle_strip, max_vertices = 10) out;
+    layout(triangle_strip, max_vertices = 4) out;
 
     in lowp vec4 v_color[];
-    #if HAVE_VERTEX
     in lowp vec3 v_vertex[];
-    #endif
     in mediump float v_line_width[];
     in mediump float v_line_height[];
 
     out lowp vec4 f_color;
     out lowp vec3 f_normal;
-    #if HAVE_VERTEX
     out lowp vec3 f_vertex;
-    #endif
 
     mediump mat4 viewProjectionMatrix;
 
-    void emitVertexH(const int index, const float sign, const float offset)
+    void myEmitVertex0(const mediump vec3 normal, const mediump vec4 pos_offset)
     {
-        if (offset > 0.0) {
-            #if HAVE_VERTEX
-            f_vertex = v_vertex[index];
-            #endif
-            f_color = v_color[index];
-            vec4 vertex_delta = gl_in[1].gl_Position - gl_in[0].gl_Position;
-            vec3 normal = sign * normalize(vec3(vertex_delta.z, vertex_delta.y, -vertex_delta.x));
-            f_normal = normal;
-            gl_Position = viewProjectionMatrix * (gl_in[index].gl_Position + vec4(normal * offset, 0.0));
-            EmitVertex();
-        }
+        f_vertex = v_vertex[0];
+        f_color = v_color[0];
+        f_normal = normal;
+        gl_Position = viewProjectionMatrix * (gl_in[0].gl_Position + pos_offset);
+        EmitVertex();
     }
 
-    void emitVertexV(const int index, const float sign, const float offset)
+    void myEmitVertex1(const mediump vec3 normal, const mediump vec4 pos_offset)
     {
-        if (offset > 0.0) {
-            #if HAVE_VERTEX
-            f_vertex = v_vertex[index];
-            #endif
-            f_color = v_color[index];
-            f_normal = vec3(0.0, sign, 0.0);
-            gl_Position = viewProjectionMatrix * (gl_in[index].gl_Position + vec4(0.0, sign * offset, 0.0, 0.0));
-            EmitVertex();
-        }
+        f_vertex = v_vertex[1];
+        f_color = v_color[1];
+        f_normal = normal;
+        gl_Position = viewProjectionMatrix * (gl_in[1].gl_Position + pos_offset);
+        EmitVertex();
     }
 
     void main()
@@ -174,16 +160,32 @@ geometry =
 
         if (v_line_width[1] >= 0.05) {
 
-            emitVertexH(0, -1.0, v_line_width[1]);
-            emitVertexH(1, -1.0, v_line_width[1]);
-            emitVertexV(0, 1.0, v_line_height[1]);
-            emitVertexV(1, 1.0, v_line_height[1]);
-            emitVertexH(0, 1.0, v_line_width[1]);
-            emitVertexH(1, 1.0, v_line_width[1]);
-            emitVertexV(0, -1.0, v_line_height[1]);
-            emitVertexV(1, -1.0, v_line_height[1]);
-            emitVertexH(0, -1.0, v_line_width[1]);
-            emitVertexH(1, -1.0, v_line_width[1]);
+            vec3 vertex_normal;
+            vec4 vertex_offset;
+
+            vec3 light_delta = normalize(u_lightPosition - (v_vertex[0] + v_vertex[1]) * 0.5);
+            if (abs(light_delta.y) > 0.5) {
+                vec4 vertex_delta = gl_in[1].gl_Position - gl_in[0].gl_Position;
+                vertex_normal = normalize(vec3(vertex_delta.z, vertex_delta.y, -vertex_delta.x));
+                if (light_delta.y > 0.5) {
+                    vertex_normal = -vertex_normal;
+                }
+                vertex_offset = vec4(vertex_normal * v_line_width[1], 0.0);
+            }
+            else {
+                if (((v_vertex[1].x - v_vertex[0].x)*(u_lightPosition.z - v_vertex[0].z) - (v_vertex[1].z - v_vertex[0].z)*(u_lightPosition.x - v_vertex[0].x)) > 0.0) {
+                    vertex_normal = vec3(0.0, -1.0, 0.0);
+                }
+                else {
+                    vertex_normal = vec3(0.0, 1.0, 0.0);
+                }
+                vertex_offset = vec4(vertex_normal * v_line_height[1], 0.0);
+            }
+
+            myEmitVertex0(vertex_normal, vertex_offset);
+            myEmitVertex1(vertex_normal, vertex_offset);
+            myEmitVertex0(-vertex_normal, -vertex_offset);
+            myEmitVertex1(-vertex_normal, -vertex_offset);
 
             EndPrimitive();
         }
@@ -213,13 +215,13 @@ fragment =
         mediump vec4 finalColor = vec4(0.0);
         float alpha = f_color.a;
 
-        finalColor.rgb += f_color.rgb * 0.2 + u_minimumAlbedo.rgb;
+        finalColor.rgb += f_color.rgb * 0.8 + u_minimumAlbedo.rgb;
 
         highp vec3 normal = normalize(f_normal);
         highp vec3 light_dir = normalize(u_lightPosition);
 
         // Diffuse Component
-        highp float NdotL = clamp(dot(normal, light_dir), 0.0, 1.0);
+        highp float NdotL = clamp(dot(normal, light_dir), 0.0, 0.2);
         finalColor += (NdotL * f_color);
         finalColor.a = alpha;  // Do not change alpha in any way
 

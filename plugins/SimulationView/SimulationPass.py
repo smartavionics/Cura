@@ -28,6 +28,7 @@ class SimulationPass(RenderPass):
         super().__init__("simulationview", width, height)
 
         self._layer_shader = None
+        self._layer_shader_2d = None
         self._layer_shadow_shader = None
         self._current_shader = None # This shader will be the shadow or the normal depending if the user wants to see the paths or the layers
         self._tool_handle_shader = None
@@ -54,7 +55,8 @@ class SimulationPass(RenderPass):
                 shadow_shader_filename = "layers_shadow.shader"
             elif self._use_gles_shader:
                 shader_filename = "gles_layers3d.shader"
-                shadow_shader_filename = "gles_layers3d_shadow.shader"
+                shadow_shader_filename = "gles_layers2d_shadow.shader"
+                self._layer_shader_2d = OpenGL.getInstance().createShaderProgram(os.path.join(PluginRegistry.getInstance().getPluginPath("SimulationView"), "gles_layers2d.shader"))
             else:
                 shader_filename = "layers3d.shader"
                 shadow_shader_filename = "layers3d_shadow.shader"
@@ -153,6 +155,23 @@ class SimulationPass(RenderPass):
                     if not self._layer_view.isSimulationRunning() and self._old_current_layer != self._layer_view._current_layer_num:
                         self._current_shader = self._layer_shader
                         self._switching_layers = True
+
+                    if self._layer_shader_2d and self._current_shader != self._layer_shadow_shader:
+                        if (end - start) < 500000:
+                            self._current_shader = self._layer_shader
+                        else:
+                            self._current_shader = self._layer_shader_2d
+                            self._current_shader.setUniformValue("u_active_extruder", float(max(0, self._extruder_manager.activeExtruderIndex)))
+                            self._current_shader.setUniformValue("u_max_feedrate", self._layer_view.getMaxFeedrate())
+                            self._current_shader.setUniformValue("u_min_feedrate", self._layer_view.getMinFeedrate())
+                            self._current_shader.setUniformValue("u_max_thickness", self._layer_view.getMaxThickness())
+                            self._current_shader.setUniformValue("u_min_thickness", self._layer_view.getMinThickness())
+                            self._current_shader.setUniformValue("u_layer_view_type", self._layer_view.getSimulationViewType())
+                            self._current_shader.setUniformValue("u_extruder_opacity", self._layer_view.getExtruderOpacities())
+                            self._current_shader.setUniformValue("u_show_travel_moves", self._layer_view.getShowTravelMoves())
+                            self._current_shader.setUniformValue("u_show_helpers", self._layer_view.getShowHelpers())
+                            self._current_shader.setUniformValue("u_show_skin", self._layer_view.getShowSkin())
+                            self._current_shader.setUniformValue("u_show_infill", self._layer_view.getShowInfill())
 
                     layers_batch = RenderBatch(self._current_shader, type = RenderBatch.RenderType.Solid, mode = RenderBatch.RenderMode.Lines, range = (start, end), backface_cull = True)
                     layers_batch.addItem(node.getWorldTransformation(), layer_data)

@@ -77,7 +77,7 @@ geometry =
     uniform mediump vec3 u_lightPosition;
 
     layout(lines) in;
-    layout(triangle_strip, max_vertices = 10) out;
+    layout(triangle_strip, max_vertices = 4) out;
 
     in lowp vec4 v_color[];
     in lowp vec3 v_vertex[];
@@ -112,80 +112,36 @@ geometry =
     {
         if (v_line_width[1] >= 0.05) {
 
-            #define HAVE_FLIP 1
-            #define HAVE_VERT 0
-
             viewProjectionMatrix = u_projectionMatrix * u_viewMatrix;
 
-            #if HAVE_FLIP
             mediump vec3 vertex_normal;
             mediump vec4 vertex_offset;
-            if (abs(normalize(u_lightPosition - (v_vertex[0] + v_vertex[1]) * 0.5).y) > 0.5) {
-                mediump vec4 vertex_delta = gl_in[1].gl_Position - gl_in[0].gl_Position;
+
+            vec3 light_delta = normalize(u_lightPosition - (v_vertex[0] + v_vertex[1]) * 0.5);
+            if (abs(light_delta.y) > 0.5) {
+                vec4 vertex_delta = gl_in[1].gl_Position - gl_in[0].gl_Position;
                 vertex_normal = normalize(vec3(vertex_delta.z, vertex_delta.y, -vertex_delta.x));
+                if (light_delta.y > 0.5) {
+                    vertex_normal = -vertex_normal;
+                }
                 vertex_offset = vec4(vertex_normal * v_line_width[1], 0.0);
             }
             else {
-                vertex_normal = vec3(0.0, 1.0, 0.0);
+                if (((v_vertex[1].x - v_vertex[0].x)*(u_lightPosition.z - v_vertex[0].z) - (v_vertex[1].z - v_vertex[0].z)*(u_lightPosition.x - v_vertex[0].x)) > 0.0) {
+                    vertex_normal = vec3(0.0, -1.0, 0.0);
+                }
+                else {
+                    vertex_normal = vec3(0.0, 1.0, 0.0);
+                }
                 vertex_offset = vec4(vertex_normal * v_line_height[1], 0.0);
             }
 
-            myEmitVertex0(-vertex_normal, -vertex_offset);
-            myEmitVertex1(-vertex_normal, -vertex_offset);
             myEmitVertex0(vertex_normal, vertex_offset);
             myEmitVertex1(vertex_normal, vertex_offset);
             myEmitVertex0(-vertex_normal, -vertex_offset);
             myEmitVertex1(-vertex_normal, -vertex_offset);
 
-            #else // !HAVE_FLIP
-
-            precise mediump vec4 g_vertex_delta = gl_in[1].gl_Position - gl_in[0].gl_Position;
-            precise mediump vec3 g_vertex_normal_horz = normalize(vec3(g_vertex_delta.z, g_vertex_delta.y, -g_vertex_delta.x));
-
-            #if HAVE_VERT
-            precise lowp vec3 g_vertex_normal_vert = vec3(0.0, 1.0, 0.0);
-            precise mediump vec4 g_vertex_offset_vert = vec4(g_vertex_normal_vert * v_line_height[1], 0.0);
-            #endif
-
-            {
-                precise mediump vec4 g_vertex_offset_horz = vec4(g_vertex_normal_horz * v_line_width[1], 0.0);
-
-                myEmitVertex0(-g_vertex_normal_horz, -g_vertex_offset_horz);
-                myEmitVertex1(-g_vertex_normal_horz, -g_vertex_offset_horz);
-            }
-
-            #if HAVE_VERT
-            {
-                precise mediump vec4 g_vertex_offset_vert = vec4(g_vertex_normal_vert * v_line_height[1], 0.0);
-
-                myEmitVertex0(g_vertex_normal_vert, g_vertex_offset_vert);
-                myEmitVertex1(g_vertex_normal_vert, g_vertex_offset_vert);
-            }
-            #endif
-
-            {
-                precise mediump vec4 g_vertex_offset_horz = vec4(g_vertex_normal_horz * v_line_width[1], 0.0);
-
-                myEmitVertex0(g_vertex_normal_horz, g_vertex_offset_horz);
-                myEmitVertex1(g_vertex_normal_horz, g_vertex_offset_horz);
-            }
-
-            #if HAVE_VERT
-            {
-                precise mediump vec4 g_vertex_offset_vert = vec4(g_vertex_normal_vert * v_line_height[1], 0.0);
-
-                myEmitVertex0(-g_vertex_normal_vert, -g_vertex_offset_vert);
-                myEmitVertex1(-g_vertex_normal_vert, -g_vertex_offset_vert);
-            }
-            #endif
-
-            {
-                precise mediump vec4 g_vertex_offset_horz = vec4(g_vertex_normal_horz * v_line_width[1], 0.0);
-
-                myEmitVertex0(-g_vertex_normal_horz, -g_vertex_offset_horz);
-                myEmitVertex1(-g_vertex_normal_horz, -g_vertex_offset_horz);
-            }
-            #endif // !HAVE_FLIP
+            EndPrimitive();
         }
     }
 
