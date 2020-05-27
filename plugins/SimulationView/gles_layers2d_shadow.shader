@@ -23,15 +23,15 @@ vertex =
     in highp float a_line_type;
 
     out lowp vec4 v_color;
-    out lowp vec3 v_vertex;
+    out vec3 v_vertex;
     out lowp float v_line_width;
     out lowp float v_line_height;
 
     //out highp mat4 v_view_projection_matrix;
 
     out lowp vec4 f_color;
-    out lowp vec3 f_normal;
-    out lowp vec3 f_vertex;
+    out vec3 f_normal;
+    out vec3 f_vertex;
 
     void main()
     {
@@ -80,7 +80,7 @@ geometry =
     layout(triangle_strip, max_vertices = 4) out;
 
     in lowp vec4 v_color[];
-    in lowp vec3 v_vertex[];
+    in vec3 v_vertex[];
     in lowp float v_line_width[];
     in lowp float v_line_height[];
 
@@ -155,8 +155,8 @@ fragment =
         #endif // GL_FRAGMENT_PRECISION_HIGH
     #endif // GL_ES
     in lowp vec4 f_color;
-    in lowp vec3 f_normal;
-    in lowp vec3 f_vertex;
+    in vec3 f_normal;
+    in vec3 f_vertex;
 
     out vec4 frag_color;
 
@@ -165,20 +165,9 @@ fragment =
 
     void main()
     {
-        mediump vec4 finalColor = vec4(0.0);
-        float alpha = f_color.a;
-
-        finalColor.rgb += f_color.rgb * 0.8;
-
-        highp vec3 normal = normalize(f_normal);
-        highp vec3 light_dir = normalize(u_lightPosition - f_vertex);
-
-        // Diffuse Component
-        highp float NdotL = clamp(dot(normal, light_dir), 0.0, 0.2);
-        finalColor += (NdotL * f_color);
-        finalColor.a = alpha;  // Do not change alpha in any way
-
-        frag_color = finalColor;
+        vec4 colour = f_color * 0.8 + dot(f_normal, normalize(u_lightPosition - f_vertex)) * 0.2;
+        colour.a = f_color.a;
+        frag_color = colour;
     }
 
 

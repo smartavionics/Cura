@@ -133,9 +133,9 @@ geometry =
     in mediump float v_line_height[];
 
     out lowp vec4 f_color;
-    out lowp vec3 f_normal;
+    out vec3 f_normal;
     #if HAVE_VERTEX
-    out lowp vec3 f_vertex;
+    out vec3 f_vertex;
     #endif
 
     mediump mat4 viewProjectionMatrix;
@@ -199,7 +199,7 @@ fragment =
         #endif // GL_FRAGMENT_PRECISION_HIGH
     #endif // GL_ES
     in lowp vec4 f_color;
-    in lowp vec3 f_normal;
+    in vec3 f_normal;
     //in lowp vec3 f_vertex;
 
     out vec4 frag_color;
@@ -210,20 +210,9 @@ fragment =
 
     void main()
     {
-        mediump vec4 finalColor = vec4(0.0);
-        float alpha = f_color.a;
-
-        finalColor.rgb += f_color.rgb * 0.2 + u_minimumAlbedo.rgb;
-
-        highp vec3 normal = normalize(f_normal);
-        highp vec3 light_dir = normalize(u_lightPosition);
-
-        // Diffuse Component
-        highp float NdotL = clamp(dot(normal, light_dir), 0.0, 1.0);
-        finalColor += (NdotL * f_color);
-        finalColor.a = alpha;  // Do not change alpha in any way
-
-        frag_color = finalColor;
+        vec4 colour = f_color * 0.8 + dot(f_normal, normalize(u_lightPosition)) * 0.2;
+        colour.a = f_color.a;
+        frag_color = colour;
     }
 
 
