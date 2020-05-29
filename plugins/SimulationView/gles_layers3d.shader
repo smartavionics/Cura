@@ -210,7 +210,7 @@ fragment =
 
     void main()
     {
-        vec4 colour = f_color * 0.8 + dot(f_normal, normalize(u_lightPosition)) * 0.2;
+        vec4 colour = u_minimumAlbedo + (f_color * (dot(f_normal, normalize(u_lightPosition)) + 0.2));
         colour.a = f_color.a;
         frag_color = colour;
     }
