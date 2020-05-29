@@ -92,14 +92,15 @@ vertex =
         //v_normal = (u_normalMatrix * normalize(a_normal)).xyz;
 
         if ((u_extruder_opacity[int(a_extruder)] == 0.0) ||
+            (a_line_dim.x < 0.01) ||
             ((u_show_travel_moves == 0) && ((a_line_type == 8.0) || (a_line_type == 9.0))) ||
             ((u_show_helpers == 0) && ((a_line_type == 4.0) || (a_line_type == 5.0) || (a_line_type == 7.0) || (a_line_type == 10.0) || a_line_type == 11.0)) ||
             ((u_show_skin == 0) && ((a_line_type == 1.0) || (a_line_type == 2.0) || (a_line_type == 3.0))) ||
             ((u_show_infill == 0) && (a_line_type == 6.0))) {
-            v_line_width = 0.0;
-            v_line_height = 0.0;
+            v_color.a = 0.0;
         }
-        else if ((a_line_type == 8.0) || (a_line_type == 9.0)) {
+
+        if ((a_line_type == 8.0) || (a_line_type == 9.0)) {
             v_line_width = 0.075;
             v_line_height = 0.075;
         }
@@ -123,7 +124,7 @@ geometry =
     uniform mediump vec3 u_lightPosition;
 
     layout(lines) in;
-    layout(triangle_strip, max_vertices = 4) out;
+    layout(triangle_strip, max_vertices = 6) out;
 
     in lowp vec4 v_color[];
     in vec3 v_vertex[];
@@ -136,59 +137,71 @@ geometry =
 
     mediump mat4 viewProjectionMatrix;
 
-    void myEmitVertex0(const mediump vec3 normal, const mediump vec4 pos_offset)
+    void outputVertex(const bool is_horizontal_surface, const int index, const float sign, const float offset)
     {
-        f_vertex = v_vertex[0];
-        f_color = v_color[0];
-        f_normal = normal;
-        gl_Position = viewProjectionMatrix * (gl_in[0].gl_Position + pos_offset);
-        EmitVertex();
-    }
-
-    void myEmitVertex1(const mediump vec3 normal, const mediump vec4 pos_offset)
-    {
-        f_vertex = v_vertex[1];
-        f_color = v_color[1];
-        f_normal = normal;
-        gl_Position = viewProjectionMatrix * (gl_in[1].gl_Position + pos_offset);
-        EmitVertex();
+        f_vertex = v_vertex[index];
+        f_color = v_color[index];
+        if (v_color[index].a != 0.0) {
+            vec4 vertex_delta = gl_in[1].gl_Position - gl_in[0].gl_Position;
+            vec3 normal = normalize(vec3(vertex_delta.z, vertex_delta.y, -vertex_delta.x));
+            vec4 pos_offset;
+            if (is_horizontal_surface) {
+                f_normal = sign * vec3(0.0, 1.0, 0.0); // up/down
+                pos_offset = vec4(normal * offset, 0.0); // left/right
+            }
+            else {
+                f_normal = sign * normal; // left/right
+                pos_offset = vec4(0.0, offset, 0.0, 0.0); // up/down
+            }
+            gl_Position = viewProjectionMatrix * (gl_in[index].gl_Position + pos_offset);
+            EmitVertex();
+        }
+        else {
+            // workaround mesa bug, must always emit a vertex even when line is not being displayed
+            gl_Position = vec4(0.0);
+            EmitVertex();
+        }
     }
 
     void main()
     {
         viewProjectionMatrix = u_projectionMatrix * u_viewMatrix;
 
-        if (v_line_width[1] >= 0.05) {
+        vec3 light_delta = normalize(u_lightPosition - (v_vertex[0] + v_vertex[1]) * 0.5);
+        float sign = 1.0;
+        float offset;
+        bool is_horizontal_surface = true;
 
-            vec3 vertex_normal;
-            vec4 vertex_offset;
-
-            vec3 light_delta = normalize(u_lightPosition - (v_vertex[0] + v_vertex[1]) * 0.5);
-            if (abs(light_delta.y) > 0.5) {
-                // looking from above or below
-                vec4 vertex_delta = gl_in[1].gl_Position - gl_in[0].gl_Position;
-                vertex_normal = normalize(vec3(vertex_delta.z, vertex_delta.y, -vertex_delta.x));
-                if (light_delta.y > 0.5) {
-                    vertex_normal = -vertex_normal;
-                }
-                vertex_offset = vec4(vertex_normal * v_line_width[1], 0.0);
+        if (light_delta.y > 0.5) {
+            // top
+            sign = -1.0;
+            offset = -v_line_width[1];
+        }
+        else if (light_delta.y < -0.5) {
+            // bottom
+            offset = v_line_width[1];
+        }
+        else {
+            is_horizontal_surface = false;
+            if (((v_vertex[1].x - v_vertex[0].x)*(u_lightPosition.z - v_vertex[0].z) - (v_vertex[1].z - v_vertex[0].z)*(u_lightPosition.x - v_vertex[0].x)) > 0.0) {
+                // front
+                offset = -v_line_height[1];
             }
             else {
-                // looking from the side
-                vertex_normal = vec3(0.0, 1.0, 0.0);
-                if (((v_vertex[1].x - v_vertex[0].x)*(u_lightPosition.z - v_vertex[0].z) - (v_vertex[1].z - v_vertex[0].z)*(u_lightPosition.x - v_vertex[0].x)) > 0.0) {
-                    vertex_normal.y = -1.0;
-                }
-                vertex_offset = vec4(vertex_normal * v_line_height[1], 0.0);
+                // back
+                sign = -1.0;
+                offset = v_line_height[1];
             }
-
-            myEmitVertex0(vertex_normal, vertex_offset);
-            myEmitVertex1(vertex_normal, vertex_offset);
-            myEmitVertex0(-vertex_normal, -vertex_offset);
-            myEmitVertex1(-vertex_normal, -vertex_offset);
-
-            EndPrimitive();
         }
+
+        outputVertex(is_horizontal_surface, 0, sign, offset);
+        outputVertex(is_horizontal_surface, 1, sign, offset);
+        outputVertex(is_horizontal_surface, 0, -sign, 0.0);
+        outputVertex(is_horizontal_surface, 1, -sign, 0.0);
+        outputVertex(is_horizontal_surface, 0, sign, -offset);
+        outputVertex(is_horizontal_surface, 1, sign, -offset);
+
+        EndPrimitive();
     }
 
 fragment =
