@@ -136,11 +136,11 @@ class SimulationView(CuraView):
 
     def _evaluateCompatibilityMode(self) -> bool:
         if QOpenGLContext.currentContext() is not None:
-            format = QOpenGLContext.currentContext().format()
             if QOpenGLContext.currentContext().isOpenGLES() and OpenGLContext.hasExtension("GL_OES_geometry_shader"):
+                if bool(Application.getInstance().getPreferences().getValue("view/force_layer_view_compatibility_mode")):
+                    return True
                 self._have_oes_geometry_shader = True
-                Logger.log("d", "Yeeha! Have GL_OES_geometry_shader")
-                return bool(Application.getInstance().getPreferences().getValue("view/force_layer_view_compatibility_mode"))
+                return False
         return OpenGLContext.isLegacyOpenGL() or bool(Application.getInstance().getPreferences().getValue("view/force_layer_view_compatibility_mode"))
 
     def _resetSettings(self) -> None:
