@@ -46,7 +46,7 @@ class SimulationPass(RenderPass):
     def setSimulationView(self, layerview):
         self._layer_view = layerview
         self._compatibility_mode = layerview.getCompatibilityMode()
-        self._pi4_shaders = layerview._have_oes_geometry_shader
+        self._pi4_shaders = layerview._have_gles_geometry_shader
 
     def render(self):
         if not self._layer_shader:

@@ -95,8 +95,15 @@ geometry =
         f_vertex = v_vertex[0];
         f_color = v_color[0];
         f_normal = normal;
-        gl_Position = viewProjectionMatrix * (gl_in[0].gl_Position + pos_offset);
-        EmitVertex();
+        if (v_color[0].a != 0.0) {
+            gl_Position = viewProjectionMatrix * (gl_in[0].gl_Position + pos_offset);
+            EmitVertex();
+        }
+        else {
+            // workaround mesa bug, must always emit a vertex even when line is not being displayed
+            gl_Position = vec4(0.0);
+            EmitVertex();
+        }
     }
 
     void myEmitVertex1(const mediump vec3 normal, const mediump vec4 pos_offset)
@@ -104,45 +111,49 @@ geometry =
         f_vertex = v_vertex[1];
         f_color = v_color[1];
         f_normal = normal;
-        gl_Position = viewProjectionMatrix * (gl_in[1].gl_Position + pos_offset);
-        EmitVertex();
+        if (v_color[1].a != 0.0) {
+            gl_Position = viewProjectionMatrix * (gl_in[1].gl_Position + pos_offset);
+            EmitVertex();
+        }
+        else {
+            // workaround mesa bug, must always emit a vertex even when line is not being displayed
+            gl_Position = vec4(0.0);
+            EmitVertex();
+        }
     }
 
     void main()
     {
-        if (v_line_width[1] >= 0.05) {
+        viewProjectionMatrix = u_projectionMatrix * u_viewMatrix;
 
-            viewProjectionMatrix = u_projectionMatrix * u_viewMatrix;
+        mediump vec3 vertex_normal;
+        mediump vec4 vertex_offset;
 
-            mediump vec3 vertex_normal;
-            mediump vec4 vertex_offset;
-
-            vec3 light_delta = normalize(u_lightPosition - (v_vertex[0] + v_vertex[1]) * 0.5);
-            if (abs(light_delta.y) > 0.5) {
-                // looking from above or below
-                vec4 vertex_delta = gl_in[1].gl_Position - gl_in[0].gl_Position;
-                vertex_normal = normalize(vec3(vertex_delta.z, vertex_delta.y, -vertex_delta.x));
-                if (light_delta.y > 0.5) {
-                    vertex_normal = -vertex_normal;
-                }
-                vertex_offset = vec4(vertex_normal * v_line_width[1], 0.0);
+        vec3 light_delta = normalize(u_lightPosition - (v_vertex[0] + v_vertex[1]) * 0.5);
+        if (abs(light_delta.y) > 0.5) {
+            // looking from above or below
+            vec4 vertex_delta = gl_in[1].gl_Position - gl_in[0].gl_Position;
+            vertex_normal = normalize(vec3(vertex_delta.z, vertex_delta.y, -vertex_delta.x));
+            if (light_delta.y > 0.5) {
+                vertex_normal = -vertex_normal;
             }
-            else {
-                // looking from the side
-                vertex_normal = vec3(0.0, 1.0, 0.0);
-                if (((v_vertex[1].x - v_vertex[0].x)*(u_lightPosition.z - v_vertex[0].z) - (v_vertex[1].z - v_vertex[0].z)*(u_lightPosition.x - v_vertex[0].x)) > 0.0) {
-                    vertex_normal.y = -1.0;
-                }
-                vertex_offset = vec4(vertex_normal * v_line_height[1], 0.0);
-            }
-
-            myEmitVertex0(vertex_normal, vertex_offset);
-            myEmitVertex1(vertex_normal, vertex_offset);
-            myEmitVertex0(-vertex_normal, -vertex_offset);
-            myEmitVertex1(-vertex_normal, -vertex_offset);
-
-            EndPrimitive();
+            vertex_offset = vec4(vertex_normal * v_line_width[1], 0.0);
         }
+        else {
+            // looking from the side
+            vertex_normal = vec3(0.0, 1.0, 0.0);
+            if (((v_vertex[1].x - v_vertex[0].x)*(u_lightPosition.z - v_vertex[0].z) - (v_vertex[1].z - v_vertex[0].z)*(u_lightPosition.x - v_vertex[0].x)) > 0.0) {
+                vertex_normal.y = -1.0;
+            }
+            vertex_offset = vec4(vertex_normal * v_line_height[1], 0.0);
+        }
+
+        myEmitVertex0(vertex_normal, vertex_offset);
+        myEmitVertex1(vertex_normal, vertex_offset);
+        myEmitVertex0(-vertex_normal, -vertex_offset);
+        myEmitVertex1(-vertex_normal, -vertex_offset);
+
+        EndPrimitive();
     }
 
 fragment =
