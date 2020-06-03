@@ -28,6 +28,7 @@ class SimulationPass(RenderPass):
         super().__init__("simulationview", width, height)
 
         self._layer_shader = None
+        self._layer_shader_2d = None
         self._layer_shadow_shader = None
         self._current_shader = None # This shader will be the shadow or the normal depending if the user wants to see the paths or the layers
         self._tool_handle_shader = None
@@ -45,12 +46,18 @@ class SimulationPass(RenderPass):
     def setSimulationView(self, layerview):
         self._layer_view = layerview
         self._compatibility_mode = layerview.getCompatibilityMode()
+        self._pi4_shaders = layerview._have_gles_geometry_shader
 
     def render(self):
         if not self._layer_shader:
             if self._compatibility_mode:
                 shader_filename = "layers.shader"
                 shadow_shader_filename = "layers_shadow.shader"
+            elif self._pi4_shaders:
+                # use simplified shaders that perform better on the PI 4
+                shader_filename = "pi4_layers3d.shader"
+                shadow_shader_filename = "pi4_layers2d_shadow.shader"
+                self._layer_shader_2d = OpenGL.getInstance().createShaderProgram(os.path.join(PluginRegistry.getInstance().getPluginPath("SimulationView"), "pi4_layers2d.shader"))
             else:
                 shader_filename = "layers3d.shader"
                 shadow_shader_filename = "layers3d_shadow.shader"
@@ -59,7 +66,7 @@ class SimulationPass(RenderPass):
             self._current_shader = self._layer_shader
         # Use extruder 0 if the extruder manager reports extruder index -1 (for single extrusion printers)
         self._layer_shader.setUniformValue("u_active_extruder", float(max(0, self._extruder_manager.activeExtruderIndex)))
-        if self._layer_view:
+        if not self._pi4_shaders and self._layer_view:
             self._layer_shader.setUniformValue("u_max_feedrate", self._layer_view.getMaxFeedrate())
             self._layer_shader.setUniformValue("u_min_feedrate", self._layer_view.getMinFeedrate())
             self._layer_shader.setUniformValue("u_max_thickness", self._layer_view.getMaxThickness())
@@ -70,7 +77,7 @@ class SimulationPass(RenderPass):
             self._layer_shader.setUniformValue("u_show_helpers", self._layer_view.getShowHelpers())
             self._layer_shader.setUniformValue("u_show_skin", self._layer_view.getShowSkin())
             self._layer_shader.setUniformValue("u_show_infill", self._layer_view.getShowInfill())
-        else:
+        elif not self._pi4_shaders:
             #defaults
             self._layer_shader.setUniformValue("u_max_feedrate", 1)
             self._layer_shader.setUniformValue("u_min_feedrate", 0)
@@ -149,9 +156,41 @@ class SimulationPass(RenderPass):
                         self._current_shader = self._layer_shader
                         self._switching_layers = True
 
-                    layers_batch = RenderBatch(self._current_shader, type = RenderBatch.RenderType.Solid, mode = RenderBatch.RenderMode.Lines, range = (start, end), backface_cull = True)
-                    layers_batch.addItem(node.getWorldTransformation(), layer_data)
-                    layers_batch.render(self._scene.getActiveCamera())
+                    if self._layer_shader_2d and self._current_shader != self._layer_shadow_shader:
+                        if (end - start) < 500000:
+                            self._current_shader = self._layer_shader
+                        else:
+                            self._current_shader = self._layer_shader_2d
+
+                    if self._pi4_shaders:
+                        self._current_shader.setUniformValue("u_active_extruder", float(max(0, self._extruder_manager.activeExtruderIndex)))
+                        self._current_shader.setUniformValue("u_max_feedrate", self._layer_view.getMaxFeedrate())
+                        self._current_shader.setUniformValue("u_min_feedrate", self._layer_view.getMinFeedrate())
+                        self._current_shader.setUniformValue("u_max_thickness", self._layer_view.getMaxThickness())
+                        self._current_shader.setUniformValue("u_min_thickness", self._layer_view.getMinThickness())
+                        self._current_shader.setUniformValue("u_layer_view_type", self._layer_view.getSimulationViewType())
+                        self._current_shader.setUniformValue("u_extruder_opacity", self._layer_view.getExtruderOpacities())
+                        self._current_shader.setUniformValue("u_show_travel_moves", self._layer_view.getShowTravelMoves())
+                        self._current_shader.setUniformValue("u_show_helpers", self._layer_view.getShowHelpers())
+                        self._current_shader.setUniformValue("u_show_skin", self._layer_view.getShowSkin())
+                        self._current_shader.setUniformValue("u_show_infill", self._layer_view.getShowInfill())
+                        if self._current_shader != self._layer_shader:
+                            self._layer_shader.setUniformValue("u_max_feedrate", self._layer_view.getMaxFeedrate())
+                            self._layer_shader.setUniformValue("u_min_feedrate", self._layer_view.getMinFeedrate())
+                            self._layer_shader.setUniformValue("u_max_thickness", self._layer_view.getMaxThickness())
+                            self._layer_shader.setUniformValue("u_min_thickness", self._layer_view.getMinThickness())
+                            self._layer_shader.setUniformValue("u_layer_view_type", self._layer_view.getSimulationViewType())
+                            self._layer_shader.setUniformValue("u_extruder_opacity", self._layer_view.getExtruderOpacities())
+                            self._layer_shader.setUniformValue("u_show_travel_moves", self._layer_view.getShowTravelMoves())
+                            self._layer_shader.setUniformValue("u_show_helpers", self._layer_view.getShowHelpers())
+                            self._layer_shader.setUniformValue("u_show_skin", self._layer_view.getShowSkin())
+                            self._layer_shader.setUniformValue("u_show_infill", self._layer_view.getShowInfill())
+
+                    # for the PI 4, don't bother to output the lower layers using the shadow shader
+                    if not self._pi4_shaders or self._current_shader != self._layer_shadow_shader:
+                        layers_batch = RenderBatch(self._current_shader, type = RenderBatch.RenderType.Solid, mode = RenderBatch.RenderMode.Lines, range = (start, end), backface_cull = True)
+                        layers_batch.addItem(node.getWorldTransformation(), layer_data)
+                        layers_batch.render(self._scene.getActiveCamera())
 
                     # Current selected layer is rendered
                     current_layer_batch = RenderBatch(self._layer_shader, type = RenderBatch.RenderType.Solid, mode = RenderBatch.RenderMode.Lines, range = (current_layer_start, current_layer_end))

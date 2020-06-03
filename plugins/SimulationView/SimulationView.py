@@ -115,6 +115,7 @@ class SimulationView(CuraView):
         self._solid_layers = int(Application.getInstance().getPreferences().getValue("view/top_layer_count"))
         self._only_show_top_layers = bool(Application.getInstance().getPreferences().getValue("view/only_show_top_layers"))
         self._compatibility_mode = self._evaluateCompatibilityMode()
+        self._have_gles_geometry_shader = False
 
         self._wireprint_warning_message = Message(catalog.i18nc("@info:status", "Cura does not accurately display layers when Wire Printing is enabled."),
                                                   title = catalog.i18nc("@info:title", "Simulation View"))
@@ -134,6 +135,12 @@ class SimulationView(CuraView):
             Logger.log("e", "Unable to find the path for %s", self.getPluginId())
 
     def _evaluateCompatibilityMode(self) -> bool:
+        if QOpenGLContext.currentContext() is not None:
+            if OpenGLContext.haveGLESGeometryShader():
+                if bool(Application.getInstance().getPreferences().getValue("view/force_layer_view_compatibility_mode")):
+                    return True
+                self._have_gles_geometry_shader = True
+                return False
         return OpenGLContext.isLegacyOpenGL() or bool(Application.getInstance().getPreferences().getValue("view/force_layer_view_compatibility_mode"))
 
     def _resetSettings(self) -> None:
