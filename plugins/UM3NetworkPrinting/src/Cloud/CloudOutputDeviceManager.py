@@ -4,12 +4,14 @@ import os
 from typing import Dict, List, Optional
 
 from PyQt5.QtCore import QTimer
+from PyQt5.QtNetwork import QNetworkReply
 
 from UM import i18nCatalog
 from UM.Logger import Logger  # To log errors talking to the API.
 from UM.Message import Message
 from UM.Signal import Signal
 from cura.API import Account
+from cura.API.Account import SyncState
 from cura.CuraApplication import CuraApplication
 from cura.Settings.CuraStackBuilder import CuraStackBuilder
 from cura.Settings.GlobalStack import GlobalStack
@@ -20,16 +22,14 @@ from ..Models.Http.CloudClusterResponse import CloudClusterResponse
 
 class CloudOutputDeviceManager:
     """The cloud output device manager is responsible for using the Ultimaker Cloud APIs to manage remote clusters.
-    
+
     Keeping all cloud related logic in this class instead of the UM3OutputDevicePlugin results in more readable code.
     API spec is available on https://api.ultimaker.com/docs/connect/spec/.
     """
 
     META_CLUSTER_ID = "um_cloud_cluster_id"
     META_NETWORK_KEY = "um_network_key"
-
-    # The interval with which the remote clusters are checked
-    CHECK_CLUSTER_INTERVAL = 30.0  # seconds
+    SYNC_SERVICE_NAME = "CloudOutputDeviceManager"
 
     # The translation catalog for this device.
     I18N_CATALOG = i18nCatalog("cura")
@@ -41,18 +41,13 @@ class CloudOutputDeviceManager:
         # Persistent dict containing the remote clusters for the authenticated user.
         self._remote_clusters = {}  # type: Dict[str, CloudOutputDevice]
         self._account = CuraApplication.getInstance().getCuraAPI().account  # type: Account
-        self._api = CloudApiClient(self._account, on_error = lambda error: Logger.log("e", str(error)))
+        self._api = CloudApiClient(CuraApplication.getInstance(), on_error = lambda error: Logger.log("e", str(error)))
         self._account.loginStateChanged.connect(self._onLoginStateChanged)
-
-        # Create a timer to update the remote cluster list
-        self._update_timer = QTimer()
-        self._update_timer.setInterval(int(self.CHECK_CLUSTER_INTERVAL * 1000))
-        # The timer is restarted explicitly after an update was processed. This prevents 2 concurrent updates
-        self._update_timer.setSingleShot(True)
-        self._update_timer.timeout.connect(self._getRemoteClusters)
 
         # Ensure we don't start twice.
         self._running = False
+
+        self._syncing = False
 
     def start(self):
         """Starts running the cloud output device manager, thus periodically requesting cloud data."""
@@ -62,9 +57,9 @@ class CloudOutputDeviceManager:
         if not self._account.isLoggedIn:
             return
         self._running = True
-        if not self._update_timer.isActive():
-            self._update_timer.start()
         self._getRemoteClusters()
+
+        self._account.syncRequested.connect(self._getRemoteClusters)
 
     def stop(self):
         """Stops running the cloud output device manager."""
@@ -72,8 +67,6 @@ class CloudOutputDeviceManager:
         if not self._running:
             return
         self._running = False
-        if self._update_timer.isActive():
-            self._update_timer.stop()
         self._onGetRemoteClustersFinished([])  # Make sure we remove all cloud output devices.
 
     def refreshConnections(self) -> None:
@@ -92,15 +85,23 @@ class CloudOutputDeviceManager:
     def _getRemoteClusters(self) -> None:
         """Gets all remote clusters from the API."""
 
-        self._api.getClusters(self._onGetRemoteClustersFinished)
+        if self._syncing:
+            return
+
+        Logger.info("Syncing cloud printer clusters")
+
+        self._syncing = True
+        self._account.setSyncState(self.SYNC_SERVICE_NAME, SyncState.SYNCING)
+        self._api.getClusters(self._onGetRemoteClustersFinished, self._onGetRemoteClusterFailed)
 
     def _onGetRemoteClustersFinished(self, clusters: List[CloudClusterResponse]) -> None:
         """Callback for when the request for getting the clusters is finished."""
 
         new_clusters = []
+        all_clusters = {c.cluster_id: c for c in clusters}  # type: Dict[str, CloudClusterResponse]
         online_clusters = {c.cluster_id: c for c in clusters if c.is_online}  # type: Dict[str, CloudClusterResponse]
 
-        for device_id, cluster_data in online_clusters.items():
+        for device_id, cluster_data in all_clusters.items():
             if device_id not in self._remote_clusters:
                 new_clusters.append(cluster_data)
 
@@ -115,8 +116,13 @@ class CloudOutputDeviceManager:
         if removed_device_keys:
             # If the removed device was active we should connect to the new active device
             self._connectToActiveMachine()
-        # Schedule a new update
-        self._update_timer.start()
+
+        self._syncing = False
+        self._account.setSyncState(self.SYNC_SERVICE_NAME, SyncState.SUCCESS)
+
+    def _onGetRemoteClusterFailed(self, reply: QNetworkReply, error: QNetworkReply.NetworkError) -> None:
+        self._syncing = False
+        self._account.setSyncState(self.SYNC_SERVICE_NAME, SyncState.ERROR)
 
     def _onDevicesDiscovered(self, clusters: List[CloudClusterResponse]) -> None:
         """**Synchronously** create machines for discovered devices
@@ -261,6 +267,13 @@ class CloudOutputDeviceManager:
         machine.setName(device.name)
         machine.setMetaDataEntry(self.META_CLUSTER_ID, device.key)
         machine.setMetaDataEntry("group_name", device.name)
+        machine.setMetaDataEntry("removal_warning", self.I18N_CATALOG.i18nc(
+            "@label ({} is printer name)",
+            "{} will be removed until the next account sync. <br> To remove {} permanently, "
+            "visit <a href='https://mycloud.ultimaker.com/'>Ultimaker Digital Factory</a>. "
+            "<br><br>Are you sure you want to remove {} temporarily?",
+            device.name, device.name, device.name
+        ))
         machine.addConfiguredConnectionType(device.connectionType.value)
 
     def _connectToOutputDevice(self, device: CloudOutputDevice, machine: GlobalStack) -> None:
