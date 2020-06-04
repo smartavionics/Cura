@@ -74,7 +74,7 @@ geometry =
     #version 320 es
     uniform mediump mat4 u_viewMatrix;
     uniform mediump mat4 u_projectionMatrix;
-    uniform mediump vec3 u_lightPosition;
+    uniform mediump vec3 u_viewPosition;
 
     layout(lines) in;
     layout(triangle_strip, max_vertices = 4) out;
@@ -129,12 +129,12 @@ geometry =
         mediump vec3 vertex_normal;
         mediump vec4 vertex_offset;
 
-        vec3 light_delta = normalize(u_lightPosition - (v_vertex[0] + v_vertex[1]) * 0.5);
-        if (abs(light_delta.y) > 0.5) {
+        vec3 view_delta = normalize(u_viewPosition - (v_vertex[0] + v_vertex[1]) * 0.5);
+        if (abs(view_delta.y) > 0.5) {
             // looking from above or below
             vec4 vertex_delta = gl_in[1].gl_Position - gl_in[0].gl_Position;
             vertex_normal = normalize(vec3(vertex_delta.z, vertex_delta.y, -vertex_delta.x));
-            if (light_delta.y > 0.5) {
+            if (view_delta.y > 0.5) {
                 vertex_normal = -vertex_normal;
             }
             vertex_offset = vec4(vertex_normal * v_line_width[1], 0.0);
@@ -142,7 +142,7 @@ geometry =
         else {
             // looking from the side
             vertex_normal = vec3(0.0, 1.0, 0.0);
-            if (((v_vertex[1].x - v_vertex[0].x)*(u_lightPosition.z - v_vertex[0].z) - (v_vertex[1].z - v_vertex[0].z)*(u_lightPosition.x - v_vertex[0].x)) > 0.0) {
+            if (((v_vertex[1].x - v_vertex[0].x)*(u_viewPosition.z - v_vertex[0].z) - (v_vertex[1].z - v_vertex[0].z)*(u_viewPosition.x - v_vertex[0].x)) > 0.0) {
                 vertex_normal.y = -1.0;
             }
             vertex_offset = vec4(vertex_normal * v_line_height[1], 0.0);
@@ -203,6 +203,7 @@ u_viewMatrix = view_matrix
 u_projectionMatrix = projection_matrix
 u_normalMatrix = normal_matrix
 u_lightPosition = light_0_position
+u_viewPosition = view_position
 
 [attributes]
 a_vertex = vertex

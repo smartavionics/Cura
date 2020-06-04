@@ -121,7 +121,7 @@ geometry =
     uniform mediump mat4 u_viewMatrix;
     uniform mediump mat4 u_projectionMatrix;
 
-    uniform mediump vec3 u_lightPosition;
+    uniform mediump vec3 u_viewPosition;
 
     layout(lines) in;
     layout(triangle_strip, max_vertices = 6) out;
@@ -167,23 +167,23 @@ geometry =
     {
         viewProjectionMatrix = u_projectionMatrix * u_viewMatrix;
 
-        vec3 light_delta = normalize(u_lightPosition - (v_vertex[0] + v_vertex[1]) * 0.5);
+        vec3 view_delta = normalize(u_viewPosition - (v_vertex[0] + v_vertex[1]) * 0.5);
         float sign = 1.0;
         float offset;
         bool is_horizontal_surface = true;
 
-        if (light_delta.y > 0.5) {
+        if (view_delta.y > 0.5) {
             // top
             sign = -1.0;
             offset = -v_line_width[1];
         }
-        else if (light_delta.y < -0.5) {
+        else if (view_delta.y < -0.5) {
             // bottom
             offset = v_line_width[1];
         }
         else {
             is_horizontal_surface = false;
-            if (((v_vertex[1].x - v_vertex[0].x)*(u_lightPosition.z - v_vertex[0].z) - (v_vertex[1].z - v_vertex[0].z)*(u_lightPosition.x - v_vertex[0].x)) > 0.0) {
+            if (((v_vertex[1].x - v_vertex[0].x)*(u_viewPosition.z - v_vertex[0].z) - (v_vertex[1].z - v_vertex[0].z)*(u_viewPosition.x - v_vertex[0].x)) > 0.0) {
                 // front
                 offset = -v_line_height[1];
             }
@@ -259,6 +259,7 @@ u_viewMatrix = view_matrix
 u_projectionMatrix = projection_matrix
 u_normalMatrix = normal_matrix
 u_lightPosition = light_0_position
+u_viewPosition = view_position
 
 [attributes]
 a_vertex = vertex
