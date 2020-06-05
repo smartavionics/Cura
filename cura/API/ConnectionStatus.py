@@ -37,9 +37,9 @@ class ConnectionStatus(QObject):
         self._update_timer = QTimer()
         self._update_timer.setInterval(int(self.UPDATE_INTERVAL * 1000))
         # The timer is restarted automatically
-        self._update_timer.setSingleShot(False)
-        self._update_timer.timeout.connect(self._update)
-        self._update_timer.start()
+        #self._update_timer.setSingleShot(False)
+        #self._update_timer.timeout.connect(self._update)
+        #self._update_timer.start()
 
     @pyqtProperty(bool, notify=internetReachableChanged)
     def isInternetReachable(self) -> bool:
