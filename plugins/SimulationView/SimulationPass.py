@@ -220,7 +220,7 @@ class SimulationPass(RenderPass):
 
                     # for the PI 4, only bother to output the lower layers using the shadow shader when riding the nozzle
                     if not self._pi4_shaders or self._current_shader != self._layer_shadow_shader or ride_the_nozzle:
-                        layers_batch = RenderBatch(self._current_shader, type = RenderBatch.RenderType.Solid, mode = RenderBatch.RenderMode.Lines, range = (start, end), backface_cull = True)
+                        layers_batch = RenderBatch(self._current_shader, type = RenderBatch.RenderType.Solid, mode = RenderBatch.RenderMode.Lines, range = (start, end), backface_cull = not self._pi4_shaders)
                         layers_batch.addItem(node.getWorldTransformation(), layer_data)
                         layers_batch.render(self._scene.getActiveCamera())
 
