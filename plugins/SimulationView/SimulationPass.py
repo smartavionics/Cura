@@ -201,7 +201,8 @@ class SimulationPass(RenderPass):
                         self._current_shader.setUniformValue("u_min_thickness", self._layer_view.getMinThickness())
                         self._current_shader.setUniformValue("u_layer_view_type", self._layer_view.getSimulationViewType())
                         self._current_shader.setUniformValue("u_extruder_opacity", self._layer_view.getExtruderOpacities())
-                        self._current_shader.setUniformValue("u_show_travel_moves", self._layer_view.getShowTravelMoves())
+                        if self._current_shader != self._layer_shadow_shader:
+                            self._current_shader.setUniformValue("u_show_travel_moves", self._layer_view.getShowTravelMoves())
                         self._current_shader.setUniformValue("u_show_helpers", self._layer_view.getShowHelpers())
                         self._current_shader.setUniformValue("u_show_skin", self._layer_view.getShowSkin())
                         self._current_shader.setUniformValue("u_show_infill", self._layer_view.getShowInfill())
