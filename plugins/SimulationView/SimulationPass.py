@@ -201,7 +201,8 @@ class SimulationPass(RenderPass):
                         self._current_shader.setUniformValue("u_min_thickness", self._layer_view.getMinThickness())
                         self._current_shader.setUniformValue("u_layer_view_type", self._layer_view.getSimulationViewType())
                         self._current_shader.setUniformValue("u_extruder_opacity", self._layer_view.getExtruderOpacities())
-                        self._current_shader.setUniformValue("u_show_travel_moves", self._layer_view.getShowTravelMoves())
+                        if self._current_shader != self._layer_shadow_shader:
+                            self._current_shader.setUniformValue("u_show_travel_moves", self._layer_view.getShowTravelMoves())
                         self._current_shader.setUniformValue("u_show_helpers", self._layer_view.getShowHelpers())
                         self._current_shader.setUniformValue("u_show_skin", self._layer_view.getShowSkin())
                         self._current_shader.setUniformValue("u_show_infill", self._layer_view.getShowInfill())
@@ -219,7 +220,7 @@ class SimulationPass(RenderPass):
 
                     # for the PI 4, only bother to output the lower layers using the shadow shader when riding the nozzle
                     if not self._pi4_shaders or self._current_shader != self._layer_shadow_shader or ride_the_nozzle:
-                        layers_batch = RenderBatch(self._current_shader, type = RenderBatch.RenderType.Solid, mode = RenderBatch.RenderMode.Lines, range = (start, end), backface_cull = True)
+                        layers_batch = RenderBatch(self._current_shader, type = RenderBatch.RenderType.Solid, mode = RenderBatch.RenderMode.Lines, range = (start, end), backface_cull = not self._pi4_shaders)
                         layers_batch.addItem(node.getWorldTransformation(), layer_data)
                         layers_batch.render(self._scene.getActiveCamera())
 

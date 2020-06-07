@@ -90,29 +90,13 @@ geometry =
 
     mediump mat4 viewProjectionMatrix;
 
-    void myEmitVertex0(const mediump vec3 normal, const mediump vec4 pos_offset)
+    void myEmitVertex(const int index, const mediump vec3 normal, const mediump vec4 pos_offset)
     {
-        f_vertex = v_vertex[0];
-        f_color = v_color[0];
+        f_vertex = v_vertex[index];
+        f_color = v_color[index];
         f_normal = normal;
-        if (v_color[0].a != 0.0) {
-            gl_Position = viewProjectionMatrix * (gl_in[0].gl_Position + pos_offset);
-            EmitVertex();
-        }
-        else {
-            // workaround mesa bug, must always emit a vertex even when line is not being displayed
-            gl_Position = vec4(0.0);
-            EmitVertex();
-        }
-    }
-
-    void myEmitVertex1(const mediump vec3 normal, const mediump vec4 pos_offset)
-    {
-        f_vertex = v_vertex[1];
-        f_color = v_color[1];
-        f_normal = normal;
-        if (v_color[1].a != 0.0) {
-            gl_Position = viewProjectionMatrix * (gl_in[1].gl_Position + pos_offset);
+        if (v_color[index].a != 0.0) {
+            gl_Position = viewProjectionMatrix * (gl_in[index].gl_Position + pos_offset);
             EmitVertex();
         }
         else {
@@ -148,10 +132,10 @@ geometry =
             vertex_offset = vec4(vertex_normal * v_line_height[1], 0.0);
         }
 
-        myEmitVertex0(vertex_normal, vertex_offset);
-        myEmitVertex1(vertex_normal, vertex_offset);
-        myEmitVertex0(-vertex_normal, -vertex_offset);
-        myEmitVertex1(-vertex_normal, -vertex_offset);
+        myEmitVertex(0, vertex_normal, vertex_offset);
+        myEmitVertex(1, vertex_normal, vertex_offset);
+        myEmitVertex(0, -vertex_normal, -vertex_offset);
+        myEmitVertex(1, -vertex_normal, -vertex_offset);
 
         EndPrimitive();
     }
