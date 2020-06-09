@@ -147,18 +147,15 @@ geometry =
         f_vertex = v_vertex[index];
         #endif
         f_color = v_color[index];
+        // workaround mesa bug, must always emit a vertex even when line is not being displayed
+        gl_Position = vec4(0.0);
         if (v_color[index].a != 0.0) {
             vec4 vertex_delta = gl_in[1].gl_Position - gl_in[0].gl_Position;
             vec3 normal = sign * normalize(vec3(vertex_delta.z, vertex_delta.y, -vertex_delta.x));
             f_normal = normal;
             gl_Position = viewProjectionMatrix * (gl_in[index].gl_Position + vec4(normal * offset, 0.0));
-            EmitVertex();
         }
-        else {
-            // workaround mesa bug, must always emit a vertex even when line is not being displayed
-            gl_Position = vec4(0.0);
-            EmitVertex();
-        }
+        EmitVertex();
     }
 
     void emitVertexV(const int index, const float sign, const float offset)
@@ -167,16 +164,13 @@ geometry =
         f_vertex = v_vertex[index];
         #endif
         f_color = v_color[index];
+        // workaround mesa bug, must always emit a vertex even when line is not being displayed
+        gl_Position = vec4(0.0);
         if (v_color[index].a != 0.0) {
             f_normal = vec3(0.0, sign, 0.0);
             gl_Position = viewProjectionMatrix * (gl_in[index].gl_Position + vec4(0.0, sign * offset, 0.0, 0.0));
-            EmitVertex();
         }
-        else {
-            // workaround mesa bug, must always emit a vertex even when line is not being displayed
-            gl_Position = vec4(0.0);
-            EmitVertex();
-        }
+        EmitVertex();
     }
 
     void main()
@@ -218,7 +212,7 @@ fragment =
 
     void main()
     {
-        vec4 colour = u_minimumAlbedo + f_color * ((gl_FrontFacing) ? (dot(f_normal, normalize(u_lightPosition)) + 0.2) :  0.5);
+        vec4 colour = u_minimumAlbedo + f_color * ((gl_FrontFacing) ? (dot(f_normal, normalize(u_lightPosition)) + 0.2) :  0.7);
         colour.a = f_color.a;
         frag_color = colour;
     }
