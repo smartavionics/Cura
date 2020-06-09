@@ -95,15 +95,12 @@ geometry =
         f_vertex = v_vertex[index];
         f_color = v_color[index];
         f_normal = normal;
+        // workaround mesa bug, must always emit a vertex even when line is not being displayed
+        gl_Position = vec4(0.0);
         if (v_color[index].a != 0.0) {
             gl_Position = viewProjectionMatrix * (gl_in[index].gl_Position + pos_offset);
-            EmitVertex();
         }
-        else {
-            // workaround mesa bug, must always emit a vertex even when line is not being displayed
-            gl_Position = vec4(0.0);
-            EmitVertex();
-        }
+        EmitVertex();
     }
 
     void main()
