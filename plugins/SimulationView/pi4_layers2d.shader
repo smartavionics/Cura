@@ -122,6 +122,7 @@ geometry =
     uniform mediump mat4 u_projectionMatrix;
 
     uniform mediump vec3 u_viewPosition;
+    uniform mediump vec3 u_lightPosition;
 
     layout(lines) in;
     layout(triangle_strip, max_vertices = 6) out;
@@ -137,25 +138,18 @@ geometry =
 
     mediump mat4 viewProjectionMatrix;
 
-    void outputVertex(const bool is_horizontal_surface, const int index, const float sign, const float offset)
+    void outputVertex(const int index, const vec3 normal, const float x_offset, const float y_offset)
     {
         f_vertex = v_vertex[index];
         f_color = v_color[index];
+        f_normal = normal;
         // workaround mesa bug, must always emit a vertex even when line is not being displayed
         gl_Position = vec4(0.0);
         if (v_color[index].a != 0.0) {
             vec4 vertex_delta = gl_in[1].gl_Position - gl_in[0].gl_Position;
-            vec3 normal = normalize(vec3(vertex_delta.z, vertex_delta.y, -vertex_delta.x));
-            vec4 pos_offset;
-            if (is_horizontal_surface) {
-                f_normal = sign * vec3(0.0, 1.0, 0.0); // up/down
-                pos_offset = vec4(normal * offset, 0.0); // left/right
-            }
-            else {
-                f_normal = sign * normal; // left/right
-                pos_offset = vec4(0.0, offset, 0.0, 0.0); // up/down
-            }
-            gl_Position = viewProjectionMatrix * (gl_in[index].gl_Position + pos_offset);
+            vec3 offset_vec = normalize(vec3(vertex_delta.z, 0.0, -vertex_delta.x)) * x_offset;
+            offset_vec.y = y_offset;
+            gl_Position = viewProjectionMatrix * (gl_in[index].gl_Position + vec4(offset_vec, 0.0));
         }
         EmitVertex();
     }
@@ -164,39 +158,32 @@ geometry =
     {
         viewProjectionMatrix = u_projectionMatrix * u_viewMatrix;
 
-        vec3 view_delta = normalize(u_viewPosition - (v_vertex[0] + v_vertex[1]) * 0.5);
-        float sign = 1.0;
-        float offset;
-        bool is_horizontal_surface = true;
+        vec3 light_delta = normalize(u_lightPosition - (v_vertex[0] + v_vertex[1]) * 0.5); // light to middle of line
+        vec3 view_delta = normalize(u_viewPosition - (v_vertex[0] + v_vertex[1]) * 0.5); // camera to middle of line
 
-        if (view_delta.y > 0.5) {
-            // top
-            sign = -1.0;
-            offset = -v_line_width[1];
+        float h_comp = length(view_delta.xz); // horizontal component
+        float v_comp = 1.0 - h_comp; // vertical component
+        float x_sign = -1.0;
+
+        // fiddle with sign of horizontal offset so that primitive is always tilting towards viewer
+        if (((v_vertex[1].x - v_vertex[0].x)*(u_viewPosition.z - v_vertex[0].z) - (v_vertex[1].z - v_vertex[0].z)*(u_viewPosition.x - v_vertex[0].x)) > 0.0) {
+            x_sign *= -1.0;
         }
-        else if (view_delta.y < -0.5) {
-            // bottom
-            offset = v_line_width[1];
-        }
-        else {
-            is_horizontal_surface = false;
-            if (((v_vertex[1].x - v_vertex[0].x)*(u_viewPosition.z - v_vertex[0].z) - (v_vertex[1].z - v_vertex[0].z)*(u_viewPosition.x - v_vertex[0].x)) > 0.0) {
-                // front
-                offset = -v_line_height[1];
-            }
-            else {
-                // back
-                sign = -1.0;
-                offset = v_line_height[1];
-            }
+        if (view_delta.y < 0.0) {
+            x_sign *= -1.0;
         }
 
-        outputVertex(is_horizontal_surface, 0, sign, offset);
-        outputVertex(is_horizontal_surface, 1, sign, offset);
-        outputVertex(is_horizontal_surface, 0, -sign, 0.0);
-        outputVertex(is_horizontal_surface, 1, -sign, 0.0);
-        outputVertex(is_horizontal_surface, 0, sign, -offset);
-        outputVertex(is_horizontal_surface, 1, sign, -offset);
+        // x_offset is max when looking from above/below (i.e. v_comp is near 1.0) or when looking along line segment
+        float x_offset = v_line_width[1] * max(v_comp, abs(dot(normalize(v_vertex[1] - v_vertex[0]), view_delta)));
+        // y_offset is max when looking from side
+        float y_offset = v_line_height[1] * h_comp;
+
+        outputVertex(0, -light_delta, -x_sign * x_offset, -y_offset);
+        outputVertex(1, -light_delta, -x_sign * x_offset, -y_offset);
+        outputVertex(0, light_delta, 0.0, 0.0);
+        outputVertex(1, light_delta, 0.0, 0.0);
+        outputVertex(0, -light_delta, x_sign * x_offset, y_offset);
+        outputVertex(1, -light_delta, x_sign * x_offset, y_offset);
 
         EndPrimitive();
     }

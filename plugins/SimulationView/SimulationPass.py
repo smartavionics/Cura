@@ -21,6 +21,7 @@ from PyQt5 import QtCore, QtWidgets
 from copy import deepcopy
 
 import os.path
+import os
 
 ## RenderPass used to display g-code paths.
 from .NozzleNode import NozzleNode
@@ -45,6 +46,13 @@ class SimulationPass(RenderPass):
 
         self._layer_view = None
         self._compatibility_mode = None
+
+        self._max_3d_elements = 500000
+        if "CURA_MAX_LAYER_VIEW_3D_ELEMENTS" in os.environ:
+            try:
+                self._max_3d_elements = int(os.environ["CURA_MAX_LAYER_VIEW_3D_ELEMENTS"])
+            except:
+                pass
 
     def setSimulationView(self, layerview):
         self._layer_view = layerview
@@ -188,7 +196,7 @@ class SimulationPass(RenderPass):
                             self._current_shader = self._layer_shader
 
                     if self._layer_shader_2d and self._current_shader != self._layer_shadow_shader:
-                        if (end - start) < 500000:
+                        if (end - start) < self._max_3d_elements:
                             self._current_shader = self._layer_shader
                         else:
                             self._current_shader = self._layer_shader_2d
@@ -220,7 +228,7 @@ class SimulationPass(RenderPass):
 
                     # for the PI 4, only bother to output the lower layers using the shadow shader when riding the nozzle
                     if not self._pi4_shaders or self._current_shader != self._layer_shadow_shader or ride_the_nozzle:
-                        backface_cull = not self._pi4_shaders or self._current_shader != self._layer_shader
+                        backface_cull = not self._pi4_shaders or self._current_shader == self._layer_shadow_shader
                         layers_batch = RenderBatch(self._current_shader, type = RenderBatch.RenderType.Solid, mode = RenderBatch.RenderMode.Lines, range = (start, end), backface_cull = backface_cull)
                         layers_batch.addItem(node.getWorldTransformation(), layer_data)
                         layers_batch.render(self._scene.getActiveCamera())
