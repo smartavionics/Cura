@@ -147,9 +147,9 @@ geometry =
         gl_Position = vec4(0.0);
         if (v_color[index].a != 0.0) {
             vec4 vertex_delta = gl_in[1].gl_Position - gl_in[0].gl_Position;
-            vec3 offset_vec = normalize(vec3(vertex_delta.z, 0.0, -vertex_delta.x)) * x_offset;
+            vec4 offset_vec = normalize(vec4(vertex_delta.z, 0.0, -vertex_delta.x, 0.0)) * x_offset;
             offset_vec.y = y_offset;
-            gl_Position = viewProjectionMatrix * (gl_in[index].gl_Position + vec4(offset_vec, 0.0));
+            gl_Position = viewProjectionMatrix * (gl_in[index].gl_Position + offset_vec);
         }
         EmitVertex();
     }
