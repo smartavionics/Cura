@@ -7712,7 +7712,7 @@
                     "label": "Bridge Extend Floating Walls",
                     "description": "Extend bridge wall lines that start/end above air so that they are anchored to the part outline. The amount a line is extended is limited to twice the original length.",
                     "type": "bool",
-                    "default_value": true,
+                    "default_value": false,
                     "enabled": "bridge_settings_enabled",
                     "settable_per_mesh": true
                 },
