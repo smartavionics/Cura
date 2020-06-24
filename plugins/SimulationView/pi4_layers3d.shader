@@ -100,8 +100,8 @@ vertex =
         }
 
         if ((a_line_type == 8.0) || (a_line_type == 9.0)) {
-            v_line_width = 0.075;
-            v_line_height = 0.075;
+            v_line_width = 0.05;
+            v_line_height = 0.01;
         }
         else {
             v_line_width = a_line_dim.x * 0.5;
