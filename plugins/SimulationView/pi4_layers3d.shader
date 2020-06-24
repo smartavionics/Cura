@@ -36,7 +36,6 @@ vertex =
 
     out lowp vec4 f_color;
     out lowp vec3 f_normal;
-    out lowp vec3 f_vertex;
 
     vec4 feedrateGradientColor(float abs_value, float min_value, float max_value)
     {
@@ -101,8 +100,8 @@ vertex =
         }
 
         if ((a_line_type == 8.0) || (a_line_type == 9.0)) {
-            v_line_width = 0.075;
-            v_line_height = 0.075;
+            v_line_width = 0.05;
+            v_line_height = 0.01;
         }
         else {
             v_line_width = a_line_dim.x * 0.5;
@@ -111,14 +110,11 @@ vertex =
 
         // for testing without geometry shader
         f_color = v_color;
-        f_vertex = v_vertex;
         //f_normal = v_normal;
     }
 
 geometry =
     #version 320 es
-
-    #define HAVE_VERTEX 0
 
     uniform mediump mat4 u_viewMatrix;
     uniform mediump mat4 u_projectionMatrix;
@@ -127,50 +123,34 @@ geometry =
     layout(triangle_strip, max_vertices = 10) out;
 
     in lowp vec4 v_color[];
-    #if HAVE_VERTEX
-    in lowp vec3 v_vertex[];
-    #endif
     in mediump float v_line_width[];
     in mediump float v_line_height[];
 
     out lowp vec4 f_color;
     out vec3 f_normal;
-    #if HAVE_VERTEX
-    out vec3 f_vertex;
-    #endif
 
     mediump mat4 viewProjectionMatrix;
 
     void emitVertexH(const int index, const float sign, const float offset)
     {
-        #if HAVE_VERTEX
-        f_vertex = v_vertex[index];
-        #endif
         f_color = v_color[index];
-        // workaround mesa bug, must always emit a vertex even when line is not being displayed
-        gl_Position = vec4(0.0);
         if (v_color[index].a != 0.0) {
             vec4 vertex_delta = gl_in[1].gl_Position - gl_in[0].gl_Position;
             vec3 normal = sign * normalize(vec3(vertex_delta.z, vertex_delta.y, -vertex_delta.x));
             f_normal = normal;
             gl_Position = viewProjectionMatrix * (gl_in[index].gl_Position + vec4(normal * offset, 0.0));
+            EmitVertex();
         }
-        EmitVertex();
     }
 
     void emitVertexV(const int index, const float sign, const float offset)
     {
-        #if HAVE_VERTEX
-        f_vertex = v_vertex[index];
-        #endif
         f_color = v_color[index];
-        // workaround mesa bug, must always emit a vertex even when line is not being displayed
-        gl_Position = vec4(0.0);
         if (v_color[index].a != 0.0) {
             f_normal = vec3(0.0, sign, 0.0);
             gl_Position = viewProjectionMatrix * (gl_in[index].gl_Position + vec4(0.0, sign * offset, 0.0, 0.0));
+            EmitVertex();
         }
-        EmitVertex();
     }
 
     void main()
@@ -202,7 +182,6 @@ fragment =
     #endif // GL_ES
     in lowp vec4 f_color;
     in vec3 f_normal;
-    //in lowp vec3 f_vertex;
 
     out vec4 frag_color;
 

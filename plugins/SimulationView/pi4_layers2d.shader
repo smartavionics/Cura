@@ -36,7 +36,6 @@ vertex =
 
     out lowp vec4 f_color;
     out vec3 f_normal;
-    out vec3 f_vertex;
 
     vec4 feedrateGradientColor(float abs_value, float min_value, float max_value)
     {
@@ -101,8 +100,8 @@ vertex =
         }
 
         if ((a_line_type == 8.0) || (a_line_type == 9.0)) {
-            v_line_width = 0.075;
-            v_line_height = 0.075;
+            v_line_width = 0.05;
+            v_line_height = 0.05;
         }
         else {
             v_line_width = a_line_dim.x * 0.5;
@@ -111,7 +110,6 @@ vertex =
 
         // for testing without geometry shader
         f_color = v_color;
-        f_vertex = v_vertex;
         //f_normal = v_normal;
     }
 
@@ -134,28 +132,26 @@ geometry =
 
     out lowp vec4 f_color;
     out vec3 f_normal;
-    out vec3 f_vertex;
 
     mediump mat4 viewProjectionMatrix;
 
     void outputVertex(const int index, const vec3 normal, const float x_offset, const float y_offset)
     {
-        f_vertex = v_vertex[index];
         f_color = v_color[index];
         f_normal = normal;
-        // workaround mesa bug, must always emit a vertex even when line is not being displayed
-        gl_Position = vec4(0.0);
-        if (v_color[index].a != 0.0) {
-            vec4 vertex_delta = gl_in[1].gl_Position - gl_in[0].gl_Position;
-            vec4 offset_vec = normalize(vec4(vertex_delta.z, 0.0, -vertex_delta.x, 0.0)) * x_offset;
-            offset_vec.y = y_offset;
-            gl_Position = viewProjectionMatrix * (gl_in[index].gl_Position + offset_vec);
-        }
+        vec4 vertex_delta = gl_in[1].gl_Position - gl_in[0].gl_Position;
+        vec4 offset_vec = normalize(vec4(vertex_delta.z, 0.0, -vertex_delta.x, 0.0)) * x_offset;
+        offset_vec.y = y_offset;
+        gl_Position = viewProjectionMatrix * (gl_in[index].gl_Position + offset_vec);
         EmitVertex();
     }
 
     void main()
     {
+        if (v_color[1].a == 0.0) {
+            return;
+        }
+
         viewProjectionMatrix = u_projectionMatrix * u_viewMatrix;
 
         vec3 light_delta = normalize(u_lightPosition - (v_vertex[0] + v_vertex[1]) * 0.5); // light to middle of line
@@ -199,7 +195,6 @@ fragment =
     #endif // GL_ES
     in lowp vec4 f_color;
     in vec3 f_normal;
-    in vec3 f_vertex;
 
     out vec4 frag_color;
 

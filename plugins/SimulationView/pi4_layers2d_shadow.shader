@@ -31,7 +31,6 @@ vertex =
 
     out lowp vec4 f_color;
     out vec3 f_normal;
-    out vec3 f_vertex;
 
     void main()
     {
@@ -66,7 +65,6 @@ vertex =
 
         // for testing without geometry shader
         f_color = v_color;
-        f_vertex = v_vertex;
         //f_normal = v_normal;
     }
 
@@ -86,25 +84,23 @@ geometry =
 
     out vec4 f_color;
     out vec3 f_normal;
-    out vec3 f_vertex;
 
     mediump mat4 viewProjectionMatrix;
 
     void myEmitVertex(const int index, const mediump vec3 normal, const mediump vec4 pos_offset)
     {
-        f_vertex = v_vertex[index];
         f_color = v_color[index];
         f_normal = normal;
-        // workaround mesa bug, must always emit a vertex even when line is not being displayed
-        gl_Position = vec4(0.0);
-        if (v_color[index].a != 0.0) {
-            gl_Position = viewProjectionMatrix * (gl_in[index].gl_Position + pos_offset);
-        }
+        gl_Position = viewProjectionMatrix * (gl_in[index].gl_Position + pos_offset);
         EmitVertex();
     }
 
     void main()
     {
+        if (v_color[1].a == 0.0) {
+            return;
+        }
+
         viewProjectionMatrix = u_projectionMatrix * u_viewMatrix;
 
         mediump vec3 vertex_normal;
@@ -148,7 +144,6 @@ fragment =
     #endif // GL_ES
     in lowp vec4 f_color;
     in vec3 f_normal;
-    in vec3 f_vertex;
 
     out vec4 frag_color;
 
