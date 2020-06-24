@@ -36,7 +36,6 @@ vertex =
 
     out lowp vec4 f_color;
     out vec3 f_normal;
-    out vec3 f_vertex;
 
     vec4 feedrateGradientColor(float abs_value, float min_value, float max_value)
     {
@@ -111,7 +110,6 @@ vertex =
 
         // for testing without geometry shader
         f_color = v_color;
-        f_vertex = v_vertex;
         //f_normal = v_normal;
     }
 
@@ -134,13 +132,11 @@ geometry =
 
     out lowp vec4 f_color;
     out vec3 f_normal;
-    out vec3 f_vertex;
 
     mediump mat4 viewProjectionMatrix;
 
     void outputVertex(const int index, const vec3 normal, const float x_offset, const float y_offset)
     {
-        f_vertex = v_vertex[index];
         f_color = v_color[index];
         f_normal = normal;
         // workaround mesa bug, must always emit a vertex even when line is not being displayed
@@ -199,7 +195,6 @@ fragment =
     #endif // GL_ES
     in lowp vec4 f_color;
     in vec3 f_normal;
-    in vec3 f_vertex;
 
     out vec4 frag_color;
 
