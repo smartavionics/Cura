@@ -139,19 +139,19 @@ geometry =
     {
         f_color = v_color[index];
         f_normal = normal;
-        // workaround mesa bug, must always emit a vertex even when line is not being displayed
-        gl_Position = vec4(0.0);
-        if (v_color[index].a != 0.0) {
-            vec4 vertex_delta = gl_in[1].gl_Position - gl_in[0].gl_Position;
-            vec4 offset_vec = normalize(vec4(vertex_delta.z, 0.0, -vertex_delta.x, 0.0)) * x_offset;
-            offset_vec.y = y_offset;
-            gl_Position = viewProjectionMatrix * (gl_in[index].gl_Position + offset_vec);
-        }
+        vec4 vertex_delta = gl_in[1].gl_Position - gl_in[0].gl_Position;
+        vec4 offset_vec = normalize(vec4(vertex_delta.z, 0.0, -vertex_delta.x, 0.0)) * x_offset;
+        offset_vec.y = y_offset;
+        gl_Position = viewProjectionMatrix * (gl_in[index].gl_Position + offset_vec);
         EmitVertex();
     }
 
     void main()
     {
+        if (v_color[1].a == 0.0) {
+            return;
+        }
+
         viewProjectionMatrix = u_projectionMatrix * u_viewMatrix;
 
         vec3 light_delta = normalize(u_lightPosition - (v_vertex[0] + v_vertex[1]) * 0.5); // light to middle of line

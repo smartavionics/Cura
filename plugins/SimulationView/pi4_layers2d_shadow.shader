@@ -91,16 +91,16 @@ geometry =
     {
         f_color = v_color[index];
         f_normal = normal;
-        // workaround mesa bug, must always emit a vertex even when line is not being displayed
-        gl_Position = vec4(0.0);
-        if (v_color[index].a != 0.0) {
-            gl_Position = viewProjectionMatrix * (gl_in[index].gl_Position + pos_offset);
-        }
+        gl_Position = viewProjectionMatrix * (gl_in[index].gl_Position + pos_offset);
         EmitVertex();
     }
 
     void main()
     {
+        if (v_color[1].a == 0.0) {
+            return;
+        }
+
         viewProjectionMatrix = u_projectionMatrix * u_viewMatrix;
 
         mediump vec3 vertex_normal;
