@@ -66,7 +66,10 @@ vertex =
     void main()
     {
         vec4 v1_vertex = a_vertex;
-        v1_vertex.y -= a_line_dim.y * 0.5;  // half layer down
+        if ((a_line_type == 8.0) || (a_line_type == 9.0))
+            v1_vertex.y += 0.05; // move line slightly above layer
+        else
+            v1_vertex.y -= a_line_dim.y * 0.5;  // half layer down
 
         vec4 world_space_vert = u_modelMatrix * v1_vertex;
         gl_Position = world_space_vert;
