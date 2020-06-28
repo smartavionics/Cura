@@ -116,6 +116,8 @@ vertex =
 geometry =
     #version 320 es
 
+    uniform lowp int u_resolution;
+
     uniform mediump mat4 u_viewMatrix;
     uniform mediump mat4 u_projectionMatrix;
 
@@ -154,7 +156,6 @@ geometry =
 
         viewProjectionMatrix = u_projectionMatrix * u_viewMatrix;
 
-        vec3 light_delta = normalize(u_lightPosition - (v_vertex[0] + v_vertex[1]) * 0.5); // light to middle of line
         vec3 view_delta = normalize(u_viewPosition - (v_vertex[0] + v_vertex[1]) * 0.5); // camera to middle of line
 
         float h_comp = length(view_delta.xz); // horizontal component
@@ -174,12 +175,15 @@ geometry =
         // y_offset is max when looking from side
         float y_offset = v_line_height[1] * h_comp;
 
-        outputVertex(0, -light_delta, -x_sign * x_offset, -y_offset);
-        outputVertex(1, -light_delta, -x_sign * x_offset, -y_offset);
-        outputVertex(0, light_delta, 0.0, 0.0);
-        outputVertex(1, light_delta, 0.0, 0.0);
-        outputVertex(0, -light_delta, x_sign * x_offset, y_offset);
-        outputVertex(1, -light_delta, x_sign * x_offset, y_offset);
+        outputVertex(0, -view_delta, -x_sign * x_offset, -y_offset);
+        outputVertex(1, -view_delta, -x_sign * x_offset, -y_offset);
+        if (u_resolution > 0) {
+            outputVertex(0, view_delta, 0.0, 0.0);
+            outputVertex(1, view_delta, 0.0, 0.0);
+            view_delta = -view_delta;
+        }
+        outputVertex(0, view_delta, x_sign * x_offset, y_offset);
+        outputVertex(1, view_delta, x_sign * x_offset, y_offset);
 
         EndPrimitive();
     }
@@ -231,6 +235,8 @@ u_max_feedrate = 1
 
 u_min_thickness = 0
 u_max_thickness = 1
+
+u_resolution = 1
 
 [bindings]
 u_modelMatrix = model_matrix

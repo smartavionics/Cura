@@ -200,6 +200,15 @@ class SimulationPass(RenderPass):
                             self._current_shader = self._layer_shader
                         else:
                             self._current_shader = self._layer_shader_2d
+                            resolution = 1
+                            camera = self._scene.getActiveCamera()
+                            if camera.isPerspective():
+                                if camera.getWorldPosition().length() > 200.0:
+                                    resolution = 0
+                            else:
+                                if camera.getZoomFactor() > -0.45:
+                                    resolution = 0
+                            self._current_shader.setUniformValue("u_resolution", resolution)
 
                     if self._pi4_shaders:
                         self._current_shader.setUniformValue("u_active_extruder", float(max(0, self._extruder_manager.activeExtruderIndex)))
