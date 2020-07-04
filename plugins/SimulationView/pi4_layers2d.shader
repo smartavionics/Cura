@@ -94,7 +94,6 @@ vertex =
         //v_normal = (u_normalMatrix * normalize(a_normal)).xyz;
 
         if ((u_extruder_opacity[int(a_extruder)] == 0.0) ||
-            (a_line_dim.x < 0.01) ||
             ((u_show_travel_moves == 0) && ((a_line_type == 8.0) || (a_line_type == 9.0))) ||
             ((u_show_helpers == 0) && ((a_line_type == 4.0) || (a_line_type == 5.0) || (a_line_type == 7.0) || (a_line_type == 10.0) || a_line_type == 11.0)) ||
             ((u_show_skin == 0) && ((a_line_type == 1.0) || (a_line_type == 2.0) || (a_line_type == 3.0))) ||
