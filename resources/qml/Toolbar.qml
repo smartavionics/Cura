@@ -78,6 +78,10 @@ Item
                         {
                             base.activeY = y;
                         }
+                        //Clear focus when tools change. This prevents the tool grabbing focus when activated.
+                        //Grabbing focus prevents items from being deleted.
+                        //Apparently this was only a problem on MacOS.
+                        forceActiveFocus();
                     }
 
                     //Workaround since using ToolButton's onClicked would break the binding of the checked property, instead
@@ -131,7 +135,6 @@ Item
 
             Repeater
             {
-                id: extruders
                 width: childrenRect.width
                 height: childrenRect.height
                 model: extrudersModel.items.length > 1 ? extrudersModel : 0
@@ -184,7 +187,7 @@ Item
         MouseArea //Catch all mouse events (so scene doesnt handle them)
         {
             anchors.fill: parent
-            acceptedButtons: Qt.NoButton
+            acceptedButtons: Qt.AllButtons
             onWheel: wheel.accepted = true
         }
 

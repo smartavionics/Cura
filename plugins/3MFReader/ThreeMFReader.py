@@ -3,7 +3,7 @@
 
 import os.path
 import zipfile
-from typing import List, Optional, Union, TYPE_CHECKING
+from typing import List, Optional, Union, TYPE_CHECKING, cast
 
 import Savitar
 import numpy
@@ -32,8 +32,9 @@ except ImportError:
     import xml.etree.ElementTree as ET
 
 
-##    Base implementation for reading 3MF files. Has no support for textures. Only loads meshes!
 class ThreeMFReader(MeshReader):
+    """Base implementation for reading 3MF files. Has no support for textures. Only loads meshes!"""
+
     def __init__(self) -> None:
         super().__init__()
 
@@ -55,13 +56,17 @@ class ThreeMFReader(MeshReader):
             return Matrix()
 
         split_transformation = transformation.split()
-        ## Transformation is saved as:
-        ## M00 M01 M02 0.0
-        ## M10 M11 M12 0.0
-        ## M20 M21 M22 0.0
-        ## M30 M31 M32 1.0
-        ## We switch the row & cols as that is how everyone else uses matrices!
         temp_mat = Matrix()
+        """Transformation is saved as:
+            M00 M01 M02 0.0
+
+            M10 M11 M12 0.0
+
+            M20 M21 M22 0.0
+
+            M30 M31 M32 1.0
+        We switch the row & cols as that is how everyone else uses matrices!
+        """
         # Rotation & Scale
         temp_mat._data[0, 0] = split_transformation[0]
         temp_mat._data[1, 0] = split_transformation[1]
@@ -80,9 +85,11 @@ class ThreeMFReader(MeshReader):
 
         return temp_mat
 
-    ##  Convenience function that converts a SceneNode object (as obtained from libSavitar) to a scene node.
-    #   \returns Scene node.
     def _convertSavitarNodeToUMNode(self, savitar_node: Savitar.SceneNode, file_name: str = "") -> Optional[SceneNode]:
+        """Convenience function that converts a SceneNode object (as obtained from libSavitar) to a scene node.
+
+        :returns: Scene node.
+        """
         try:
             node_name = savitar_node.getName()
             node_id = savitar_node.getId()
@@ -162,8 +169,16 @@ class ThreeMFReader(MeshReader):
                 setting_container.setProperty(key, "value", setting_value)
 
         if len(um_node.getChildren()) > 0 and um_node.getMeshData() is None:
-            group_decorator = GroupDecorator()
-            um_node.addDecorator(group_decorator)
+            if len(um_node.getAllChildren()) == 1:
+                # We don't want groups of one, so move the node up one "level"
+                child_node = um_node.getChildren()[0]
+                parent_transformation = um_node.getLocalTransformation()
+                child_transformation = child_node.getLocalTransformation()
+                child_node.setTransformation(parent_transformation.multiply(child_transformation))
+                um_node = cast(CuraSceneNode, um_node.getChildren()[0])
+            else:
+                group_decorator = GroupDecorator()
+                um_node.addDecorator(group_decorator)
         um_node.setSelectable(True)
         if um_node.getMeshData():
             # Assuming that all nodes with mesh data are printable objects
@@ -185,8 +200,8 @@ class ThreeMFReader(MeshReader):
                 um_node = self._convertSavitarNodeToUMNode(node, file_name)
                 if um_node is None:
                     continue
-                # compensate for original center position, if object(s) is/are not around its zero position
 
+                # compensate for original center position, if object(s) is/are not around its zero position
                 transform_matrix = Matrix()
                 mesh_data = um_node.getMeshData()
                 if mesh_data is not None:
@@ -243,15 +258,17 @@ class ThreeMFReader(MeshReader):
 
         return result
 
-    ##  Create a scale vector based on a unit string.
-    #   The core spec defines the following:
-    #   * micron
-    #   * millimeter (default)
-    #   * centimeter
-    #   * inch
-    #   * foot
-    #   * meter
     def _getScaleFromUnit(self, unit: Optional[str]) -> Vector:
+        """Create a scale vector based on a unit string.
+
+        .. The core spec defines the following:
+        * micron
+        * millimeter (default)
+        * centimeter
+        * inch
+        * foot
+        * meter
+        """
         conversion_to_mm = {
             "micron": 0.001,
             "millimeter": 1,
