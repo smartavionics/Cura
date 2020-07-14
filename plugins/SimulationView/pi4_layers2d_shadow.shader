@@ -5,7 +5,7 @@ vertex =
 
     uniform lowp float u_active_extruder;
 
-    uniform lowp vec4 u_extruder_opacity;  // currently only for max 4 extruders, others always visible
+    uniform lowp mat4 u_extruder_opacity;  // currently only for max 16 extruders, others always visible
 
     //uniform highp mat4 u_normalMatrix;
 
@@ -46,7 +46,7 @@ vertex =
         v_vertex = world_space_vert.xyz;
         //v_normal = (u_normalMatrix * normalize(a_normal)).xyz;
 
-        if ((u_extruder_opacity[int(a_extruder)] == 0.0) ||
+        if ((u_extruder_opacity[int(mod(a_extruder, 4.0))][int(a_extruder / 4.0)] == 0.0) ||
             ((u_show_travel_moves == 0) && ((a_line_type == 8.0) || (a_line_type == 9.0))) ||
             ((u_show_helpers == 0) && ((a_line_type == 4.0) || (a_line_type == 5.0) || (a_line_type == 7.0) || (a_line_type == 10.0) || a_line_type == 11.0)) ||
             ((u_show_skin == 0) && ((a_line_type == 1.0) || (a_line_type == 2.0) || (a_line_type == 3.0))) ||
@@ -161,7 +161,7 @@ fragment =
 [defaults]
 u_active_extruder = 0.0
 u_layer_view_type = 0
-u_extruder_opacity = [1.0, 1.0, 1.0, 1.0]
+u_extruder_opacity = [[1.0, 1.0, 1.0, 1.0], [1.0, 1.0, 1.0, 1.0], [1.0, 1.0, 1.0, 1.0], [1.0, 1.0, 1.0, 1.0]]
 
 u_specularColor = [0.4, 0.4, 0.4, 1.0]
 u_ambientColor = [0.3, 0.3, 0.3, 0.0]
