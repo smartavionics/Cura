@@ -4436,7 +4436,7 @@
                         "low_resolution": "Low"
                     },
                     "default_value": "medium_resolution",
-                    "enabled": "(support_enable or support_tree_enable) and support_pattern == 'gyroid'",
+                    "enabled": "support_enable and support_pattern == 'gyroid'",
                     "limit_to_extruder": "support_infill_extruder_nr",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
