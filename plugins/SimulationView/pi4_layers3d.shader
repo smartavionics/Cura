@@ -134,41 +134,40 @@ geometry =
     void emitVertexH(const int index, const float sign, const float offset)
     {
         f_color = v_color[index];
-        if (v_color[index].a != 0.0) {
-            vec4 vertex_delta = gl_in[1].gl_Position - gl_in[0].gl_Position;
-            vec3 normal = sign * normalize(vec3(vertex_delta.z, vertex_delta.y, -vertex_delta.x));
-            f_normal = normal;
-            gl_Position = viewProjectionMatrix * (gl_in[index].gl_Position + vec4(normal * offset, 0.0));
-            EmitVertex();
-        }
+        vec4 vertex_delta = gl_in[1].gl_Position - gl_in[0].gl_Position;
+        vec3 normal = sign * normalize(vec3(vertex_delta.z, vertex_delta.y, -vertex_delta.x));
+        f_normal = normal;
+        gl_Position = viewProjectionMatrix * (gl_in[index].gl_Position + vec4(normal * offset, 0.0));
+        EmitVertex();
     }
 
     void emitVertexV(const int index, const float sign, const float offset)
     {
         f_color = v_color[index];
-        if (v_color[index].a != 0.0) {
-            f_normal = vec3(0.0, sign, 0.0);
-            gl_Position = viewProjectionMatrix * (gl_in[index].gl_Position + vec4(0.0, sign * offset, 0.0, 0.0));
-            EmitVertex();
-        }
+        f_normal = vec3(0.0, sign, 0.0);
+        gl_Position = viewProjectionMatrix * (gl_in[index].gl_Position + vec4(0.0, sign * offset, 0.0, 0.0));
+        EmitVertex();
     }
 
     void main()
     {
-        viewProjectionMatrix = u_projectionMatrix * u_viewMatrix;
+        if (v_color[1].a != 0.0) {
 
-        emitVertexH(0, -1.0, v_line_width[1]);
-        emitVertexH(1, -1.0, v_line_width[1]);
-        emitVertexV(0, 1.0, v_line_height[1]);
-        emitVertexV(1, 1.0, v_line_height[1]);
-        emitVertexH(0, 1.0, v_line_width[1]);
-        emitVertexH(1, 1.0, v_line_width[1]);
-        emitVertexV(0, -1.0, v_line_height[1]);
-        emitVertexV(1, -1.0, v_line_height[1]);
-        emitVertexH(0, -1.0, v_line_width[1]);
-        emitVertexH(1, -1.0, v_line_width[1]);
+            viewProjectionMatrix = u_projectionMatrix * u_viewMatrix;
 
-        EndPrimitive();
+            emitVertexH(0, -1.0, v_line_width[1]);
+            emitVertexH(1, -1.0, v_line_width[1]);
+            emitVertexV(0, 1.0, v_line_height[1]);
+            emitVertexV(1, 1.0, v_line_height[1]);
+            emitVertexH(0, 1.0, v_line_width[1]);
+            emitVertexH(1, 1.0, v_line_width[1]);
+            emitVertexV(0, -1.0, v_line_height[1]);
+            emitVertexV(1, -1.0, v_line_height[1]);
+            emitVertexH(0, -1.0, v_line_width[1]);
+            emitVertexH(1, -1.0, v_line_width[1]);
+
+            EndPrimitive();
+        }
     }
 
 fragment =
