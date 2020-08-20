@@ -8201,6 +8201,39 @@
                     "minimum_value_warning": "25",
                     "maximum_value_warning": "100",
                     "settable_per_mesh": true
+                },
+                "skin_lines_boost_flow":
+                {
+                    "label": "Travel Compensate Skin Lines",
+                    "description": "When enabled, skin line flow is progressively increased to compensate for the nozzle pressure loss that occurs during the preceding travel move. This pressure loss can result in reduced skin print quality. The longer the preceding travel move or shorter the skin line, the more the flow is increased.",
+                    "type": "bool",
+                    "default_value": false,
+                    "settable_per_mesh": true
+                },
+                "skin_lines_max_flow_boost":
+                {
+                    "label": "Skin Lines Max Flow",
+                    "description": "The maximum flow multiplier used when printing skin lines.",
+                    "unit": "%",
+                    "type": "float",
+                    "default_value": 125,
+                    "minimum_value": "100",
+                    "maximum_value_warning": "200",
+                    "enabled": "skin_lines_boost_flow",
+                    "settable_per_mesh": true
+                },
+                "skin_lines_max_flow_boost_0":
+                {
+                    "label": "Skin Lines Initial Layer Max Flow",
+                    "description": "The maximum flow multiplier used when printing skin lines on the initial layer.",
+                    "unit": "%",
+                    "type": "float",
+                    "default_value": 125,
+                    "minimum_value": "100",
+                    "maximum_value_warning": "200",
+                    "value": "skin_lines_max_flow_boost",
+                    "enabled": "skin_lines_boost_flow",
+                    "settable_per_mesh": true
                 }
             }
         },
