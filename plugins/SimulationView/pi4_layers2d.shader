@@ -139,7 +139,7 @@ geometry =
 
     void outputVertex(const int index, const vec3 normal, const float x_offset, const float y_offset)
     {
-        f_color = v_color[index];
+        f_color = v_color[1];
         f_normal = normal;
         vec4 vertex_delta = gl_in[1].gl_Position - gl_in[0].gl_Position;
         vec4 offset_vec = normalize(vec4(vertex_delta.z, 0.0, -vertex_delta.x, 0.0)) * x_offset;

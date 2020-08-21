@@ -133,7 +133,7 @@ geometry =
 
     void emitVertexH(const int index, const float sign, const float offset)
     {
-        f_color = v_color[index];
+        f_color = v_color[1];
         vec4 vertex_delta = gl_in[1].gl_Position - gl_in[0].gl_Position;
         vec3 normal = sign * normalize(vec3(vertex_delta.z, vertex_delta.y, -vertex_delta.x));
         f_normal = normal;
@@ -143,7 +143,7 @@ geometry =
 
     void emitVertexV(const int index, const float sign, const float offset)
     {
-        f_color = v_color[index];
+        f_color = v_color[1];
         f_normal = vec3(0.0, sign, 0.0);
         gl_Position = viewProjectionMatrix * (gl_in[index].gl_Position + vec4(0.0, sign * offset, 0.0, 0.0));
         EmitVertex();
