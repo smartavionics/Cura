@@ -192,3 +192,65 @@ def test_setInvalidActiveMachine(machine_manager):
     # Notification stuff should happen now!
     configuration_error_message.addFaultyContainers.assert_called_once_with("InvalidMachine")
 
+
+def test_clearUserSettingsAllCurrentStacks(machine_manager, application):
+    global_stack = application.getGlobalContainerStack()
+    extruder_1 = createMockedExtruder("extruder_1")
+    instance_container = createMockedInstanceContainer("user", "UserContainer")
+    extruder_1.getTop = MagicMock(return_value = instance_container)
+    global_stack.extruderList = [extruder_1]
+
+    machine_manager.clearUserSettingAllCurrentStacks("some_setting")
+
+    instance_container.removeInstance.assert_called_once_with("some_setting", postpone_emit=True)
+
+
+def test_clearUserSettingsAllCurrentStacksLinkedSetting(machine_manager, application):
+    global_stack = application.getGlobalContainerStack()
+    extruder_1 = createMockedExtruder("extruder_1")
+    instance_container = createMockedInstanceContainer("user", "UserContainer")
+    instance_container_global = createMockedInstanceContainer("global_user", "GlobalUserContainer")
+    global_stack.getTop = MagicMock(return_value = instance_container_global)
+    extruder_1.getTop = MagicMock(return_value=instance_container)
+    global_stack.extruderList = [extruder_1]
+
+    global_stack.getProperty = MagicMock(side_effect = lambda key, prop: True if prop == "settable_per_extruder" else "-1" )
+
+    machine_manager.clearUserSettingAllCurrentStacks("some_setting")
+
+    instance_container.removeInstance.assert_not_called()
+    instance_container_global.removeInstance.assert_called_once_with("some_setting", postpone_emit = True)
+
+
+def test_isActiveQualityExperimental(machine_manager):
+    quality_group = MagicMock(is_experimental = True)
+    machine_manager.activeQualityGroup = MagicMock(return_value = quality_group)
+    assert machine_manager.isActiveQualityExperimental
+    
+    
+def test_isActiveQualityNotExperimental(machine_manager):
+    quality_group = MagicMock(is_experimental = False)
+    machine_manager.activeQualityGroup = MagicMock(return_value = quality_group)
+    assert not machine_manager.isActiveQualityExperimental
+
+
+def test_isActiveQualityNotExperimental_noQualityGroup(machine_manager):
+    machine_manager.activeQualityGroup = MagicMock(return_value=None)
+    assert not machine_manager.isActiveQualityExperimental
+
+
+def test_isActiveQualitySupported(machine_manager):
+    quality_group = MagicMock(is_available=True)
+    machine_manager.activeQualityGroup = MagicMock(return_value=quality_group)
+    assert machine_manager.isActiveQualitySupported
+
+
+def test_isActiveQualityNotSupported(machine_manager):
+    quality_group = MagicMock(is_available=False)
+    machine_manager.activeQualityGroup = MagicMock(return_value=quality_group)
+    assert not machine_manager.isActiveQualitySupported
+
+
+def test_isActiveQualityNotSupported_noQualityGroup(machine_manager):
+    machine_manager.activeQualityGroup = MagicMock(return_value=None)
+    assert not machine_manager.isActiveQualitySupported
