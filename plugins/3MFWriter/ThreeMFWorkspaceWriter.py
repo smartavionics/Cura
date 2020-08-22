@@ -63,7 +63,7 @@ class ThreeMFWorkspaceWriter(WorkspaceWriter):
         # Write preferences to archive
         original_preferences = Application.getInstance().getPreferences() #Copy only the preferences that we use to the workspace.
         temp_preferences = Preferences()
-        for preference in {"general/visible_settings", "cura/active_mode", "cura/categories_expanded"}:
+        for preference in {"general/visible_settings", "cura/active_mode", "cura/categories_expanded", "metadata/setting_version"}:
             temp_preferences.addPreference(preference, None)
             temp_preferences.setValue(preference, original_preferences.getValue(preference))
         preferences_string = StringIO()
@@ -136,7 +136,17 @@ class ThreeMFWorkspaceWriter(WorkspaceWriter):
             file_in_archive.compress_type = zipfile.ZIP_DEFLATED
 
             # Do not include the network authentication keys
-            ignore_keys = {"network_authentication_id", "network_authentication_key", "octoprint_api_key"}
+            ignore_keys = {
+                "um_cloud_cluster_id",
+                "um_network_key",
+                "um_linked_to_account",
+                "removal_warning",
+                "host_guid",
+                "group_name",
+                "group_size",
+                "connection_type",
+                "octoprint_api_key"
+            }
             serialized_data = container.serialize(ignored_metadata_keys = ignore_keys)
 
             archive.writestr(file_in_archive, serialized_data)
