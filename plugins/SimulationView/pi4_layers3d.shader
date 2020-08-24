@@ -122,7 +122,14 @@ geometry =
     uniform mediump mat4 u_projectionMatrix;
 
     layout(lines) in;
+
+ #define HAVE_POINTY_ENDS 0
+
+ #if HAVE_POINTY_ENDS
+    layout(triangle_strip, max_vertices = 26) out;
+ #else
     layout(triangle_strip, max_vertices = 10) out;
+ #endif
 
     in lowp vec4 v_color[];
     in mediump float v_line_width[];
@@ -133,22 +140,18 @@ geometry =
 
     mediump mat4 viewProjectionMatrix;
 
-    void emitVertexH(const int index, const float sign, const float offset)
+    void outputVertex(const int index, const vec3 normal, const vec4 offset)
     {
         f_color = v_color[1];
-        vec4 vertex_delta = gl_in[1].gl_Position - gl_in[0].gl_Position;
-        vec3 normal = sign * normalize(vec3(vertex_delta.z, vertex_delta.y, -vertex_delta.x));
         f_normal = normal;
-        gl_Position = viewProjectionMatrix * (gl_in[index].gl_Position + vec4(normal * offset, 0.0));
+        gl_Position = viewProjectionMatrix * (gl_in[index].gl_Position + offset);
         EmitVertex();
     }
 
-    void emitVertexV(const int index, const float sign, const float offset)
+    void outputEdge(const vec3 normal, const vec4 offset)
     {
-        f_color = v_color[1];
-        f_normal = vec3(0.0, sign, 0.0);
-        gl_Position = viewProjectionMatrix * (gl_in[index].gl_Position + vec4(0.0, sign * offset, 0.0, 0.0));
-        EmitVertex();
+        outputVertex(0, normal, offset);
+        outputVertex(1, normal, offset);
     }
 
     void main()
@@ -157,18 +160,50 @@ geometry =
 
             viewProjectionMatrix = u_projectionMatrix * u_viewMatrix;
 
-            emitVertexH(0, -1.0, v_line_width[1]);
-            emitVertexH(1, -1.0, v_line_width[1]);
-            emitVertexV(0, 1.0, v_line_height[1]);
-            emitVertexV(1, 1.0, v_line_height[1]);
-            emitVertexH(0, 1.0, v_line_width[1]);
-            emitVertexH(1, 1.0, v_line_width[1]);
-            emitVertexV(0, -1.0, v_line_height[1]);
-            emitVertexV(1, -1.0, v_line_height[1]);
-            emitVertexH(0, -1.0, v_line_width[1]);
-            emitVertexH(1, -1.0, v_line_width[1]);
+            vec3 vertex_delta = gl_in[1].gl_Position.xyz - gl_in[0].gl_Position.xyz;
+            vec3 normal_h = normalize(vec3(vertex_delta.z, vertex_delta.y, -vertex_delta.x));
+            vec3 normal_v = vec3(0.0, 1.0, 0.0);
+            vec4 offset_h = vec4(normal_h * v_line_width[1], 0.0);
+            vec4 offset_v = vec4(normal_v * v_line_height[1], 0.0);
 
+            outputEdge(-normal_h, -offset_h);
+            outputEdge(normal_v, offset_v);
+            outputEdge(normal_h, offset_h);
+            outputEdge(-normal_v, -offset_v);
+            outputEdge(-normal_h, -offset_h);
             EndPrimitive();
+
+ #if HAVE_POINTY_ENDS
+            if (v_line_height[1] > 0.01)
+            {
+                vertex_delta = normalize(vertex_delta);
+                vec4 offset_point = vec4(vertex_delta * v_line_width[1], 0.0);
+
+                outputVertex(0, -normal_h, -offset_h);
+                outputVertex(0, -vertex_delta, -offset_point);
+                outputVertex(0, normal_v, offset_v);
+                outputVertex(0, normal_h, offset_h);
+                EndPrimitive();
+
+                outputVertex(0, normal_h, offset_h);
+                outputVertex(0, -vertex_delta, -offset_point);
+                outputVertex(0, -normal_v, -offset_v);
+                outputVertex(0, -normal_h, -offset_h);
+                EndPrimitive();
+
+                outputVertex(1, -normal_h, -offset_h);
+                outputVertex(1, vertex_delta, offset_point);
+                outputVertex(1, normal_v, offset_v);
+                outputVertex(1, normal_h, offset_h);
+                EndPrimitive();
+
+                outputVertex(1, normal_h, offset_h);
+                outputVertex(1, vertex_delta, offset_point);
+                outputVertex(1, -normal_v, -offset_v);
+                outputVertex(1, -normal_h, -offset_h);
+                EndPrimitive();
+            }
+ #endif
         }
     }
 
