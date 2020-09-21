@@ -32,6 +32,7 @@ from UM.i18n import i18nCatalog
 from cura.CuraView import CuraView
 from cura.Scene.ConvexHullNode import ConvexHullNode
 from cura.CuraApplication import CuraApplication
+from cura.LayerPolygon import LayerPolygon
 
 from .NozzleNode import NozzleNode
 from .SimulationPass import SimulationPass
@@ -336,6 +337,7 @@ class SimulationView(CuraView):
 
     def setShowTravelMoves(self, show):
         self._show_travel_moves = show
+        self.calculateMaxLayers()
         self.currentLayerNumChanged.emit()
 
     def getShowTravelMoves(self):
@@ -398,6 +400,7 @@ class SimulationView(CuraView):
             self.setActivity(True)
             min_layer_number = sys.maxsize
             max_layer_number = -sys.maxsize
+            self._max_feedrate = 0
             for layer_id in layer_data.getLayers():
 
                 # If a layer doesn't contain any polygons, skip it (for infill meshes taller than print objects
@@ -406,7 +409,12 @@ class SimulationView(CuraView):
 
                 # Store the max and min feedrates and thicknesses for display purposes
                 for p in layer_data.getLayer(layer_id).polygons:
-                    self._max_feedrate = max(float(p.lineFeedrates.max()), self._max_feedrate)
+                    if self._show_travel_moves:
+                        self._max_feedrate = max(float(p.lineFeedrates.max()), self._max_feedrate)
+                    else:
+                        for i in range(len(p.lineFeedrates)):
+                            if p.types[i] != LayerPolygon.MoveCombingType and p.types[i] != LayerPolygon.MoveRetractionType:
+                                self._max_feedrate = max(float(p.lineFeedrates[i]), self._max_feedrate)
                     self._min_feedrate = min(float(p.lineFeedrates.min()), self._min_feedrate)
                     self._max_thickness = max(float(p.lineThicknesses.max()), self._max_thickness)
                     try:
