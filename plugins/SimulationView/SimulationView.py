@@ -412,9 +412,8 @@ class SimulationView(CuraView):
                     if self._show_travel_moves:
                         self._max_feedrate = max(float(p.lineFeedrates.max()), self._max_feedrate)
                     else:
-                        for i in range(len(p.lineFeedrates)):
-                            if p.types[i] != LayerPolygon.MoveCombingType and p.types[i] != LayerPolygon.MoveRetractionType:
-                                self._max_feedrate = max(float(p.lineFeedrates[i]), self._max_feedrate)
+                        non_travel_feedrates = p.lineFeedrates[(p.types < LayerPolygon.MoveCombingType) | (p.types > LayerPolygon.MoveRetractionType)]
+                        self._max_feedrate = max(float(non_travel_feedrates.max()), self._max_feedrate)
                     self._min_feedrate = min(float(p.lineFeedrates.min()), self._min_feedrate)
                     self._max_thickness = max(float(p.lineThicknesses.max()), self._max_thickness)
                     try:
