@@ -79,7 +79,8 @@ class SimulationPass(RenderPass):
         # Use extruder 0 if the extruder manager reports extruder index -1 (for single extrusion printers)
         self._layer_shader.setUniformValue("u_active_extruder", float(max(0, self._extruder_manager.activeExtruderIndex)))
         if not self._pi4_shaders and self._layer_view:
-            self._layer_shader.setUniformValue("u_max_feedrate", self._layer_view.getMaxFeedrate())
+            # slightly increase u_max_feedrate to avoid DBZ in shader when max and min feedrates are equal
+            self._layer_shader.setUniformValue("u_max_feedrate", self._layer_view.getMaxFeedrate() + 0.01)
             self._layer_shader.setUniformValue("u_min_feedrate", self._layer_view.getMinFeedrate())
             self._layer_shader.setUniformValue("u_max_thickness", self._layer_view.getMaxThickness())
             self._layer_shader.setUniformValue("u_min_thickness", self._layer_view.getMinThickness())
@@ -224,7 +225,8 @@ class SimulationPass(RenderPass):
 
                     if self._pi4_shaders:
                         self._current_shader.setUniformValue("u_active_extruder", float(max(0, self._extruder_manager.activeExtruderIndex)))
-                        self._current_shader.setUniformValue("u_max_feedrate", self._layer_view.getMaxFeedrate())
+                        # slightly increase u_max_feedrate to avoid DBZ in shader when max and min feedrates are equal
+                        self._current_shader.setUniformValue("u_max_feedrate", self._layer_view.getMaxFeedrate() + 0.01)
                         self._current_shader.setUniformValue("u_min_feedrate", self._layer_view.getMinFeedrate())
                         self._current_shader.setUniformValue("u_max_thickness", self._layer_view.getMaxThickness())
                         self._current_shader.setUniformValue("u_min_thickness", self._layer_view.getMinThickness())
@@ -236,7 +238,8 @@ class SimulationPass(RenderPass):
                         self._current_shader.setUniformValue("u_show_skin", self._layer_view.getShowSkin())
                         self._current_shader.setUniformValue("u_show_infill", self._layer_view.getShowInfill())
                         if self._current_shader != self._layer_shader:
-                            self._layer_shader.setUniformValue("u_max_feedrate", self._layer_view.getMaxFeedrate())
+                            # slightly increase u_max_feedrate to avoid DBZ in shader when max and min feedrates are equal
+                            self._layer_shader.setUniformValue("u_max_feedrate", self._layer_view.getMaxFeedrate() + 0.01)
                             self._layer_shader.setUniformValue("u_min_feedrate", self._layer_view.getMinFeedrate())
                             self._layer_shader.setUniformValue("u_max_thickness", self._layer_view.getMaxThickness())
                             self._layer_shader.setUniformValue("u_min_thickness", self._layer_view.getMinThickness())
