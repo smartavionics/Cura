@@ -9,9 +9,9 @@
         "file_formats": "text/x-gcode",
         "first_start_actions": ["MachineSettingsAction"],
 
-    	"machine_extruder_trains": {
-        	"0": "biqu_base_extruder_0"
-    	},
+        "machine_extruder_trains": {
+            "0": "biqu_base_extruder_0"
+        },
 
         "has_materials": true,
         "has_variants": true,
@@ -88,7 +88,6 @@
         "z_seam_type": { "value": "'back'" },
         "z_seam_corner": { "value": "'z_seam_corner_weighted'" },
 
-        "infill_line_width": { "default_value": "line_width * 1.2" },
         "infill_line_width": { "value": "line_width * 1.2" },
         "infill_sparse_density": { "value": "20" },
         "infill_pattern": { "value": "'lines' if infill_sparse_density > 50 else 'cubic'" },
@@ -143,13 +142,13 @@
         "meshfix_maximum_resolution": { "value": "0.05" },
         "meshfix_maximum_travel_resolution": { "value": "meshfix_maximum_resolution" },
 
-        "support_angle": { "value": "math.floor(math.degrees(math.atan(line_width/2.0/layer_height)))" },
+        "support_angle": { "value": "math.floor(math.degrees(math.atan(line_width / 2.0 / layer_height)))" },
         "support_pattern": { "value": "'zigzag'" },
-        "support_infill_rate": { "value": "0 if support_tree_enable else 20" },
+        "support_infill_rate": { "value": "0 if support_structure == 'tree' else 20" },
         "support_use_towers": { "value": false },
         "support_xy_distance": { "value": "wall_line_width_0 * 2" },
         "support_xy_distance_overhang": { "value": "wall_line_width_0" },
-        "support_z_distance": { "value": "layer_height if layer_height >= 0.16 else layer_height*2" },
+        "support_z_distance": { "value": "layer_height if layer_height >= 0.16 else layer_height * 2" },
         "support_xy_overrides_z": { "value": "'xy_overrides_z'" },
         "support_wall_count": { "value": 1 },
         "support_brim_enable": { "value": true },
@@ -164,6 +163,5 @@
         "minimum_interface_area": { "value": 10 },
         "top_bottom_thickness": {"value":  "layer_height_0 + layer_height * 3" },
         "wall_thickness": {"value": "line_width * 2" }
-
     }
 }

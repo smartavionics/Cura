@@ -140,7 +140,7 @@ class SimulationPass(RenderPass):
 
             elif isinstance(node, NozzleNode):
                 nozzle_node = node
-                nozzle_node.setVisible(False)
+                nozzle_node.setVisible(False)  # Don't set to true, we render it separately!
 
             elif getattr(node, "_outside_buildarea", False) and isinstance(node, SceneNode) and node.getMeshData() and node.isVisible():
                 disabled_batch.addItem(node.getWorldTransformation(copy=False), node.getMeshData())
