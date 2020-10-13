@@ -24,6 +24,7 @@ import os
 # tries to create PyQt objects on a non-main thread.
 import Arcus  # @UnusedImport
 import Savitar  # @UnusedImport
+import pynest2d # @UnusedImport
 
 from UM.Platform import Platform
 
