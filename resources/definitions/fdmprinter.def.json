@@ -6,7 +6,7 @@
         "type": "machine",
         "author": "Ultimaker",
         "manufacturer": "Unknown",
-        "setting_version": 15,
+        "setting_version": 16,
         "file_formats": "text/x-gcode;application/x-stl-ascii;application/x-stl-binary;application/x-wavefront-obj;application/x3g",
         "visible": false,
         "has_materials": true,
@@ -1765,7 +1765,8 @@
                         "cross_3d": "Cross 3D",
                         "gyroid": "Gyroid",
                         "schwarz_p": "Schwarz P",
-                        "schwarz_d": "Schwarz D"
+                        "schwarz_d": "Schwarz D",
+                        "honeycomb": "Honeycomb"
                     },
                     "default_value": "grid",
                     "enabled": "infill_sparse_density > 0",
@@ -1795,8 +1796,8 @@
                     "description": "Connect the ends where the infill pattern meets the inner wall using a line which follows the shape of the inner wall. Enabling this setting can make the infill adhere to the walls better and reduce the effects of infill on the quality of vertical surfaces. Disabling this setting reduces the amount of material used.",
                     "type": "bool",
                     "default_value": false,
-                    "value": "infill_pattern == 'cross' or infill_pattern == 'cross_3d'",
-                    "enabled": "infill_pattern == 'lines' or infill_pattern == 'grid' or infill_pattern == 'triangles' or infill_pattern == 'trihexagon' or infill_pattern == 'cubic' or infill_pattern == 'tetrahedral' or infill_pattern == 'quarter_cubic' or infill_pattern == 'cross' or infill_pattern == 'cross_3d' or infill_pattern == 'gyroid' or infill_pattern == 'schwarz_p' or infill_pattern == 'schwarz_d'",
+                    "value": "infill_pattern == 'cross' or infill_pattern == 'cross_3d' or infill_pattern == 'honeycomb'",
+                    "enabled": "infill_pattern == 'lines' or infill_pattern == 'grid' or infill_pattern == 'triangles' or infill_pattern == 'trihexagon' or infill_pattern == 'cubic' or infill_pattern == 'tetrahedral' or infill_pattern == 'quarter_cubic' or infill_pattern == 'cross' or infill_pattern == 'cross_3d' or infill_pattern == 'gyroid' or infill_pattern == 'schwarz_p' or infill_pattern == 'schwarz_d' or infill_pattern == 'honeycomb'",
                     "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
                 },
@@ -2178,6 +2179,7 @@
                     "default_value": 0.8,
                     "minimum_value": "0",
                     "maximum_value": "machine_height",
+                    "maximum_value_warning": "resolveOrValue('infill_sparse_thickness') * 10",
                     "type": "float",
                     "value": "resolveOrValue('infill_sparse_thickness') * (4 if infill_sparse_density < 12.5 else (3 if infill_sparse_density < 25 else (2 if infill_sparse_density < 50 else 1)))",
                     "limit_to_extruder": "infill_extruder_nr",
@@ -2191,6 +2193,7 @@
                               "description": "The number of infill layers that supports skin edges.",
                               "default_value": 4,
                               "minimum_value": "0",
+                              "maximum_value_warning": "10",
                               "type": "int",
                               "value": "math.ceil(round(skin_edge_support_thickness / resolveOrValue('infill_sparse_thickness'), 4))",
                               "limit_to_extruder": "infill_extruder_nr",
@@ -2337,7 +2340,7 @@
                 "material_bed_temperature":
                 {
                     "label": "Build Plate Temperature",
-                    "description": "The temperature used for the heated build plate. If this is 0, the bed temperature will not be adjusted.",
+                    "description": "The temperature used for the heated build plate. If this is 0, the build plate is left unheated.",
                     "unit": "°C",
                     "type": "float",
                     "default_value": 60,
@@ -2355,7 +2358,7 @@
                 "material_bed_temperature_layer_0":
                 {
                     "label": "Build Plate Temperature Initial Layer",
-                    "description": "The temperature used for the heated build plate at the first layer.",
+                    "description": "The temperature used for the heated build plate at the first layer. If this is 0, the build plate is left unheated during the first layer.",
                     "unit": "°C",
                     "type": "float",
                     "resolve": "max(extruderValues('material_bed_temperature_layer_0'))",
@@ -2397,16 +2400,18 @@
                 },
                 "material_shrinkage_percentage":
                 {
-                    "label": "Shrinkage Ratio",
-                    "description": "Shrinkage ratio in percentage.",
+                    "label": "Scaling Factor Shrinkage Compensation",
+                    "description": "To compensate for the shrinkage of the material as it cools down, the model will be scaled with this factor.",
                     "unit": "%",
                     "type": "float",
-                    "default_value": 0,
-                    "minimum_value": "0",
-                    "maximum_value": "100",
+                    "default_value": 100.0,
                     "enabled": false,
+                    "minimum_value": "0.001",
+                    "minimum_value_warning": "100",
+                    "maximum_value_warning": "120",
                     "settable_per_mesh": false,
-                    "settable_per_extruder": true
+                    "settable_per_extruder": false,
+                    "resolve": "sum(extruderValues(\"material_shrinkage_percentage\")) / len(extruderValues(\"material_shrinkage_percentage\"))"
                 },
                 "material_crystallinity":
                 {
@@ -4503,7 +4508,8 @@
                         "concentric": "Concentric",
                         "zigzag": "Zig Zag",
                         "cross": "Cross",
-                        "gyroid": "Gyroid"
+                        "gyroid": "Gyroid",
+                        "honeycomb": "Honeycomb"
                     },
                     "default_value": "zigzag",
                     "enabled": "support_enable or support_meshes_present",
@@ -4804,8 +4810,9 @@
                     "limit_to_extruder": "support_infill_extruder_nr",
                     "minimum_value_warning": "0",
                     "maximum_value_warning": "10",
-                    "enabled": "support_enable and support_structure == 'normal'",
-                    "settable_per_mesh": true
+                    "enabled": "(support_enable and support_structure == 'normal') or support_meshes_present",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
                 },
                 "support_offset":
                 {
@@ -4818,7 +4825,8 @@
                     "minimum_value_warning": "-1 * machine_nozzle_size",
                     "maximum_value_warning": "10 * machine_nozzle_size",
                     "enabled": "(support_enable and support_structure == 'normal') or support_meshes_present",
-                    "settable_per_mesh": true
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
                 },
                 "support_infill_sparse_thickness":
                 {
@@ -4833,7 +4841,8 @@
                     "value": "resolveOrValue('layer_height')",
                     "enabled": "(support_enable or support_meshes_present) and support_infill_rate > 0",
                     "limit_to_extruder": "support_infill_extruder_nr",
-                    "settable_per_mesh": false
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
                 },
                 "gradual_support_infill_steps":
                 {
@@ -4846,7 +4855,8 @@
                     "maximum_value": "999999 if support_line_distance == 0 else (20 - math.log(support_line_distance) / math.log(2))",
                     "enabled": "(support_enable or support_meshes_present) and support_infill_rate > 0",
                     "limit_to_extruder": "support_infill_extruder_nr",
-                    "settable_per_mesh": false
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
                 },
                 "gradual_support_infill_step_height":
                 {
@@ -4859,7 +4869,8 @@
                     "minimum_value_warning": "3 * resolveOrValue('layer_height')",
                     "enabled": "(support_enable or support_meshes_present) and support_infill_rate > 0 and gradual_support_infill_steps > 0",
                     "limit_to_extruder": "support_infill_extruder_nr",
-                    "settable_per_mesh": false
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
                 },
                 "minimum_support_area": 
                 {
@@ -5095,7 +5106,8 @@
                         "grid": "Grid",
                         "triangles": "Triangles",
                         "concentric": "Concentric",
-                        "zigzag": "Zig Zag"
+                        "zigzag": "Zig Zag",
+                        "honeycomb": "Honeycomb"
                     },
                     "default_value": "concentric",
                     "limit_to_extruder": "support_interface_extruder_nr",
@@ -6067,7 +6079,7 @@
                     "type": "float",
                     "default_value": 6,
                     "minimum_value": "0",
-                    "maximum_value_warning": "(resolveOrValue('prime_tower_size') * 0.5) ** 2 * 3.14159 * resolveOrValue('layer_height')",
+                    "maximum_value_warning": "(resolveOrValue('prime_tower_size') * 0.5) ** 2 * 3.14159 * resolveOrValue('layer_height') - sum(extruderValues('prime_tower_min_volume')) + prime_tower_min_volume",
                     "enabled": "resolveOrValue('prime_tower_enable')",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
@@ -6107,7 +6119,7 @@
                     "unit": "mm",
                     "enabled": "resolveOrValue('prime_tower_enable')",
                     "default_value": 200,
-                    "value": "machine_depth - prime_tower_size - max(extruderValue(adhesion_extruder_nr, 'brim_width') * extruderValue(adhesion_extruder_nr, 'initial_layer_line_width_factor') / 100 if adhesion_type == 'brim' or (prime_tower_brim_enable and adhesion_type != 'raft') else (extruderValue(adhesion_extruder_nr, 'raft_margin') if adhesion_type == 'raft' else (extruderValue(adhesion_extruder_nr, 'skirt_gap') if adhesion_type == 'skirt' else 0)), max(extruderValues('travel_avoid_distance'))) - max(extruderValues('support_offset')) - sum(extruderValues('skirt_brim_line_width')) * extruderValue(adhesion_extruder_nr, 'initial_layer_line_width_factor') / 100 - (resolveOrValue('draft_shield_dist') if resolveOrValue('draft_shield_enabled') else 0) - max(map(abs, extruderValues('machine_nozzle_offset_y'))) - 1",
+                    "value": "machine_depth - prime_tower_size - max(extruderValue(adhesion_extruder_nr, 'brim_width') * extruderValue(adhesion_extruder_nr, 'initial_layer_line_width_factor') / 100 if adhesion_type == 'brim' or (prime_tower_brim_enable and adhesion_type != 'raft') else (extruderValue(adhesion_extruder_nr, 'raft_margin') if adhesion_type == 'raft' else (extruderValue(adhesion_extruder_nr, 'skirt_gap') if adhesion_type == 'skirt' else 0)), max(extruderValues('travel_avoid_distance'))) - max(extruderValues('support_offset')) - sum(extruderValues('skirt_brim_line_width')) * extruderValue(adhesion_extruder_nr, 'initial_layer_line_width_factor') / 100 - (resolveOrValue('draft_shield_dist') if resolveOrValue('draft_shield_enabled') else 0) - max(map(abs, extruderValues('machine_nozzle_offset_y'))) - 3",
                     "maximum_value": "machine_depth / 2 - resolveOrValue('prime_tower_size') if machine_center_is_zero else machine_depth - resolveOrValue('prime_tower_size')",
                     "minimum_value": "machine_depth / -2 if machine_center_is_zero else 0",
                     "settable_per_mesh": false,
