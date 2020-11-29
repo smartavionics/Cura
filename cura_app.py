@@ -28,6 +28,12 @@ import pynest2d # @UnusedImport
 
 from UM.Platform import Platform
 
+if Platform.isOSX():
+    # workaround for Big Sur and recent PyQt/Qt
+    import platform
+    if int(platform.mac_ver()[0].split('.')[0]) > 10:
+        os.environ['QT_MAC_WANTS_LAYER'] = '1'
+
 if Platform.isWindows() and hasattr(sys, "frozen"):
     DIR_NAME = os.path.dirname(sys.executable)
     # add DIR_NAME and DIR_NAME/lib to the path so DLLs can be found
