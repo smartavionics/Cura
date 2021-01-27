@@ -112,6 +112,7 @@ class SimulationView(CuraView):
         Application.getInstance().getPreferences().addPreference("layerview/show_helpers", True)
         Application.getInstance().getPreferences().addPreference("layerview/show_skin", True)
         Application.getInstance().getPreferences().addPreference("layerview/show_infill", True)
+        Application.getInstance().getPreferences().addPreference("layerview/show_starts", True)
 
         self._updateWithPreferences()
 
@@ -154,6 +155,7 @@ class SimulationView(CuraView):
         self._show_helpers = True
         self._show_skin = True
         self._show_infill = True
+        self._show_starts = True
         self.resetLayerData()
 
     def getActivity(self) -> bool:
@@ -363,6 +365,13 @@ class SimulationView(CuraView):
 
     def getShowInfill(self) -> bool:
         return self._show_infill
+
+    def setShowStarts(self, show: bool) -> None:
+        self._show_starts = show
+        self.currentLayerNumChanged.emit()
+
+    def getShowStarts(self) -> bool:
+        return self._show_starts
 
     def getCompatibilityMode(self) -> bool:
         return self._compatibility_mode
@@ -653,6 +662,7 @@ class SimulationView(CuraView):
         self.setShowHelpers(bool(Application.getInstance().getPreferences().getValue("layerview/show_helpers")))
         self.setShowSkin(bool(Application.getInstance().getPreferences().getValue("layerview/show_skin")))
         self.setShowInfill(bool(Application.getInstance().getPreferences().getValue("layerview/show_infill")))
+        self.setShowStarts(bool(Application.getInstance().getPreferences().getValue("layerview/show_starts")))
 
         self._startUpdateTopLayers()
         self.preferencesChanged.emit()
@@ -668,6 +678,7 @@ class SimulationView(CuraView):
             "layerview/show_helpers",
             "layerview/show_skin",
             "layerview/show_infill",
+            "layerview/show_starts",
             }:
             return
 
