@@ -24,6 +24,7 @@ vertex =
     in highp vec4 a_normal;
     in highp vec2 a_line_dim;  // line width and thickness
     in highp float a_extruder;
+    in highp float a_prev_line_type;
     in highp float a_line_type;
     in highp float a_feedrate;
     in highp float a_thickness;
@@ -33,6 +34,8 @@ vertex =
     //out highp vec2 v_line_dim;
     out mediump float v_line_width;
     out mediump float v_line_height;
+    out mediump float v_prev_line_type;
+    out mediump float v_line_type;
 
     out lowp vec4 f_color;
     out vec3 f_normal;
@@ -110,6 +113,9 @@ vertex =
             v_line_height = a_line_dim.y * 0.5;
         }
 
+        v_prev_line_type = a_prev_line_type;
+        v_line_type = a_line_type;
+
         // for testing without geometry shader
         f_color = v_color;
         //f_normal = v_normal;
@@ -126,18 +132,31 @@ geometry =
     uniform mediump vec3 u_viewPosition;
     uniform mediump vec3 u_lightPosition;
 
+    uniform lowp vec4 u_starts_color;
+    uniform int u_show_starts;
+
     layout(lines) in;
-    layout(triangle_strip, max_vertices = 6) out;
+    layout(triangle_strip, max_vertices = 11) out;
 
     in lowp vec4 v_color[];
     in vec3 v_vertex[];
     in mediump float v_line_width[];
     in mediump float v_line_height[];
+    in mediump float v_prev_line_type[];
+    in mediump float v_line_type[];
 
     out lowp vec4 f_color;
     out vec3 f_normal;
 
     mediump mat4 viewProjectionMatrix;
+
+    void outputStartVertex(const vec3 normal, const vec4 offset)
+    {
+        f_color = u_starts_color;
+        f_normal = normal;
+        gl_Position = viewProjectionMatrix * (gl_in[0].gl_Position + offset);
+        EmitVertex();
+    }
 
     void outputVertex(const int index, const vec3 normal, const float x_offset, const float y_offset)
     {
@@ -188,6 +207,19 @@ geometry =
         outputVertex(1, view_delta, x_sign * x_offset, y_offset);
 
         EndPrimitive();
+
+        if ((u_show_starts == 1) && (v_prev_line_type[0] != 1.0) && (v_line_type[0] == 1.0)) {
+            float w = v_line_width[1];
+            float h = v_line_height[1];
+
+            outputStartVertex(normalize(vec3( 1.0,  1.0,  1.0)), vec4( w,  h,  w, 0.0)); // Front-top-left
+            outputStartVertex(normalize(vec3( 1.0,  1.0, -1.0)), vec4( w,  h, -w, 0.0)); // Back-top-left
+            outputStartVertex(normalize(vec3(-1.0,  1.0,  1.0)), vec4(-w,  h,  w, 0.0)); // Front-top-right
+            outputStartVertex(normalize(vec3(-1.0,  1.0, -1.0)), vec4(-w,  h, -w, 0.0)); // Back-top-right
+            outputStartVertex(normalize(vec3( 1.0,  1.0, -1.0)), vec4( w,  h, -w, 0.0)); // Back-top-left
+
+            EndPrimitive();
+        }
     }
 
 fragment =
@@ -227,10 +259,13 @@ u_diffuseColor = [1.0, 0.79, 0.14, 1.0]
 u_minimumAlbedo = [0.1, 0.1, 0.1, 1.0]
 u_shininess = 20.0
 
+u_starts_color = [1.0, 1.0, 1.0, 1.0]
+
 u_show_travel_moves = 0
 u_show_helpers = 1
 u_show_skin = 1
 u_show_infill = 1
+u_show_starts = 1
 
 u_min_feedrate = 0
 u_max_feedrate = 1
@@ -256,5 +291,6 @@ a_line_dim = line_dim
 a_extruder = extruder
 a_material_color = material_color
 a_line_type = line_type
+a_prev_line_type = prev_line_type
 a_feedrate = feedrate
 a_thickness = thickness

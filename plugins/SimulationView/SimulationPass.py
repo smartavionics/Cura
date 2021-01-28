@@ -245,6 +245,8 @@ class SimulationPass(RenderPass):
                         self._current_shader.setUniformValue("u_show_helpers", self._layer_view.getShowHelpers())
                         self._current_shader.setUniformValue("u_show_skin", self._layer_view.getShowSkin())
                         self._current_shader.setUniformValue("u_show_infill", self._layer_view.getShowInfill())
+                        self._current_shader.setUniformValue("u_starts_color", Color(*Application.getInstance().getTheme().getColor("layerview_starts").getRgb()))
+                        self._current_shader.setUniformValue("u_show_starts", self._layer_view.getShowStarts())
                         if self._current_shader != self._layer_shader:
                             # slightly increase u_max_feedrate to avoid DBZ in shader when max and min feedrates are equal
                             self._layer_shader.setUniformValue("u_max_feedrate", self._layer_view.getMaxFeedrate() + 0.01)
@@ -257,6 +259,7 @@ class SimulationPass(RenderPass):
                             self._layer_shader.setUniformValue("u_show_helpers", self._layer_view.getShowHelpers())
                             self._layer_shader.setUniformValue("u_show_skin", self._layer_view.getShowSkin())
                             self._layer_shader.setUniformValue("u_show_infill", self._layer_view.getShowInfill())
+                            self._layer_shader.setUniformValue("u_show_starts", self._layer_view.getShowStarts())
 
                     # The first line does not have a previous line: add a MoveCombingType in front for start detection
                     # this way the first start of the layer can also be drawn 
