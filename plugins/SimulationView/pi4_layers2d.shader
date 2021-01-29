@@ -209,7 +209,7 @@ geometry =
         EndPrimitive();
 
         if ((u_show_starts == 1) && (v_prev_line_type[0] != 1.0) && (v_line_type[0] == 1.0)) {
-            float w = v_line_width[1];
+            float w = v_line_width[1] * 1.1;
             float h = v_line_height[1];
 
             outputStartVertex(normalize(vec3( 1.0,  1.0,  1.0)), vec4( w,  h,  w, 0.0)); // Front-top-left
