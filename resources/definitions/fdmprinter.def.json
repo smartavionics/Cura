@@ -1513,6 +1513,16 @@
                     "limit_to_extruder": "top_bottom_extruder_nr",
                     "settable_per_mesh": true
                 },
+                "monotonic_skin_lines":
+                {
+                    "label": "Monotonic Skin Lines",
+                    "description": "Print the skin lines monotonically. This may improve the visual quality of the skin.",
+                    "type": "bool",
+                    "default_value": false,
+                    "enabled": "(top_layers > 0 or bottom_layers > 0) and top_bottom_pattern == 'lines'",
+                    "limit_to_extruder": "top_bottom_extruder_nr",
+                    "settable_per_mesh": true
+                },
                 "connect_skin_polygons":
                 {
                     "label": "Connect Top/Bottom Polygons",
