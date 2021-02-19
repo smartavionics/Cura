@@ -92,6 +92,8 @@ class SimulationView(CuraView):
         self._min_feedrate = sys.float_info.max
         self._max_thickness = sys.float_info.min
         self._min_thickness = sys.float_info.max
+        self._max_line_width = sys.float_info.min
+        self._min_line_width = sys.float_info.max
 
         self._global_container_stack = None  # type: Optional[ContainerStack]
         self._proxy = None
@@ -228,6 +230,8 @@ class SimulationView(CuraView):
         self._min_feedrate = sys.float_info.max
         self._max_thickness = sys.float_info.min
         self._min_thickness = sys.float_info.max
+        self._max_line_width = sys.float_info.min
+        self._min_line_width = sys.float_info.max
 
     def beginRendering(self) -> None:
         scene = self.getController().getScene()
@@ -395,6 +399,14 @@ class SimulationView(CuraView):
     def getMaxThickness(self) -> float:
         return self._max_thickness
 
+    def getMaxLineWidth(self) -> float:
+        return self._max_line_width
+
+    def getMinLineWidth(self) -> float:
+        if abs(self._min_line_width - sys.float_info.max) < 10:  # Some lenience due to floating point rounding.
+            return 0.0  # If it's still max-float, there are no measurements. Use 0 then.
+        return self._min_line_width
+
     def calculateMaxLayers(self) -> None:
         scene = self.getController().getScene()
 
@@ -425,6 +437,8 @@ class SimulationView(CuraView):
                         if len(non_travel_feedrates) != 0:
                             self._max_feedrate = max(float(non_travel_feedrates.max()), self._max_feedrate)
                     self._min_feedrate = min(float(p.lineFeedrates.min()), self._min_feedrate)
+                    self._max_line_width = max(float(p.lineWidths.max()), self._max_line_width)
+                    self._min_line_width = min(float(p.lineWidths.min()), self._min_line_width)
                     self._max_thickness = max(float(p.lineThicknesses.max()), self._max_thickness)
                     try:
                         self._min_thickness = min(float(p.lineThicknesses[numpy.nonzero(p.lineThicknesses)].min()), self._min_thickness)
