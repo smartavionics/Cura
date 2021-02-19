@@ -437,8 +437,9 @@ class SimulationView(CuraView):
                         if len(non_travel_feedrates) != 0:
                             self._max_feedrate = max(float(non_travel_feedrates.max()), self._max_feedrate)
                     self._min_feedrate = min(float(p.lineFeedrates.min()), self._min_feedrate)
-                    self._max_line_width = max(float(p.lineWidths.max()), self._max_line_width)
-                    self._min_line_width = min(float(p.lineWidths.min()), self._min_line_width)
+                    non_travel_line_widths = p.lineWidths[(p.types != LayerPolygon.MoveCombingType) & (p.types != LayerPolygon.MoveRetractionType)]
+                    self._max_line_width = max(float(non_travel_line_widths.max()), self._max_line_width)
+                    self._min_line_width = min(float(non_travel_line_widths.min()), self._min_line_width)
                     self._max_thickness = max(float(p.lineThicknesses.max()), self._max_thickness)
                     try:
                         self._min_thickness = min(float(p.lineThicknesses[numpy.nonzero(p.lineThicknesses)].min()), self._min_thickness)
