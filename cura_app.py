@@ -144,6 +144,13 @@ if Platform.isLinux() and hasattr(sys, "frozen"):
         os.chdir(os.environ["OWD"])
     else:
         os.chdir(os.path.expanduser("~"))
+    if not sys.prefix:
+        if "python" in os.path.basename(sys.executable):
+            executable = sys.argv[0]
+        else:
+            executable = sys.executable
+        # needed to find libgeos_c
+        sys.prefix = os.path.dirname(os.path.realpath(executable))
 
 # WORKAROUND: GITHUB-704 GITHUB-708
 # It looks like setuptools creates a .pth file in
