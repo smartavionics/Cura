@@ -107,7 +107,7 @@ vertex =
                 v_color = layerThicknessGradientColor(a_line_dim.y, u_min_thickness, u_max_thickness);
                 break;
             case 4:  // "Line width"
-                v_color = (a_line_type == 8.0 || a_line_type == 9.0) ? vec4(1.0, 1.0, 1.0, 1.0) : lineWidthGradientColor(a_line_dim.x, u_min_line_width, u_max_line_width);
+                v_color = lineWidthGradientColor(a_line_dim.x, u_min_line_width, u_max_line_width);
                 break;
         }
 
