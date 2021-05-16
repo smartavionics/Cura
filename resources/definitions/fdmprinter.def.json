@@ -1544,7 +1544,20 @@
                     "default_value": false,
                     "enabled": "(top_layers > 0 or bottom_layers > 0) and (top_bottom_pattern == 'lines' or top_bottom_pattern_0 == 'lines' or roofing_pattern == 'lines')",
                     "limit_to_extruder": "top_bottom_extruder_nr",
-                    "settable_per_mesh": true
+                    "settable_per_mesh": true,
+                    "children":
+                    {
+                          "monotonic_skin_lines_reversed":
+                          {
+                              "label": "Reverse Monotonic Line Order",
+                              "description": "Print the skin lines monotonically in reverse order.",
+                              "type": "bool",
+                              "default_value": false,
+                              "enabled": "monotonic_skin_lines and (top_layers > 0 or bottom_layers > 0) and (top_bottom_pattern == 'lines' or top_bottom_pattern_0 == 'lines' or roofing_pattern == 'lines')",
+                              "limit_to_extruder": "top_bottom_extruder_nr",
+                              "settable_per_mesh": true
+                          }
+                    }
                 },
                 "connect_skin_polygons":
                 {
