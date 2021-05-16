@@ -1629,6 +1629,7 @@
                     "options":
                     {
                         "concentric": "Concentric",
+                        "lines": "Lines",
                         "zigzag": "Zig Zag"
                     },
                     "default_value": "zigzag",
