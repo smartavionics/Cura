@@ -6,7 +6,7 @@
         "type": "machine",
         "author": "Ultimaker",
         "manufacturer": "Unknown",
-        "setting_version": 16,
+        "setting_version": 17,
         "file_formats": "text/x-gcode;model/stl;application/x-wavefront-obj;application/x3g",
         "visible": false,
         "has_materials": true,
@@ -3177,7 +3177,6 @@
                     "default_value": 10,
                     "minimum_value": "0",
                     "maximum_value": "machine_max_feedrate_z",
-                    "enabled": "retraction_enable and retraction_hop_enabled",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
@@ -4008,7 +4007,7 @@
                 "retraction_combing_max_distance":
                 {
                     "label": "Max Comb Distance With No Retract",
-                    "description": "When non-zero, combing travel moves that are longer than this distance will use retraction.",
+                    "description": "When greater than zero, combing travel moves that are longer than this distance will use retraction. If set to zero, there is no maximum and combing moves will not use retraction.",
                     "unit": "mm",
                     "type": "float",
                     "default_value": 0,

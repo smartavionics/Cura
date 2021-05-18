@@ -93,6 +93,8 @@ class SimulationPass(RenderPass):
             self._layer_shader.setUniformValue("u_min_thickness", self._layer_view.getMinThickness())
             self._layer_shader.setUniformValue("u_max_line_width", self._layer_view.getMaxLineWidth())
             self._layer_shader.setUniformValue("u_min_line_width", self._layer_view.getMinLineWidth())
+            self._layer_shader.setUniformValue("u_max_flow_rate", self._layer_view.getMaxFlowRate())
+            self._layer_shader.setUniformValue("u_min_flow_rate", self._layer_view.getMinFlowRate())
             self._layer_shader.setUniformValue("u_layer_view_type", self._layer_view.getSimulationViewType())
             self._layer_shader.setUniformValue("u_extruder_opacity", self._layer_view.getExtruderOpacities())
             self._layer_shader.setUniformValue("u_show_travel_moves", self._layer_view.getShowTravelMoves())
@@ -106,6 +108,8 @@ class SimulationPass(RenderPass):
             self._layer_shader.setUniformValue("u_min_feedrate", 0)
             self._layer_shader.setUniformValue("u_max_thickness", 1)
             self._layer_shader.setUniformValue("u_min_thickness", 0)
+            self._layer_shader.setUniformValue("u_max_flow_rate", 1)
+            self._layer_shader.setUniformValue("u_min_flow_rate", 0)
             self._layer_shader.setUniformValue("u_max_line_width", 1)
             self._layer_shader.setUniformValue("u_min_line_width", 0)
             self._layer_shader.setUniformValue("u_layer_view_type", 1)
@@ -271,9 +275,9 @@ class SimulationPass(RenderPass):
                             self._layer_shader.setUniformValue("u_show_starts", self._layer_view.getShowStarts())
 
                     # The first line does not have a previous line: add a MoveCombingType in front for start detection
-                    # this way the first start of the layer can also be drawn 
+                    # this way the first start of the layer can also be drawn
                     prev_line_types = numpy.concatenate([numpy.asarray([LayerPolygon.MoveCombingType], dtype = numpy.float32), layer_data._attributes["line_types"]["value"]])
-                    # Remove the last element 
+                    # Remove the last element
                     prev_line_types = prev_line_types[0:layer_data._attributes["line_types"]["value"].size]
                     layer_data._attributes["prev_line_types"] =  {'opengl_type': 'float', 'value': prev_line_types, 'opengl_name': 'a_prev_line_type'}
 
