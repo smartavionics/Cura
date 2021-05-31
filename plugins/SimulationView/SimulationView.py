@@ -91,6 +91,7 @@ class SimulationView(CuraView):
 
         self._max_feedrate = sys.float_info.min
         self._min_feedrate = sys.float_info.max
+        self._max_feedrate_with_extrusion = sys.float_info.min
         self._max_thickness = sys.float_info.min
         self._min_thickness = sys.float_info.max
         self._max_line_width = sys.float_info.min
@@ -421,7 +422,7 @@ class SimulationView(CuraView):
         return self._min_line_width
 
     def getMaxFlowRate(self) -> float:
-        return self._max_line_width * self._max_thickness * self._max_feedrate
+        return self._max_line_width * self._max_thickness * self._max_feedrate_with_extrusion
 
     def getMinFlowRate(self) -> float:
         min_flow_rate = self._min_line_width * self._min_thickness * self._min_feedrate
@@ -482,6 +483,7 @@ class SimulationView(CuraView):
         # Before we start, save the old values so that we can tell if any of the spectrums need to change.
         old_min_feedrate = self._min_feedrate
         old_max_feedrate = self._max_feedrate
+        old_max_feedrate_with_extrusion = self._max_feedrate_with_extrusion
         old_min_linewidth = self._min_line_width
         old_max_linewidth = self._max_line_width
         old_min_thickness = self._min_thickness
@@ -489,6 +491,7 @@ class SimulationView(CuraView):
 
         self._min_feedrate = sys.float_info.max
         self._max_feedrate = sys.float_info.min
+        self._max_feedrate_with_extrusion = sys.float_info.min
         self._min_line_width = sys.float_info.max
         self._max_line_width = sys.float_info.min
         self._min_thickness = sys.float_info.max
@@ -508,6 +511,7 @@ class SimulationView(CuraView):
             visible_line_types.append(LayerPolygon.SupportType)
             visible_line_types.append(LayerPolygon.SupportInfillType)
             visible_line_types.append(LayerPolygon.SupportInterfaceType)
+        visible_line_types_with_extrusion = visible_line_types.copy()  # Copy before travel moves are added
         if self.getShowTravelMoves():
             visible_line_types.append(LayerPolygon.MoveCombingType)
             visible_line_types.append(LayerPolygon.MoveRetractionType)
@@ -521,12 +525,16 @@ class SimulationView(CuraView):
                 for polyline in layer_data.getLayer(layer_index).polygons:
                     is_visible = numpy.isin(polyline.types, visible_line_types)
                     visible_indices = numpy.where(is_visible)[0]
+                    visible_indicies_with_extrusion = numpy.where(numpy.isin(polyline.types, visible_line_types_with_extrusion))[0]
                     if visible_indices.size == 0:  # No items to take maximum or minimum of.
                         continue
                     visible_feedrates = numpy.take(polyline.lineFeedrates, visible_indices)
+                    visible_feedrates_with_extrusion = numpy.take(polyline.lineFeedrates, visible_indicies_with_extrusion)
                     visible_linewidths = numpy.take(polyline.lineWidths, visible_indices)
                     visible_thicknesses = numpy.take(polyline.lineThicknesses, visible_indices)
                     self._max_feedrate = max(float(visible_feedrates.max()), self._max_feedrate)
+                    if visible_feedrates_with_extrusion.size != 0:
+                        self._max_feedrate_with_extrusion = max(float(visible_feedrates_with_extrusion.max()), self._max_feedrate_with_extrusion)
                     self._min_feedrate = min(float(visible_feedrates.min()), self._min_feedrate)
                     self._max_line_width = max(float(visible_linewidths.max()), self._max_line_width)
                     self._min_line_width = min(float(visible_linewidths.min()), self._min_line_width)
@@ -535,11 +543,12 @@ class SimulationView(CuraView):
                         self._min_thickness = min(float(visible_thicknesses[numpy.nonzero(visible_thicknesses)].min()), self._min_thickness)
                     except ValueError:
                         # Sometimes, when importing a GCode the line thicknesses are zero and so the minimum (avoiding the zero) can't be calculated.
-                        Logger.log("i", "Min thickness can't be calculated because all the values are zero")
+                        Logger.log("w", "Min thickness can't be calculated because all the values are zero")
 
         if old_min_feedrate != self._min_feedrate or old_max_feedrate != self._max_feedrate \
                 or old_min_linewidth != self._min_line_width or old_max_linewidth != self._max_line_width \
-                or old_min_thickness != self._min_thickness or old_max_thickness != self._max_thickness:
+                or old_min_thickness != self._min_thickness or old_max_thickness != self._max_thickness \
+                or old_max_feedrate_with_extrusion != self._max_feedrate_with_extrusion:
             self.colorSchemeLimitsChanged.emit()
 
     def calculateMaxPathsOnLayer(self, layer_num: int) -> None:
