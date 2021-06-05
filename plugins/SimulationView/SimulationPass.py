@@ -249,6 +249,8 @@ class SimulationPass(RenderPass):
                         self._current_shader.setUniformValue("u_min_thickness", self._layer_view.getMinThickness())
                         self._current_shader.setUniformValue("u_max_line_width", self._layer_view.getMaxLineWidth())
                         self._current_shader.setUniformValue("u_min_line_width", self._layer_view.getMinLineWidth())
+                        self._current_shader.setUniformValue("u_max_flow_rate", self._layer_view.getMaxFlowRate())
+                        self._current_shader.setUniformValue("u_min_flow_rate", self._layer_view.getMinFlowRate())
                         self._current_shader.setUniformValue("u_layer_view_type", self._layer_view.getSimulationViewType())
                         self._current_shader.setUniformValue("u_extruder_opacity", self._layer_view.getExtruderOpacities())
                         if self._current_shader != self._layer_shadow_shader:
@@ -266,6 +268,8 @@ class SimulationPass(RenderPass):
                             self._layer_shader.setUniformValue("u_min_thickness", self._layer_view.getMinThickness())
                             self._layer_shader.setUniformValue("u_max_line_width", self._layer_view.getMaxLineWidth())
                             self._layer_shader.setUniformValue("u_min_line_width", self._layer_view.getMinLineWidth())
+                            self._layer_shader.setUniformValue("u_max_flow_rate", self._layer_view.getMaxFlowRate())
+                            self._layer_shader.setUniformValue("u_min_flow_rate", self._layer_view.getMinFlowRate())
                             self._layer_shader.setUniformValue("u_layer_view_type", self._layer_view.getSimulationViewType())
                             self._layer_shader.setUniformValue("u_extruder_opacity", self._layer_view.getExtruderOpacities())
                             self._layer_shader.setUniformValue("u_show_travel_moves", self._layer_view.getShowTravelMoves())

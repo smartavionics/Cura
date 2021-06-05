@@ -10,6 +10,8 @@ vertex =
     uniform lowp float u_min_thickness;
     uniform lowp float u_max_line_width;
     uniform lowp float u_min_line_width;
+    uniform lowp float u_max_flow_rate;
+    uniform lowp float u_min_flow_rate;
     uniform lowp int u_layer_view_type;
     uniform lowp mat4 u_extruder_opacity;  // currently only for max 16 extruders, others always visible
 
@@ -81,6 +83,30 @@ vertex =
         return vec4(red, green, blue, 1.0);
     }
 
+    float clamp(float v)
+    {
+        float t = v < 0.0 ? 0.0 : v;
+        return t > 1.0 ? 1.0 : t;
+    }
+
+    // Inspired by https://stackoverflow.com/a/46628410
+    vec4 flowRateGradientColor(float abs_value, float min_value, float max_value)
+    {
+        float t;
+        if(abs(min_value - max_value) < 0.0001)
+        {
+          t = 0.0;
+        }
+        else
+        {
+          t = 2.0 * ((abs_value - min_value) / (max_value - min_value)) - 1.0;
+        }
+        float red = clamp(1.5 - abs(2.0 * t - 1.0));
+        float green = clamp(1.5 - abs(2.0 * t));
+        float blue = clamp(1.5 - abs(2.0 * t + 1.0));
+        return vec4(red, green, blue, 1.0);
+    }
+
     void main()
     {
         vec4 v1_vertex = a_vertex;
@@ -108,6 +134,10 @@ vertex =
                 break;
             case 4:  // "Line width"
                 v_color = lineWidthGradientColor(a_line_dim.x, u_min_line_width, u_max_line_width);
+                break;
+            case 5:  // "Flow"
+                float flow_rate =  a_line_dim.x * a_line_dim.y * a_feedrate;
+                v_color = flowRateGradientColor(flow_rate, u_min_flow_rate, u_max_flow_rate);
                 break;
         }
 
