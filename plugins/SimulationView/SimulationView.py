@@ -345,7 +345,6 @@ class SimulationView(CuraView):
         if show == self._show_travel_moves:
             return
         self._show_travel_moves = show
-        self.calculateMaxLayers()
         self.currentLayerNumChanged.emit()
         self.visibleStructuresChanged.emit()
 
@@ -448,7 +447,6 @@ class SimulationView(CuraView):
             self.setActivity(True)
             min_layer_number = sys.maxsize
             max_layer_number = -sys.maxsize
-            self._max_feedrate = 0
             for layer_id in layer_data.getLayers():
 
                 # If a layer doesn't contain any polygons, skip it (for infill meshes taller than print objects
