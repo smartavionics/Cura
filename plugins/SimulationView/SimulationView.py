@@ -33,7 +33,6 @@ from cura.CuraView import CuraView
 from cura.LayerPolygon import LayerPolygon  # To distinguish line types.
 from cura.Scene.ConvexHullNode import ConvexHullNode
 from cura.CuraApplication import CuraApplication
-from cura.LayerPolygon import LayerPolygon
 
 from .NozzleNode import NozzleNode
 from .SimulationPass import SimulationPass
@@ -451,6 +450,7 @@ class SimulationView(CuraView):
                 # If a layer doesn't contain any polygons, skip it (for infill meshes taller than print objects
                 if len(layer_data.getLayer(layer_id).polygons) < 1:
                     continue
+
                 if max_layer_number < layer_id:
                     max_layer_number = layer_id
                 if min_layer_number > layer_id:
