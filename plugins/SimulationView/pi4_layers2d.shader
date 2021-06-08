@@ -83,7 +83,7 @@ vertex =
         return vec4(red, green, blue, 1.0);
     }
 
-    float clamp(float v)
+    float clamp1(float v)
     {
         float t = v < 0.0 ? 0.0 : v;
         return t > 1.0 ? 1.0 : t;
@@ -101,9 +101,9 @@ vertex =
         {
           t = 2.0 * ((abs_value - min_value) / (max_value - min_value)) - 1.0;
         }
-        float red = clamp(1.5 - abs(2.0 * t - 1.0));
-        float green = clamp(1.5 - abs(2.0 * t));
-        float blue = clamp(1.5 - abs(2.0 * t + 1.0));
+        float red = clamp1(1.5 - abs(2.0 * t - 1.0));
+        float green = clamp1(1.5 - abs(2.0 * t));
+        float blue = clamp1(1.5 - abs(2.0 * t + 1.0));
         return vec4(red, green, blue, 1.0);
     }
 
