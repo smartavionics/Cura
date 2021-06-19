@@ -546,7 +546,7 @@ class SimulationView(CuraView):
                     try:
                         self._min_thickness = min(float(visible_thicknesses[numpy.nonzero(visible_thicknesses)].min()), self._min_thickness)
                     except ValueError:
-                        # Sometimes, when importing a GCode the line thicknesses are zero and so the minimum (avoiding the zero) can't be calculated.
+                        # Sometimes, when importing a GCode the line thicknesses are zero and so the minimum (avoiding the zero) can't be calculated.0.5
                         Logger.log("w", "Min thickness can't be calculated because all the values are zero")
 
         if old_min_feedrate != self._min_feedrate or old_max_feedrate != self._max_feedrate \
