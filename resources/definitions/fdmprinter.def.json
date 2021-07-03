@@ -7866,8 +7866,9 @@
                     "default_value": 100,
                     "type": "float",
                     "minimum_value": "5",
-                    "maximum_value": "10000 / bridge_skin_material_flow",
+                    "maximum_value": "20000 / bridge_skin_material_flow",
                     "minimum_value_warning": "20",
+                    "maximum_value_warning": "10000 / bridge_skin_material_flow",
                     "enabled": "bridge_settings_enabled",
                     "settable_per_mesh": true
                 },
@@ -7928,8 +7929,9 @@
                     "default_value": 75,
                     "type": "float",
                     "minimum_value": "5",
-                    "maximum_value": "10000 / bridge_skin_material_flow_2",
+                    "maximum_value": "20000 / bridge_skin_material_flow_2",
                     "minimum_value_warning": "20",
+                    "maximum_value_warning": "10000 / bridge_skin_material_flow_2",
                     "enabled": "bridge_settings_enabled and bridge_enable_more_layers",
                     "settable_per_mesh": true
                 },
@@ -7981,8 +7983,9 @@
                     "default_value": 80,
                     "type": "float",
                     "minimum_value": "5",
-                    "maximum_value": "10000 / bridge_skin_material_flow_3",
+                    "maximum_value": "20000 / bridge_skin_material_flow_3",
                     "minimum_value_warning": "20",
+                    "maximum_value_warning": "10000 / bridge_skin_material_flow_3",
                     "enabled": "bridge_settings_enabled and bridge_enable_more_layers",
                     "settable_per_mesh": true
                 },
