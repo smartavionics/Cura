@@ -1967,7 +1967,7 @@
                         "honeycomb": "Honeycomb"
                     },
                     "default_value": "grid",
-                    "enabled": "infill_sparse_density > 0",
+                    "enabled": "infill_line_distance > 0",
                     "value": "'lines' if infill_sparse_density > 25 else 'grid'",
                     "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
