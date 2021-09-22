@@ -204,7 +204,7 @@ class StartSliceJob(Job):
         then = time.time()
         for node in DepthFirstIterator(self._scene.getRoot()):
             if node.callDecoration("getLayerData") and node.callDecoration("getBuildPlateNumber") == self._build_plate_number:
-                # Singe we walk through all nodes in the scene, they always have a parent.
+                # Since we walk through all nodes in the scene, they always have a parent.
                 cast(SceneNode, node.getParent()).removeChild(node)
                 break
         Logger.log("d", "Remove layer old data took %s seconds", time.time() - then)
