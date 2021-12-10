@@ -105,19 +105,19 @@ class IntentCategoryModel(ListModel):
         available_categories = IntentManager.getInstance().currentAvailableIntentCategories()
         result = []
         for category in available_categories:
+            qualities = IntentModel()
+            qualities.setIntentCategory(category)
             try:
-                qualities = IntentModel()
-                qualities.setIntentCategory(category)
-                result.append({
-                    "name": IntentCategoryModel.translation(category, "name", category),
-                    "description": IntentCategoryModel.translation(category, "description", None),
-                    "intent_category": category,
-                    "weight": list(IntentCategoryModel._get_translations().keys()).index(category),
-                    "qualities": qualities
-                })
-            except:
-                Logger.log("e", "Unknown or bad intent category '%s'", category)
-
+                weight = list(IntentCategoryModel._get_translations().keys()).index(category)
+            except ValueError:
+                weight = 99
+            result.append({
+                "name": IntentCategoryModel.translation(category, "name", category),
+                "description": IntentCategoryModel.translation(category, "description", None),
+                "intent_category": category,
+                "weight": weight,
+                "qualities": qualities
+            })
         result.sort(key = lambda k: k["weight"])
         self.setItems(result)
 
