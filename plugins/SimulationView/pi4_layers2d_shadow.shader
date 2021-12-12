@@ -7,8 +7,6 @@ vertex =
 
     uniform lowp mat4 u_extruder_opacity;  // currently only for max 16 extruders, others always visible
 
-    uniform highp vec2 u_drawRange;
-
     //uniform highp mat4 u_normalMatrix;
 
     uniform int u_show_travel_moves;
@@ -23,7 +21,6 @@ vertex =
     in highp vec2 a_line_dim;  // line width and thickness
     in highp float a_extruder;
     in highp float a_line_type;
-    in highp float a_vertex_index;
 
     out lowp vec4 v_color;
     out vec3 v_vertex;
@@ -49,8 +46,7 @@ vertex =
         v_vertex = world_space_vert.xyz;
         //v_normal = (u_normalMatrix * normalize(a_normal)).xyz;
 
-        if ((u_drawRange[0] >= 0.0 && u_drawRange[1] >= 0.0 && (a_vertex_index < u_drawRange[0] || a_vertex_index >= u_drawRange[1])) ||
-            (u_extruder_opacity[int(mod(a_extruder, 4.0))][int(a_extruder / 4.0)] == 0.0) ||
+        if ((u_extruder_opacity[int(mod(a_extruder, 4.0))][int(a_extruder / 4.0)] == 0.0) ||
             ((u_show_travel_moves == 0) && ((a_line_type == 8.0) || (a_line_type == 9.0))) ||
             ((u_show_helpers == 0) && ((a_line_type == 4.0) || (a_line_type == 5.0) || (a_line_type == 7.0) || (a_line_type == 10.0) || a_line_type == 11.0)) ||
             ((u_show_skin == 0) && ((a_line_type == 1.0) || (a_line_type == 2.0) || (a_line_type == 3.0))) ||
@@ -176,8 +172,6 @@ u_show_travel_moves = 0
 u_show_helpers = 1
 u_show_skin = 1
 u_show_infill = 1
-
-u_drawRange = [-1.0, -1.0]
 
 [bindings]
 u_modelMatrix = model_matrix
