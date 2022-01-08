@@ -1277,16 +1277,31 @@
                     "limit_to_extruder": "wall_0_extruder_nr",
                     "settable_per_mesh": true
                 },
-                "hole_xy_offset_max_path_len":
+                "hole_xy_offset_max_size":
                 {
-                    "label": "Hole Horizontal Expansion Max Path Len",
-                    "description": "When non-zero, horizontal expansion is only applied to holes whose perimeter length is less than this value.",
+                    "label": "Hole Horizontal Expansion Max Size",
+                    "description": "When non-zero, horizontal expansion is only applied to holes whose diameter is less than this value.",
                     "unit": "mm",
                     "type": "float",
                     "minimum_value": "0",
                     "default_value": 0,
                     "limit_to_extruder": "wall_0_extruder_nr",
-                    "settable_per_mesh": true
+                    "settable_per_mesh": true,
+                    "children":
+                    {
+                         "hole_xy_offset_max_path_len":
+                         {
+                              "label": "Hole Horizontal Expansion Max Length",
+                              "description": "When non-zero, horizontal expansion is only applied to holes whose perimeter length is less than this value.",
+                              "unit": "mm",
+                              "type": "float",
+                              "minimum_value": "0",
+                              "default_value": 0,
+                              "value": "hole_xy_offset_max_size * math.pi",
+                              "limit_to_extruder": "wall_0_extruder_nr",
+                              "settable_per_mesh": true
+                          }
+                    }
                 },
                "z_seam_type":
                 {
