@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# Copyright (c) 2020 Ultimaker B.V.
+# Copyright (c) 2022 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 # Remove the working directory from sys.path.
@@ -17,6 +17,9 @@ for dir in ["", site.USER_SITE]:
 import argparse
 import faulthandler
 import os
+if sys.platform != "linux":  # Turns out the Linux build _does_ use this, but we're not making an Enterprise release for that system anyway.
+    os.environ["QT_PLUGIN_PATH"] = ""  # Security workaround: Don't need it, and introduces an attack vector, so set to nul.
+    os.environ["QML2_IMPORT_PATH"] = ""  # Security workaround: Don't need it, and introduces an attack vector, so set to nul.
 
 # Workaround for a race condition on certain systems where there
 # is a race condition between Arcus and PyQt. Importing Arcus
