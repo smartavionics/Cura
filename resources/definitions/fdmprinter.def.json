@@ -8459,6 +8459,28 @@
                     "value": "skin_lines_max_flow_boost",
                     "enabled": "skin_lines_boost_flow",
                     "settable_per_mesh": true
+                },
+                "arrange_model_spacing_mm":
+                {
+                    "label": "Model Spacing Distance",
+                    "description": "The spacing distance between arranged objects. After changing this setting, do 'Arrange All Models' to re-arrange the models.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default_value": 1.5,
+                    "minimum_value": 0,
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false,
+                    "settable_per_meshgroup": false
+                },
+                "arrange_disable_model_rotations":
+                {
+                    "label": "Disable Model Rotations",
+                    "description": "When enabled, models are not rotated when they are arranged. Does not alter any existing rotation the models may have.",
+                    "type": "bool",
+                    "default_value": false,
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false,
+                    "settable_per_meshgroup": false
                 }
             }
         },

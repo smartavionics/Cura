@@ -36,7 +36,11 @@ def findNodePlacement(nodes_to_arrange: List["SceneNode"], build_volume: "BuildV
         found_solution_for_all: Whether the algorithm found a place on the buildplate for all the objects
         node_items: A list of the nodes return by libnest2d, which contain the new positions on the buildplate
     """
-    spacing = int(1.5 * factor)  # 1.5mm spacing.
+    global_container_stack = Application.getInstance().getGlobalContainerStack()
+    spacing_mm = global_container_stack.getProperty("arrange_model_spacing_mm", "value")
+    if spacing_mm is None:
+        spacing_mm = 1.5
+    spacing = int(spacing_mm * factor)
 
     machine_width = build_volume.getWidth()
     machine_depth = build_volume.getDepth()
@@ -59,8 +63,10 @@ def findNodePlacement(nodes_to_arrange: List["SceneNode"], build_volume: "BuildV
         node_items.append(item)
 
     # Use a tiny margin for the build_plate_polygon (the nesting doesn't like overlapping disallowed areas)
-    half_machine_width = 0.5 * machine_width - 1
-    half_machine_depth = 0.5 * machine_depth - 1
+    # mb - shrink build_plate_polygon so that when disallowed areas are expanded by spacing/2 they can't reach the build plate edge
+    # using spacing_mm/2 should be sufficient but for some values of spacing_mm, it fails to arrange
+    half_machine_width = 0.5 * machine_width - spacing_mm - 1
+    half_machine_depth = 0.5 * machine_depth - spacing_mm - 1
     build_plate_polygon = Polygon(numpy.array([
         [half_machine_width, -half_machine_depth],
         [-half_machine_width, -half_machine_depth],
@@ -99,7 +105,8 @@ def findNodePlacement(nodes_to_arrange: List["SceneNode"], build_volume: "BuildV
 
     config = NfpConfig()
     config.accuracy = 1.0
-
+    if global_container_stack.getProperty("arrange_disable_model_rotations", "value"):
+        config.rotations = [0]
     num_bins = nest(node_items, build_plate_bounding_box, spacing, config)
 
     # Strip the fixed items (previously placed) and the disallowed areas from the results again.
