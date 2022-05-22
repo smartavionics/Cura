@@ -8007,6 +8007,34 @@
                     "enabled": "bridge_settings_enabled",
                     "settable_per_mesh": true
                 },
+                "bridge_skin_overlap":
+                {
+                    "label": "Bridge Skin Overlap Percentage",
+                    "description": "Skin Overlap Percentage used for bridge skins.",
+                    "unit": "%",
+                    "type": "float",
+                    "default_value": 10,
+                    "minimum_value_warning": "-50",
+                    "maximum_value_warning": "100",
+                    "enabled": "bridge_settings_enabled",
+                    "settable_per_mesh": true,
+                    "children":
+                    {
+                        "bridge_skin_overlap_mm":
+                        {
+                            "label": "Bridge Skin Overlap",
+                            "description": "Skin Overlap used for bridge skins",
+                            "unit": "mm",
+                            "type": "float",
+                            "default_value": 0.02,
+                            "minimum_value_warning": "-0.5 * machine_nozzle_size",
+                            "maximum_value_warning": "machine_nozzle_size",
+                            "value": "0.5 * (skin_line_width + (wall_line_width_x if wall_line_count > 1 else wall_line_width_0)) * bridge_skin_overlap / 100",
+                            "enabled": "bridge_settings_enabled",
+                            "settable_per_mesh": true
+                        }
+                    }
+                },
                 "bridge_fan_speed":
                 {
                     "label": "Bridge Fan Speed",
