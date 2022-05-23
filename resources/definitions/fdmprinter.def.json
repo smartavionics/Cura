@@ -8096,6 +8096,32 @@
                     "enabled": "bridge_settings_enabled and bridge_enable_more_layers",
                     "settable_per_mesh": true
                 },
+                "bridge_skin_overlap_2":
+                {
+                    "label": "Bridge Second Skin Overlap Percentage",
+                    "description": "Skin overlap used for the second bridge skin layer expressed as a percentage of the outer wall line width.",
+                    "unit": "%",
+                    "type": "float",
+                    "default_value": 50,
+                    "enabled": "bridge_settings_enabled",
+                    "settable_per_mesh": true,
+                    "children":
+                    {
+                        "bridge_skin_overlap_mm_2":
+                        {
+                            "label": "Bridge Second Skin Overlap",
+                            "description": "Skin overlap distance used for the second bridge skin layer. Ideally, this should be less than Bottom Skin Expand Distance.",
+                            "unit": "mm",
+                            "type": "float",
+                            "default_value": 0.5,
+                            "minimum_value_warning": "-0.5 * machine_nozzle_size",
+                            "maximum_value_warning": "bottom_skin_expand_distance",
+                            "value": "wall_line_width_0 * bridge_skin_overlap_2 / 100",
+                            "enabled": "bridge_settings_enabled",
+                            "settable_per_mesh": true
+                        }
+                    }
+                },
                 "bridge_fan_speed_2":
                 {
                     "label": "Bridge Second Skin Fan Speed",
@@ -8149,6 +8175,32 @@
                     "maximum_value_warning": "10000 / bridge_skin_material_flow_3",
                     "enabled": "bridge_settings_enabled and bridge_enable_more_layers",
                     "settable_per_mesh": true
+                },
+                "bridge_skin_overlap_3":
+                {
+                    "label": "Bridge Third Skin Overlap Percentage",
+                    "description": "Skin overlap used for the third bridge skin layer expressed as a percentage of the outer wall line width.",
+                    "unit": "%",
+                    "type": "float",
+                    "default_value": 25,
+                    "enabled": "bridge_settings_enabled",
+                    "settable_per_mesh": true,
+                    "children":
+                    {
+                        "bridge_skin_overlap_mm_3":
+                        {
+                            "label": "Bridge Third Skin Overlap",
+                            "description": "Skin overlap distance used for the third bridge skin layer. Ideally, this should be less than Bottom Skin Expand Distance.",
+                            "unit": "mm",
+                            "type": "float",
+                            "default_value": 0.5,
+                            "minimum_value_warning": "-0.5 * machine_nozzle_size",
+                            "maximum_value_warning": "bottom_skin_expand_distance",
+                            "value": "wall_line_width_0 * bridge_skin_overlap_3 / 100",
+                            "enabled": "bridge_settings_enabled",
+                            "settable_per_mesh": true
+                        }
+                    }
                 },
                 "bridge_fan_speed_3":
                 {
