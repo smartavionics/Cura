@@ -5683,6 +5683,21 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
+               "skirt_brim_z_offset":
+                {
+                    "label": "Skirt/Brim Z Offset",
+                    "description": "Offset the nozzle height by this amount when printing skirt or brim lines (negative values move the nozzle down).",
+                    "unit": "mm",
+                    "type": "float",
+                    "default_value": 0,
+                    "minimum_value": "-layer_height_0",
+                    "minimum_value_warning": "-layer_height_0/2",
+                    "maximum_value_warning": "layer_height/2",
+                    "enabled": "resolveOrValue('adhesion_type') == 'brim' or resolveOrValue('adhesion_type') == 'skirt'",
+                    "settable_per_mesh": true,
+                    "settable_per_extruder": true,
+                    "limit_to_extruder": "adhesion_extruder_nr"
+                },
                 "brim_width":
                 {
                     "label": "Brim Width",
