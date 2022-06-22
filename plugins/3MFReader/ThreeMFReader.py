@@ -52,6 +52,8 @@ class ThreeMFReader(MeshReader):
         self._base_name = ""
         self._unit = None
         self._empty_project = False
+        self._preferences = CuraApplication.getInstance().getPreferences()
+        self._preferences.addPreference("3mfreader/load_models_in_middle_of_buildplate", False)
 
     def emptyFileHintSet(self) -> bool:
         return self._empty_project
@@ -210,6 +212,10 @@ class ThreeMFReader(MeshReader):
             scene_3mf = parser.parse(archive.open("3D/3dmodel.model").read())
             self._unit = scene_3mf.getUnit()
 
+            load_models_in_middle_of_buildplate = False
+            if "Application" not in scene_3mf.getMetadata() or not scene_3mf.getMetadata()["Application"].value.startswith("Ultimaker Cura"):
+                load_models_in_middle_of_buildplate = self._preferences.getValue("3mfreader/load_models_in_middle_of_buildplate")
+
             for key, value in scene_3mf.getMetadata().items():
                 CuraApplication.getInstance().getController().getScene().setMetaDataEntry(key, value)
 
@@ -241,7 +247,7 @@ class ThreeMFReader(MeshReader):
 
                 # Second step: 3MF defines the left corner of the machine as center, whereas cura uses the center of the
                 # build volume.
-                if global_container_stack:
+                if global_container_stack and not load_models_in_middle_of_buildplate:
                     translation_vector = Vector(x = -global_container_stack.getProperty("machine_width", "value") / 2,
                                                 y = -global_container_stack.getProperty("machine_depth", "value") / 2,
                                                 z = 0)
@@ -268,6 +274,23 @@ class ThreeMFReader(MeshReader):
                             um_node.callDecoration("setZOffset", minimum_z_value)
 
                 result.append(um_node)
+
+            if load_models_in_middle_of_buildplate:
+                # translate the models so that the centre of their combined bounding box is at the centre of the buildplate
+                aabb = None
+                for um_node in result:
+                    node_meshdata = um_node.getMeshData()
+                    if node_meshdata is not None:
+                        if aabb is None:
+                            aabb = um_node.getMeshData().getExtents(um_node.getWorldTransformation())
+                        else:
+                            aabb = aabb + um_node.getMeshData().getExtents(um_node.getWorldTransformation())
+
+                if aabb is not None:
+                    for um_node in result:
+                        translation_matrix = Matrix()
+                        translation_matrix.setByTranslation(Vector(-aabb.center.x/2, 0, aabb.center.y))
+                        um_node.setTransformation(um_node.getLocalTransformation().preMultiply(translation_matrix))
 
             if len(result) == 0:
                 self._empty_project = True

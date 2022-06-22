@@ -591,6 +591,21 @@ UM.PreferencesPage
             {
                 width: childrenRect.width
                 height: childrenRect.height
+                text: catalog.i18nc("@info:tooltip","Should models loaded from 3mf files created by other applications be moved to the middle of the buildplate?")
+
+                CheckBox
+                {
+                    id: load3mfFilesInMiddleCheckbox
+                    text: catalog.i18nc("@option:check","Move models loaded from 3mf files to the middle of the buildplate")
+                    checked: boolCheck(UM.Preferences.getValue("3mfreader/load_models_in_middle_of_buildplate"))
+                    onCheckedChanged: UM.Preferences.setValue("3mfreader/load_models_in_middle_of_buildplate", checked)
+                }
+            }
+
+            UM.TooltipArea
+            {
+                width: childrenRect.width
+                height: childrenRect.height
                 text: catalog.i18nc("@info:tooltip","Should models be scaled to the build volume if they are too large?")
 
                 CheckBox
