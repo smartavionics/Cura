@@ -8528,6 +8528,30 @@
                     "default_value": false,
                     "settable_per_mesh": true
                 },
+                "skin_lines_boost_flow_scaling":
+                {
+                    "label": "Travel Compensation Scaling Factor",
+                    "description": "The amount the skin line flow is increased in proportion to the length of the preceding travel move is multiplied by this factor. Larger values increase the amount the flow is boosted for a given travel distance.",
+                    "unit": "%",
+                    "type": "float",
+                    "default_value": 100,
+                    "minimum_value": "10",
+                    "maximum_value_warning": "300",
+                    "enabled": "skin_lines_boost_flow",
+                    "settable_per_mesh": true
+                },
+                "skin_lines_boost_max_travel_len":
+                {
+                    "label": "Maximum compensated travel distance",
+                    "description": "Limits the travel distance used to calculate the amount of boost applied to skin lines. Travels longer than this distance are treated as if they are this length.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default_value": 1.2,
+                    "value": "skin_line_width * 3",
+                    "minimum_value": 0,
+                    "enabled": "skin_lines_boost_flow",
+                    "settable_per_mesh": true
+                },
                 "skin_lines_max_flow_boost":
                 {
                     "label": "Skin Lines Max Flow",
