@@ -8534,9 +8534,9 @@
                     "description": "The amount the skin line flow is increased in proportion to the length of the preceding travel move is multiplied by this factor. Larger values increase the amount the flow is boosted for a given travel distance.",
                     "unit": "%",
                     "type": "float",
-                    "default_value": 100,
+                    "default_value": 300,
                     "minimum_value": "10",
-                    "maximum_value_warning": "300",
+                    "maximum_value_warning": "500",
                     "enabled": "skin_lines_boost_flow",
                     "settable_per_mesh": true
                 },
