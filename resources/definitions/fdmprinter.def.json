@@ -2030,6 +2030,16 @@
                     "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
                 },
+                "infill_constrain_gyroid_pitch":
+                {
+                    "label": "Fill Gyroid Pattern Hole",
+                    "description": "When enabled, the gyroid line pitch is altered to ensure that the hole that occurs each gyroid cycle is filled as much as possible. Note that enabling this will make some infill densities impossible to print so a close printable density will be used instead.",
+                    "type": "bool",
+                    "default_value": false,
+                    "enabled": "infill_pattern == 'gyroid'",
+                    "limit_to_extruder": "infill_extruder_nr",
+                    "settable_per_mesh": true
+                },
                 "zig_zaggify_infill":
                 {
                     "label": "Connect Infill Lines",
