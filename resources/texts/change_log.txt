@@ -1,3 +1,26 @@
+[4.20.3]
+* New features
+- Added Horizontal Expansion Taper Layers setting to specify how many layers are added to blend the horizontal expansion value from the first layer value to the values used for upper layers.
+- Added Minimise Gyroid Holes setting to (partially) fill in the holes that can appear in the gyroid pattern.
+
+* Bug fixes and improvements
+- When printing infill patterns that contain junctions of more than 2 lines (e.g. gyroid), it will select the next line to be printed to be the line whose direction most closely matches the line that has just been printed. i.e. it tries to avoid big changes in direction.
+
+[4.20.2]
+* New features
+- Added Skirt/Brim Z Offset setting.
+- Added Travel Compensation Scaling Factor and Maximum Compensated Travel Distance settings.
+- Added preference setting to move models loaded from 3mf files not created by Cura to the centre of the buildplate.
+
+* Bug fixes and improvements
+- No longer considers a wall with bridge sections to be a small feature.
+- No longer starts a wall above air when seam location is "exact" (seam position is user specified and seam corner preference is none)
+- No longer irons skin areas narrower than 2 line widths.
+
+[4.20.1]
+* New feature
+Added settings to specify the overlap of bridge skin areas with the walls/infill that surrounds them.
+
 [4.13.1]
 * Bug fixes 
 - Fixed a bug where tree support could go through the model
