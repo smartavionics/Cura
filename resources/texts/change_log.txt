@@ -7,6 +7,7 @@
 - Computed default for bridge_skin_overlap_mm now uses width of outer bridge skin wall line.
 - Fix bridge skin overlapping bridge wall lines.
 - Avoid generating very small line segments when using TPMS infill patterns.
+- Upstream fix for zoom towards mouse direction.
 
 [4.20.3]
 * New features
