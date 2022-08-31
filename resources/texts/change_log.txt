@@ -1,3 +1,13 @@
+[4.20.4]
+* New features
+- Added Visible Top Skins Have Only One Wall and Bottom Skin Has Only One Wall settings to surround visible top layers and the bottom layer with just a single wall line irrespective of how many wall lines are used elsewhere.
+
+* Bug fixes and improvements
+- Fixed visibility of bridge skin overlap settings for 2nd and 3rd layers.
+- Computed default for bridge_skin_overlap_mm now uses width of outer bridge skin wall line.
+- Fix bridge skin overlapping bridge wall lines.
+- Avoid generating very small line segments when using TPMS infill patterns.
+
 [4.20.3]
 * New features
 - Added Horizontal Expansion Taper Layers setting to specify how many layers are added to blend the horizontal expansion value from the first layer value to the values used for upper layers.
