@@ -2052,10 +2052,11 @@
                 "infill_constrain_gyroid_pitch":
                 {
                     "label": "Minimise Gyroid Holes",
-                    "description": "When enabled, the gyroid line pitch is altered to ensure that the lines 'cross' twice per gyroid cycle. This will partially fill the holes that often appear where the line orientation changes. Note that enabling this will make some infill densities impossible to print so a higher density that is printable will be used instead.",
+                    "description": "When enabled, the gyroid line pitch is altered to ensure that the lines 'cross' twice per gyroid cycle. This will partially fill the holes that often appear where the line orientation changes. Note that enabling this will make some infill densities impossible to print so a higher density that is printable will be used instead. This feature is disabled when adaptive layer heights are enabled.",
                     "type": "bool",
                     "default_value": false,
                     "enabled": "infill_pattern == 'gyroid'",
+                    "warning_value": "True if adaptive_layer_height_enabled else None",
                     "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
                 },
