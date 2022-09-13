@@ -2025,7 +2025,8 @@
                         "schwarz_p": "Schwarz P",
                         "schwarz_d": "Schwarz D",
                         "hilbert": "Hilbert Curve",
-                        "honeycomb": "Honeycomb"
+                        "honeycomb": "Honeycomb",
+                        "discrete_lines": "Discrete Lines"
                     },
                     "default_value": "grid",
                     "enabled": "infill_line_distance > 0",
@@ -2060,6 +2061,17 @@
                     "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
                 },
+                "discrete_lines_infill_definition":
+                {
+                    "label": "Discrete Lines Definition",
+                    "description": "Either a definition written as a JSON string or an @ followed by the name of a JSON file that contains the definition.",
+                    "type": "str",
+                    "default_value": "",
+                    "value": "{ '\"pitch\": ' + str(infill_line_distance) }",
+                    "enabled": "infill_pattern == 'discrete_lines'",
+                    "limit_to_extruder": "infill_extruder_nr",
+                    "settable_per_mesh": true
+                },
                 "zig_zaggify_infill":
                 {
                     "label": "Connect Infill Lines",
@@ -2067,7 +2079,7 @@
                     "type": "bool",
                     "default_value": false,
                     "value": "infill_pattern == 'cross' or infill_pattern == 'cross_3d' or infill_pattern == 'honeycomb'",
-                    "enabled": "infill_pattern == 'lines' or infill_pattern == 'grid' or infill_pattern == 'triangles' or infill_pattern == 'trihexagon' or infill_pattern == 'cubic' or infill_pattern == 'tetrahedral' or infill_pattern == 'quarter_cubic' or infill_pattern == 'cross' or infill_pattern == 'cross_3d' or infill_pattern == 'gyroid' or infill_pattern == 'schwarz_p' or infill_pattern == 'schwarz_d' or infill_pattern == 'honeycomb' or infill_pattern == 'hilbert'",
+                    "enabled": "infill_pattern == 'lines' or infill_pattern == 'grid' or infill_pattern == 'triangles' or infill_pattern == 'trihexagon' or infill_pattern == 'cubic' or infill_pattern == 'tetrahedral' or infill_pattern == 'quarter_cubic' or infill_pattern == 'cross' or infill_pattern == 'cross_3d' or infill_pattern == 'gyroid' or infill_pattern == 'schwarz_p' or infill_pattern == 'schwarz_d' or infill_pattern == 'honeycomb' or infill_pattern == 'hilbert' or infill_pattern == 'discrete_lines'",
                     "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
                 },
@@ -2088,7 +2100,7 @@
                     "description": "A list of integer line directions to use. Elements from the list are used sequentially as the layers progress and when the end of the list is reached, it starts at the beginning again. The list items are separated by commas and the whole list is contained in square brackets. Default is an empty list which means use the traditional default angles (45 and 135 degrees for the lines and zig zag patterns and 45 degrees for all other patterns).",
                     "type": "[int]",
                     "default_value": "[ ]",
-                    "enabled": "infill_pattern not in ('concentric', 'cross', 'cross_3d', 'lightning') and infill_sparse_density > 0",
+                    "enabled": "infill_pattern not in ('concentric', 'cross', 'cross_3d', 'lightning', 'discrete_lines') and infill_sparse_density > 0",
                     "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
                 },
