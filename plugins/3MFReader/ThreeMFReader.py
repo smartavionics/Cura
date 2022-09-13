@@ -290,7 +290,10 @@ class ThreeMFReader(MeshReader):
                 if aabb is not None:
                     for um_node in result:
                         translation_matrix = Matrix()
-                        translation_matrix.setByTranslation(Vector(-aabb.center.x/2, 0, aabb.center.y))
+                        lift = 0
+                        if aabb.bottom < 0:
+                            lift = aabb.height/2 - aabb.center.y/2
+                        translation_matrix.setByTranslation(Vector(-aabb.center.x/2, lift, -aabb.center.z/2))
                         um_node.setTransformation(um_node.getLocalTransformation().preMultiply(translation_matrix))
 
             if len(result) == 0:
