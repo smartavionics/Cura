@@ -2067,7 +2067,6 @@
                     "description": "Either a definition written as a JSON string or an @ followed by the name of a JSON file that contains the definition. The definition file name can either be absolute or relative to the current project file's directory or the user's home directory.",
                     "type": "str",
                     "default_value": "",
-                    "value": "{ '\"pitch\": ' + str(infill_line_distance) }",
                     "enabled": "infill_pattern == 'discrete_lines'",
                     "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
