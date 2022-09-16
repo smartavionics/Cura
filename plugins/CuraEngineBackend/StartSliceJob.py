@@ -7,6 +7,7 @@ from enum import IntEnum
 import time
 from typing import Any, cast, Dict, List, Optional, Set
 import re
+import os
 import Arcus #For typing.
 from PyQt5.QtCore import QCoreApplication
 
@@ -493,6 +494,10 @@ class StartSliceJob(Job):
         initial_extruder_nr = CuraApplication.getInstance().getExtruderManager().getInitialExtruderNr()
         settings["machine_start_gcode"] = self._expandGcodeTokens(settings["machine_start_gcode"], initial_extruder_nr)
         settings["machine_end_gcode"] = self._expandGcodeTokens(settings["machine_end_gcode"], initial_extruder_nr)
+
+        last_loaded_filename = CuraApplication.getInstance()._last_loaded_filename
+        settings["project_file_dir"] = os.path.dirname(last_loaded_filename) if last_loaded_filename else ""
+        settings["home_dir"] = os.path.expanduser("~")
 
         # Add all sub-messages for each individual setting.
         for key, value in settings.items():

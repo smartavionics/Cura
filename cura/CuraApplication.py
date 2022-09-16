@@ -248,6 +248,8 @@ class CuraApplication(QtApplication):
 
         self._plugins_loaded = False
 
+        self._last_loaded_filename = None
+
         # Backups
         self._auto_save = None  # type: Optional[AutoSave]
         self._enable_save = True
@@ -1805,6 +1807,7 @@ class CuraApplication(QtApplication):
         extension = os.path.splitext(f)[1]
         extension = extension.lower()
         filename = os.path.basename(f)
+        self._last_loaded_filename = os.path.abspath(f)
         if self._currently_loading_files:
             # If a non-slicable file is already being loaded, we prevent loading of any further non-slicable files
             if extension in self._non_sliceable_extensions:
