@@ -2064,7 +2064,7 @@
                 "discrete_lines_infill_definition":
                 {
                     "label": "Discrete Lines Definition",
-                    "description": "Either a definition written as a JSON string or an @ followed by the name of a JSON file that contains the definition.",
+                    "description": "Either a definition written as a JSON string or an @ followed by the name of a JSON file that contains the definition. The definition file name can either be absolute or relative to the current project file's directory or the user's home directory.",
                     "type": "str",
                     "default_value": "",
                     "value": "{ '\"pitch\": ' + str(infill_line_distance) }",
@@ -2079,7 +2079,7 @@
                     "type": "bool",
                     "default_value": false,
                     "value": "infill_pattern == 'cross' or infill_pattern == 'cross_3d' or infill_pattern == 'honeycomb'",
-                    "enabled": "infill_pattern == 'lines' or infill_pattern == 'grid' or infill_pattern == 'triangles' or infill_pattern == 'trihexagon' or infill_pattern == 'cubic' or infill_pattern == 'tetrahedral' or infill_pattern == 'quarter_cubic' or infill_pattern == 'cross' or infill_pattern == 'cross_3d' or infill_pattern == 'gyroid' or infill_pattern == 'schwarz_p' or infill_pattern == 'schwarz_d' or infill_pattern == 'honeycomb' or infill_pattern == 'hilbert' or infill_pattern == 'discrete_lines'",
+                    "enabled": "infill_pattern == 'lines' or infill_pattern == 'grid' or infill_pattern == 'triangles' or infill_pattern == 'trihexagon' or infill_pattern == 'cubic' or infill_pattern == 'tetrahedral' or infill_pattern == 'quarter_cubic' or infill_pattern == 'cross' or infill_pattern == 'cross_3d' or infill_pattern == 'gyroid' or infill_pattern == 'schwarz_p' or infill_pattern == 'schwarz_d' or infill_pattern == 'honeycomb' or infill_pattern == 'hilbert'",
                     "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
                 },
@@ -2111,7 +2111,7 @@
                     "unit": "mm",
                     "type": "float",
                     "default_value": 0,
-                    "enabled": "infill_pattern == 'grid' or infill_pattern == 'lines' or infill_pattern == 'triangles' or infill_pattern == 'cubic' or infill_pattern == 'tetrahedral' or infill_pattern == 'quarter_cubic' or infill_pattern == 'zigzag' or infill_pattern == 'gyroid' or infill_pattern == 'schwarz_p' or infill_pattern == 'schwarz_d'",
+                    "enabled": "infill_pattern == 'grid' or infill_pattern == 'lines' or infill_pattern == 'triangles' or infill_pattern == 'cubic' or infill_pattern == 'tetrahedral' or infill_pattern == 'quarter_cubic' or infill_pattern == 'zigzag' or infill_pattern == 'gyroid' or infill_pattern == 'schwarz_p' or infill_pattern == 'schwarz_d' or infill_pattern == 'discrete_lines'",
                     "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
                 },
@@ -2122,7 +2122,7 @@
                     "unit": "mm",
                     "type": "float",
                     "default_value": 0,
-                    "enabled": "infill_pattern == 'grid' or infill_pattern == 'lines' or infill_pattern == 'triangles' or infill_pattern == 'cubic' or infill_pattern == 'tetrahedral' or infill_pattern == 'quarter_cubic' or infill_pattern == 'zigzag' or infill_pattern == 'gyroid' or infill_pattern == 'schwarz_p' or infill_pattern == 'schwarz_d'",
+                    "enabled": "infill_pattern == 'grid' or infill_pattern == 'lines' or infill_pattern == 'triangles' or infill_pattern == 'cubic' or infill_pattern == 'tetrahedral' or infill_pattern == 'quarter_cubic' or infill_pattern == 'zigzag' or infill_pattern == 'gyroid' or infill_pattern == 'schwarz_p' or infill_pattern == 'schwarz_d' or infill_pattern == 'discrete_lines'",
                     "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
                 },
