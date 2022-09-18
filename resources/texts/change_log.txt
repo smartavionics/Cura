@@ -1,3 +1,12 @@
+
+[4.20.5]
+* New features
+- Added Discrete Lines infill pattern with associated setting Discrete Lines Definition.
+
+* Bug fixes and improvements
+- Rework of random number generation to improve random seam positioning.
+- Upstream fixes for monotonic ordering.
+
 [4.20.4]
 * New features
 - Added Visible Top Skins Have Only One Wall and Bottom Skin Has Only One Wall settings to surround visible top layers and the bottom layer with just a single wall line irrespective of how many wall lines are used elsewhere.
