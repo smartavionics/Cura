@@ -2064,7 +2064,7 @@
                 "discrete_lines_infill_definition":
                 {
                     "label": "Discrete Lines Definition",
-                    "description": "Either a definition written as a JSON string or an @ followed by the name of a JSON file that contains the definition. The definition file name can either be absolute or relative to the current project file's directory or the user's home directory.",
+                    "description": "Either a definition written as a JSON string or an @ followed by the name of a JSON file that contains the definition. The definition file name can either be absolute or relative to the current project file's directory or the user's home directory. Note that although the Infill Density setting is ignored when generating discrete lines, a density value of 0 will still generate no infill and a density value of 100 will generate completely solid infill.",
                     "type": "str",
                     "default_value": "",
                     "enabled": "infill_pattern == 'discrete_lines'",
