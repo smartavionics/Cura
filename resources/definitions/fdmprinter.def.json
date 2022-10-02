@@ -5820,6 +5820,17 @@
                     "settable_per_extruder": true,
                     "limit_to_extruder": "adhesion_extruder_nr"
                 },
+                "brim_inside_only":
+                {
+                    "label": "Brim Only on Inside",
+                    "description": "Only print the brim on the inside of the model. This reduces the amount of brim you need to remove afterwards, while it doesn't reduce the bed adhesion that much.",
+                    "type": "bool",
+                    "default_value": false,
+                    "enabled": "resolveOrValue('adhesion_type') == 'brim' and not resolveOrValue('brim_outside_only')",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true,
+                    "limit_to_extruder": "adhesion_extruder_nr"
+                },
                 "raft_margin":
                 {
                     "label": "Raft Extra Margin",
