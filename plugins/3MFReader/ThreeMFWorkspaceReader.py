@@ -52,6 +52,7 @@ _ignored_machine_network_metadata = {
     "connection_type",
     "capabilities",
     "octoprint_api_key",
+    "is_abstract_machine"
 }  # type: Set[str]
 
 
