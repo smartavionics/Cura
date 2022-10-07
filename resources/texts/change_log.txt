@@ -1,4 +1,12 @@
 
+[4.20.6]
+* New features
+- Added Brim Only on Inside setting.
+
+* Bug fixes and improvements
+- Further new functionality and fixes to Discrete Lines infill pattern.
+- Further work on random seam positioning - start points can now fall between model vertices.
+
 [4.20.5]
 * New features
 - Added Discrete Lines infill pattern with associated setting Discrete Lines Definition.
