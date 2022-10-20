@@ -1,4 +1,9 @@
 
+[4.20.7]
+* Bug fixes and improvements
+- Further new functionality and fixes to Discrete Lines infill pattern.
+- Fixed regression introduced in 4.20.4 that caused skin overlap to not be applied in some circumstances.
+
 [4.20.6]
 * New features
 - Added Brim Only on Inside setting.
