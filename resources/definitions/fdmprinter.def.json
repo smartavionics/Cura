@@ -6962,6 +6962,36 @@
                     "limit_to_extruder": "roofing_extruder_nr",
                     "settable_per_mesh": true
                 },
+                "roofing_overlap":
+                {
+                    "label": "Top Surface Skin Overlap Percentage",
+                    "description": "Adjust the amount of overlap between the walls and (the endpoints of) the top surface skin-centerlines, as a percentage of the line widths of the skin lines and the innermost wall. A slight overlap allows the walls to connect firmly to the skin. Note that, given an equal skin and wall line-width, any percentage over 50% may already cause any skin to go past the wall, because at that point the position of the nozzle of the skin-extruder may already reach past the middle of the wall.",
+                    "unit": "%",
+                    "type": "float",
+                    "default_value": 5,
+                    "minimum_value_warning": "-50",
+                    "maximum_value_warning": "100",
+                    "value": "skin_overlap if roofing_pattern != 'concentric' else 0",
+                    "enabled": "roofing_layer_count > 0 and top_bottom_pattern != 'concentric'",
+                    "limit_to_extruder": "roofing_extruder_nr",
+                    "settable_per_mesh": true,
+                    "children":
+                    {
+                        "roofing_overlap_mm":
+                        {
+                            "label": "Top Surface Skin Overlap",
+                            "description": "Adjust the amount of overlap between the walls and (the endpoints of) the top surface skin-centerlines. A slight overlap allows the walls to connect firmly to the skin. Note that, given an equal skin and wall line-width, any value over half the width of the wall may already cause any skin to go past the wall, because at that point the position of the nozzle of the skin-extruder may already reach past the middle of the wall.",
+                            "unit": "mm",
+                            "type": "float",
+                            "default_value": 0.02,
+                            "minimum_value_warning": "-0.5 * machine_nozzle_size",
+                            "maximum_value_warning": "machine_nozzle_size",
+                            "value": "0.5 * (roofing_line_width + (wall_line_width_x if wall_line_count > 1 else wall_line_width_0)) * roofing_overlap / 100 if top_bottom_pattern != 'concentric' else 0",
+                            "enabled": "roofing_layer_count > 0 and top_bottom_pattern != 'concentric'",
+                            "settable_per_mesh": true
+                        }
+                    }
+                },
                 "infill_enable_travel_optimization":
                 {
                     "label": "Infill Travel Optimization",
