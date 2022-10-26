@@ -1775,6 +1775,8 @@ class CuraApplication(QtApplication):
         if not file.isValid():
             return
 
+        self._last_loaded_filename = os.path.abspath(file.toLocalFile())
+
         scene = self.getController().getScene()
 
         for node in DepthFirstIterator(scene.getRoot()):
@@ -1807,7 +1809,6 @@ class CuraApplication(QtApplication):
         extension = os.path.splitext(f)[1]
         extension = extension.lower()
         filename = os.path.basename(f)
-        self._last_loaded_filename = os.path.abspath(f)
         if self._currently_loading_files:
             # If a non-slicable file is already being loaded, we prevent loading of any further non-slicable files
             if extension in self._non_sliceable_extensions:
