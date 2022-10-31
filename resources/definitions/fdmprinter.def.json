@@ -870,6 +870,21 @@
                             "limit_to_extruder": "top_bottom_extruder_nr",
                             "settable_per_mesh": true
                         },
+                        "roofing_line_width":
+                        {
+                            "label": "Top Surface Skin Line Width",
+                            "description": "Width of a single line of the areas at the top of the print.",
+                            "unit": "mm",
+                            "minimum_value": "0.001",
+                            "minimum_value_warning": "0.1 + 0.4 * machine_nozzle_size",
+                            "maximum_value_warning": "2 * machine_nozzle_size",
+                            "default_value": 0.4,
+                            "type": "float",
+                            "value": "skin_line_width",
+                            "limit_to_extruder": "roofing_extruder_nr",
+                            "settable_per_mesh": true,
+                            "enabled": "roofing_layer_count > 0 and top_layers > 0"
+                        },
                         "infill_line_width":
                         {
                             "label": "Infill Line Width",
@@ -1597,6 +1612,24 @@
                     "limit_to_extruder": "top_bottom_extruder_nr",
                     "settable_per_mesh": true
                 },
+                "roofing_pattern":
+                {
+                    "label": "Top Surface Skin Pattern",
+                    "description": "The pattern of the top most layers.",
+                    "type": "enum",
+                    "options":
+                    {
+                        "lines": "Lines",
+                        "concentric": "Concentric",
+                        "hilbert": "Hilbert Curve",
+                        "zigzag": "Zig Zag"
+                    },
+                    "default_value": "lines",
+                    "value": "top_bottom_pattern",
+                    "limit_to_extruder": "roofing_extruder_nr",
+                    "settable_per_mesh": true,
+                    "enabled": "roofing_layer_count > 0 and top_layers > 0"
+                },
                 "monotonic_skin_lines":
                 {
                     "label": "Monotonic Skin Lines (mb-master)",
@@ -1640,6 +1673,17 @@
                     "limit_to_extruder": "top_bottom_extruder_nr",
                     "settable_per_mesh": true
                 },
+                "roofing_monotonic":
+                {
+                    "label": "Monotonic Top Surface Order",
+                    "description": "Print top surface lines in an ordering that causes them to always overlap with adjacent lines in a single direction. This takes slightly more time to print, but makes flat surfaces look more consistent.",
+                    "type": "bool",
+                    "default_value": false,
+                    "value": "skin_monotonic",
+                    "enabled": "roofing_layer_count > 0 and top_layers > 0 and roofing_pattern != 'concentric'",
+                    "limit_to_extruder": "roofing_extruder_nr",
+                    "settable_per_mesh": true
+                },
                 "skin_angles":
                 {
                     "label": "Top/Bottom Line Directions",
@@ -1648,6 +1692,17 @@
                     "default_value": "[ ]",
                     "enabled": "(top_layers > 0 or bottom_layers > 0) and top_bottom_pattern != 'concentric'",
                     "limit_to_extruder": "top_bottom_extruder_nr",
+                    "settable_per_mesh": true
+                },
+                "roofing_angles":
+                {
+                    "label": "Top Surface Skin Line Directions",
+                    "description": "A list of integer line directions to use when the top surface skin layers use the lines or zig zag pattern. Elements from the list are used sequentially as the layers progress and when the end of the list is reached, it starts at the beginning again. The list items are separated by commas and the whole list is contained in square brackets. Default is an empty list which means use the traditional default angles (45 and 135 degrees).",
+                    "type": "[int]",
+                    "default_value": "[ ]",
+                    "value": "skin_angles",
+                    "enabled": "roofing_pattern != 'concentric' and roofing_layer_count > 0 and top_layers > 0",
+                    "limit_to_extruder": "roofing_extruder_nr",
                     "settable_per_mesh": true
                 },
                 "skin_no_small_gaps_heuristic":
@@ -1830,6 +1885,36 @@
                             "maximum_value_warning": "machine_nozzle_size",
                             "value": "0.5 * (skin_line_width + (wall_line_width_x if wall_line_count > 1 else wall_line_width_0)) * skin_overlap / 100 if top_bottom_pattern != 'concentric' else 0",
                             "enabled": "(top_layers > 0 or bottom_layers > 0) and top_bottom_pattern != 'concentric'",
+                            "settable_per_mesh": true
+                        }
+                    }
+                },
+                "roofing_overlap":
+                {
+                    "label": "Top Surface Skin Overlap Percentage",
+                    "description": "Adjust the amount of overlap between the walls and (the endpoints of) the top surface skin-centerlines, as a percentage of the line widths of the skin lines and the innermost wall. A slight overlap allows the walls to connect firmly to the skin. Note that, given an equal skin and wall line-width, any percentage over 50% may already cause any skin to go past the wall, because at that point the position of the nozzle of the skin-extruder may already reach past the middle of the wall.",
+                    "unit": "%",
+                    "type": "float",
+                    "default_value": 5,
+                    "minimum_value_warning": "-50",
+                    "maximum_value_warning": "100",
+                    "value": "skin_overlap if roofing_pattern != 'concentric' else 0",
+                    "enabled": "roofing_layer_count > 0 and top_bottom_pattern != 'concentric'",
+                    "limit_to_extruder": "roofing_extruder_nr",
+                    "settable_per_mesh": true,
+                    "children":
+                    {
+                        "roofing_overlap_mm":
+                        {
+                            "label": "Top Surface Skin Overlap",
+                            "description": "Adjust the amount of overlap between the walls and (the endpoints of) the top surface skin-centerlines. A slight overlap allows the walls to connect firmly to the skin. Note that, given an equal skin and wall line-width, any value over half the width of the wall may already cause any skin to go past the wall, because at that point the position of the nozzle of the skin-extruder may already reach past the middle of the wall.",
+                            "unit": "mm",
+                            "type": "float",
+                            "default_value": 0.02,
+                            "minimum_value_warning": "-0.5 * machine_nozzle_size",
+                            "maximum_value_warning": "machine_nozzle_size",
+                            "value": "0.5 * (roofing_line_width + (wall_line_width_x if wall_line_count > 1 else wall_line_width_0)) * roofing_overlap / 100 if top_bottom_pattern != 'concentric' else 0",
+                            "enabled": "roofing_layer_count > 0 and top_bottom_pattern != 'concentric'",
                             "settable_per_mesh": true
                         }
                     }
@@ -6906,91 +6991,6 @@
                     },
                     "default_value": "middle",
                     "settable_per_mesh": true
-                },
-                "roofing_line_width":
-                {
-                    "label": "Top Surface Skin Line Width",
-                    "description": "Width of a single line of the areas at the top of the print.",
-                    "unit": "mm",
-                    "minimum_value": "0.001",
-                    "minimum_value_warning": "0.1 + 0.4 * machine_nozzle_size",
-                    "maximum_value_warning": "2 * machine_nozzle_size",
-                    "default_value": 0.4,
-                    "type": "float",
-                    "value": "skin_line_width",
-                    "limit_to_extruder": "roofing_extruder_nr",
-                    "settable_per_mesh": true,
-                    "enabled": "roofing_layer_count > 0 and top_layers > 0"
-                },
-                "roofing_pattern":
-                {
-                    "label": "Top Surface Skin Pattern",
-                    "description": "The pattern of the top most layers.",
-                    "type": "enum",
-                    "options":
-                    {
-                        "lines": "Lines",
-                        "concentric": "Concentric",
-                        "hilbert": "Hilbert Curve",
-                        "zigzag": "Zig Zag"
-                    },
-                    "default_value": "lines",
-                    "value": "top_bottom_pattern",
-                    "limit_to_extruder": "roofing_extruder_nr",
-                    "settable_per_mesh": true,
-                    "enabled": "roofing_layer_count > 0 and top_layers > 0"
-                },
-                "roofing_monotonic":
-                {
-                    "label": "Monotonic Top Surface Order",
-                    "description": "Print top surface lines in an ordering that causes them to always overlap with adjacent lines in a single direction. This takes slightly more time to print, but makes flat surfaces look more consistent.",
-                    "type": "bool",
-                    "default_value": false,
-                    "value": "skin_monotonic",
-                    "enabled": "roofing_layer_count > 0 and top_layers > 0 and roofing_pattern != 'concentric'",
-                    "limit_to_extruder": "roofing_extruder_nr",
-                    "settable_per_mesh": true
-                },
-                "roofing_angles":
-                {
-                    "label": "Top Surface Skin Line Directions",
-                    "description": "A list of integer line directions to use when the top surface skin layers use the lines or zig zag pattern. Elements from the list are used sequentially as the layers progress and when the end of the list is reached, it starts at the beginning again. The list items are separated by commas and the whole list is contained in square brackets. Default is an empty list which means use the traditional default angles (45 and 135 degrees).",
-                    "type": "[int]",
-                    "default_value": "[ ]",
-                    "value": "skin_angles",
-                    "enabled": "roofing_pattern != 'concentric' and roofing_layer_count > 0 and top_layers > 0",
-                    "limit_to_extruder": "roofing_extruder_nr",
-                    "settable_per_mesh": true
-                },
-                "roofing_overlap":
-                {
-                    "label": "Top Surface Skin Overlap Percentage",
-                    "description": "Adjust the amount of overlap between the walls and (the endpoints of) the top surface skin-centerlines, as a percentage of the line widths of the skin lines and the innermost wall. A slight overlap allows the walls to connect firmly to the skin. Note that, given an equal skin and wall line-width, any percentage over 50% may already cause any skin to go past the wall, because at that point the position of the nozzle of the skin-extruder may already reach past the middle of the wall.",
-                    "unit": "%",
-                    "type": "float",
-                    "default_value": 5,
-                    "minimum_value_warning": "-50",
-                    "maximum_value_warning": "100",
-                    "value": "skin_overlap if roofing_pattern != 'concentric' else 0",
-                    "enabled": "roofing_layer_count > 0 and top_bottom_pattern != 'concentric'",
-                    "limit_to_extruder": "roofing_extruder_nr",
-                    "settable_per_mesh": true,
-                    "children":
-                    {
-                        "roofing_overlap_mm":
-                        {
-                            "label": "Top Surface Skin Overlap",
-                            "description": "Adjust the amount of overlap between the walls and (the endpoints of) the top surface skin-centerlines. A slight overlap allows the walls to connect firmly to the skin. Note that, given an equal skin and wall line-width, any value over half the width of the wall may already cause any skin to go past the wall, because at that point the position of the nozzle of the skin-extruder may already reach past the middle of the wall.",
-                            "unit": "mm",
-                            "type": "float",
-                            "default_value": 0.02,
-                            "minimum_value_warning": "-0.5 * machine_nozzle_size",
-                            "maximum_value_warning": "machine_nozzle_size",
-                            "value": "0.5 * (roofing_line_width + (wall_line_width_x if wall_line_count > 1 else wall_line_width_0)) * roofing_overlap / 100 if top_bottom_pattern != 'concentric' else 0",
-                            "enabled": "roofing_layer_count > 0 and top_bottom_pattern != 'concentric'",
-                            "settable_per_mesh": true
-                        }
-                    }
                 },
                 "infill_enable_travel_optimization":
                 {
