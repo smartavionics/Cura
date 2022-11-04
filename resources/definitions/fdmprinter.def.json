@@ -1859,6 +1859,28 @@
                     "limit_to_extruder": "top_bottom_extruder_nr",
                     "settable_per_mesh": true
                 },
+                "ironing_fan_enable":
+                {
+                    "label": "Ironing Fan Speed Override",
+                    "description": "When enabled, the print cooling fan speed is altered for the ironed regions.",
+                    "type": "bool",
+                    "default_value": false,
+                    "enabled": "ironing_enabled",
+                    "settable_per_mesh": true
+                },
+                "ironing_fan_speed":
+                {
+                    "label": "Ironing Fan Speed",
+                    "description": "Percentage fan speed to use when printing ironed regions.",
+                    "unit": "%",
+                    "minimum_value": "0",
+                    "maximum_value": "100",
+                    "default_value": 100,
+                    "value": "cool_fan_speed",
+                    "type": "float",
+                    "enabled": "ironing_enabled",
+                    "settable_per_mesh": true
+                },
                 "skin_overlap":
                 {
                     "label": "Skin Overlap Percentage",
