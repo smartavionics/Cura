@@ -1,4 +1,14 @@
 
+[4.20.8]
+* New features
+- Added Top Surface Skin Overlap Percentage and Top Surface Skin Overlap settings.
+- Added Ironing Fan Speed Override and Ironing Fan Speed settings.
+
+* Bug fixes and improvements
+- Moved Top Surface Skin settings out of Experimental section.
+- Further fixes to Discrete Lines infill pattern.
+- Misc minor fixes.
+
 [4.20.7]
 * Bug fixes and improvements
 - Further new functionality and fixes to Discrete Lines infill pattern.
