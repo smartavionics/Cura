@@ -1,4 +1,14 @@
 
+[4.20.9]
+* New features
+- Added Max Filament Flow Rate setting.
+- Upstream addition of Support Interface Wall Line Count, Support Roof Wall Line Count and Support Bottom Wall Line Count settings.
+
+* Bug fixes and improvements
+- Reworked skin edge support.
+- Fix crash that occured when both Visible Top Skins Have Only One Wall and Alternate Extra Wall settings are enabled.
+- Bridge skins are now printed after non-bridge skins which should help the bridge skins adhere to the non-bridge skins where they meet.
+
 [4.20.8]
 * New features
 - Added Top Surface Skin Overlap Percentage and Top Surface Skin Overlap settings.
