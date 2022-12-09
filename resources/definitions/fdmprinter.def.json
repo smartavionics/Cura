@@ -8236,6 +8236,16 @@
                     "enabled": "bridge_settings_enabled",
                     "settable_per_mesh": true
                 },
+                "bridge_wall_layers":
+                {
+                    "label": "Bridge Wall Layers",
+                    "description": "The number of layers above air that are printed using the bridge wall settings.",
+                    "default_value": 1,
+                    "minimum_value": "1",
+                    "type": "int",
+                    "enabled": "bridge_settings_enabled",
+                    "settable_per_mesh": true
+                },
                 "bridge_enable_more_layers":
                 {
                     "label": "Bridge Has Multiple Layers",
