@@ -7988,6 +7988,18 @@
                     "type": "float",
                     "settable_per_mesh": true
                 },
+                "wall_overhang_material_flow":
+                {
+                    "label": "Overhanging Wall Flow",
+                    "description": "When printing overhanging walls, the amount of material extruded is multiplied by this value.",
+                    "unit": "%",
+                    "default_value": 100,
+                    "type": "float",
+                    "minimum_value": "5",
+                    "minimum_value_warning": "50",
+                    "maximum_value_warning": "150",
+                    "settable_per_mesh": true
+                },
                 "bridge_settings_enabled":
                 {
                     "label": "Enable Bridge Settings",
