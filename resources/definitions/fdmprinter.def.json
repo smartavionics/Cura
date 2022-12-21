@@ -1435,10 +1435,17 @@
                 {
                     "label": "Z Seam Relative",
                     "description": "When enabled, the z seam coordinates are relative to each part's centre. When disabled, the coordinates define an absolute position on the build plate.",
-                    "unit": "mm",
                     "type": "bool",
                     "default_value": false,
-                    "enabled": "z_seam_type == 'back'",
+                    "limit_to_extruder": "wall_0_extruder_nr",
+                    "settable_per_mesh": true
+                },
+                "z_seam_not_over_air":
+                {
+                    "label": "Z Seam Not Over Air",
+                    "description": "When enabled, if the z seam location is above air, it is moved so that it is not above air (if possible).",
+                    "type": "bool",
+                    "default_value": true,
                     "limit_to_extruder": "wall_0_extruder_nr",
                     "settable_per_mesh": true
                 }
