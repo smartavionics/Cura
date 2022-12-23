@@ -8030,6 +8030,18 @@
                     "settable_per_mesh": true,
                     "settable_per_extruder": false
                 },
+                "bridge_wall_max_length":
+                {
+                    "label": "Maximum Bridge Wall Length",
+                    "description": "When non-zero, unsupported walls longer than this will be printed using the normal wall settings.",
+                    "unit": "mm",
+                    "type": "float",
+                    "minimum_value": "0",
+                    "default_value": 0,
+                    "enabled": "bridge_settings_enabled",
+                    "settable_per_mesh": true,
+                    "settable_per_extruder": false
+                },
                 "bridge_skin_min_area":
                 {
                     "label": "Minimum Bridge Skin Area",
