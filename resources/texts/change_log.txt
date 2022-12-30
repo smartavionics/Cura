@@ -1,4 +1,15 @@
 
+[4.20.10]
+* New features
+- Added Bridge Wall Layers setting.
+- Added Maximum Bridge Wall Length setting.
+- Added Overhanging Wall Flow setting.
+- Added Z Seam Not Over Air setting which defaults to enabled thus preserving existing behaviour.
+
+* Bug fixes and improvements.
+- Stopped gyroid infill bleeding through walls.
+- Reimplemented detection and printing of bridge walls.
+
 [4.20.9]
 * New features
 - Added Max Filament Flow Rate setting.
@@ -6,7 +17,7 @@
 
 * Bug fixes and improvements
 - Reworked skin edge support.
-- Fix crash that occured when both Visible Top Skins Have Only One Wall and Alternate Extra Wall settings are enabled.
+- Fix crash that occurred when both Visible Top Skins Have Only One Wall and Alternate Extra Wall settings are enabled.
 - Bridge skins are now printed after non-bridge skins which should help the bridge skins adhere to the non-bridge skins where they meet.
 
 [4.20.8]
