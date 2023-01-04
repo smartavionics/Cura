@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Cura 4.20.10\n"
 "Report-Msgid-Bugs-To: p5axes@free.fr\n"
 "POT-Creation-Date: 2021-12-10 11:59+0000\n"
-"PO-Revision-Date: 2023-01-04 19:52+0200\n"
+"PO-Revision-Date: 2023-01-04 20:00+0200\n"
 "Last-Translator: 5axes <5axes@free.fr>\n"
 "Language-Team: 5axes\n"
 "Language: fr\n"
@@ -225,7 +225,7 @@ msgstr "Si la machine est capable de stabiliser la température du volume d'impr
 #: fdmprinter.def.json
 msgctxt "machine_always_write_active_tool label"
 msgid "Always Write Active Tool"
-msgstr "Toujours écrire l'outil actif"
+msgstr "Toujours écrire l'extrudeur actif"
 
 #: fdmprinter.def.json
 msgctxt "machine_always_write_active_tool description"
@@ -235,7 +235,7 @@ msgstr "Écrivez l'outil actif après avoir envoyé des commandes temporaires à
 #: fdmprinter.def.json
 msgctxt "machine_center_is_zero label"
 msgid "Is Center Origin"
-msgstr "Est l'origine du centre"
+msgstr "L'origine est au centre du plateau"
 
 #: fdmprinter.def.json
 msgctxt "machine_center_is_zero description"
@@ -250,7 +250,9 @@ msgstr "Nombre d'extrudeuses"
 #: fdmprinter.def.json
 msgctxt "machine_extruder_count description"
 msgid "Number of extruder trains. An extruder train is the combination of a feeder, bowden tube, and nozzle."
-msgstr "Nombre de trains d'extrudeuse. Un train d'extrudeuse est la combinaison d'un chargeur, d'un tube bowden et d'une buse."
+msgstr ""
+"Nombre de trains d'extrudeuse. Un train d'extrudeuse est la combinaison d'un "
+"chargeur, d'un tube bowden et d'une buse."
 
 #: fdmprinter.def.json
 msgctxt "extruders_enabled_count label"
@@ -5568,7 +5570,6 @@ msgid "Draft Shield X/Y Distance"
 msgstr "Distance X/Y du bouclier"
 
 #: fdmprinter.def.json
-#, fuzzy
 msgctxt "draft_shield_dist description"
 msgid "Distance of the draft shield from the print, in the X/Y directions."
 msgstr "Distance entre la pièce et le bouclier dans les directions X et Y."
@@ -6553,13 +6554,11 @@ msgid "Offset applied to the object in the y direction."
 msgstr "Offset appliqué à l'objet dans la direction Y."
 
 #: fdmprinter.def.json
-#, fuzzy
 msgctxt "mesh_position_z label"
 msgid "Mesh Position Z"
 msgstr "Position Z du maillage"
 
 #: fdmprinter.def.json
-#, fuzzy
 msgctxt "mesh_position_z description"
 msgid "Offset applied to the object in the z direction. With this you can perform what was used to be called 'Object Sink'."
 msgstr ""
@@ -6567,7 +6566,6 @@ msgstr ""
 "que l'on appelait « Affaissement de l'objet »."
 
 #: fdmprinter.def.json
-#, fuzzy
 msgctxt "mesh_rotation_matrix label"
 msgid "Mesh Rotation Matrix"
 msgstr "Matrice de rotation du maillage"
@@ -6578,7 +6576,6 @@ msgid "Transformation matrix to be applied to the model when loading it from fil
 msgstr "Matrice de transformation à appliquer au modèle lors de son chargement depuis le fichier."
 
 #: fdmprinter.def.json
-#, fuzzy
 msgctxt "only_one_wall_top label"
 msgid "Visible Top Skins Have Only One Wall"
 msgstr "Les peaux supérieures visibles n'ont qu'un seul mur"
@@ -6602,13 +6599,11 @@ msgstr ""
 "Lorsqu'elle est activée, la peau inférieure est entourée d'une seule paroi."
 
 #: fdmprinter.def.json
-#, fuzzy
 msgctxt "min_gap_area label"
 msgid "Minimum Gap Area"
 msgstr "Surface minimale des espaces"
 
 #: fdmprinter.def.json
-#, fuzzy
 msgctxt "min_gap_area description"
 msgid "Filter out gaps whose area is less than this."
 msgstr "Filtrez les espaces dont la surface est inférieure à cette valeur."
@@ -6874,7 +6869,6 @@ msgid "When non-zero, this specifies a resonant frequency to be avoided when pri
 msgstr "Lorsqu'il est différent de zéro, ce paramètre indique une fréquence de résonance à éviter lors de l'impression à l'aide des lignes et des motifs en zigzag. Pour empêcher la tête d'impression d'osciller à cette fréquence, la vitesse d'impression est réduite le cas échéant."
 
 #: fdmprinter.def.json
-#, fuzzy
 msgctxt "travel_no_combing_on_initial_layer label"
 msgid "Disable combing on the initial layer"
 msgstr "Désactiver le peignage sur la couche initiale"
@@ -6925,7 +6919,6 @@ msgid "The layer at which the fans spin at Initial Fan Speed. If Initial Fan Spe
 msgstr "La hauteur à laquelle les ventilateurs tournent à la vitesse initiale du ventilateur. Si la vitesse initiale du ventilateur à la hauteur est définie, cette valeur est calculée et arrondie à un nombre entier."
 
 #: fdmprinter.def.json
-#, fuzzy
 msgctxt "cool_fan_lag label"
 msgid "Cooling Fan Lag"
 msgstr "Lag du ventilateur de refroidissement"
@@ -7219,7 +7212,6 @@ msgid "When enabled, support is ignored and so overhangs over support are printe
 msgstr "Lorsqu'il est activé, le support est ignoré et les surplombs au-dessus du support sont donc imprimés en utilisant les paramètres de murs en surplomb."
 
 #: fdmprinter.def.json
-#, fuzzy
 msgctxt "wall_overhang_fan_speed label"
 msgid "Overhanging Wall Fan Speed"
 msgstr "Vitesse du ventilateur Mur en surplomb"
@@ -7273,7 +7265,6 @@ msgstr ""
 "est limitée à deux fois la longueur initiale."
 
 #: fdmprinter.def.json
-#, fuzzy
 msgctxt "bridge_wall_end_boost label"
 msgid "Bridge Wall End Boost"
 msgstr "Boost des Bout de Mur de Pont "
@@ -7304,7 +7295,6 @@ msgid "The maximum instantaneous velocity change with which all bridge walls are
 msgstr "La variation maximale de la vitesse instantanée avec laquelle tous les murs du pont sont imprimés."
 
 #: fdmprinter.def.json
-#, fuzzy
 msgctxt "bridge_skin_acceleration label"
 msgid "Bridge Skin Acceleration"
 msgstr "Accélération de la peau du pont"
@@ -7315,7 +7305,6 @@ msgid "The acceleration with which all bridge skins are printed."
 msgstr "L'accélération avec laquelle toutes les peaux de pont sont imprimées."
 
 #: fdmprinter.def.json
-#, fuzzy
 msgctxt "bridge_skin_jerk label"
 msgid "Bridge Skin Jerk"
 msgstr "Saccade de la peau du pont"
@@ -7386,13 +7375,11 @@ msgid "Skin overlap used for the third bridge skin layer expressed as a percenta
 msgstr "Recouvrement de la peau utilisé pour la troisième couche de peau du pont, exprimé en pourcentage de la largeur de la ligne de la paroi extérieure."
 
 #: fdmprinter.def.json
-#, fuzzy
 msgctxt "bridge_skin_overlap_mm_3 label"
 msgid "Bridge Third Skin Overlap"
 msgstr "Chevauchement Pont Troisième Peau"
 
 #: fdmprinter.def.json
-#, fuzzy
 msgctxt "bridge_skin_overlap_mm_3 description"
 msgid "Skin overlap distance used for the third bridge skin layer. Ideally, this should be less than Bottom Skin Expand Distance."
 msgstr ""
@@ -7401,13 +7388,11 @@ msgstr ""
 "distance de chevauchement de la peau du bas."
 
 #: fdmprinter.def.json
-#, fuzzy
 msgctxt "mesh_temperature_delta label"
 msgid "Mesh Temperature Delta"
 msgstr "Delta de Température du maillage"
 
 #: fdmprinter.def.json
-#, fuzzy
 msgctxt "mesh_temperature_delta description"
 msgid "The nozzle temperature used for the current mesh is increased by this amount. Negative values reduce the nozzle temperature"
 msgstr ""
@@ -7415,13 +7400,11 @@ msgstr ""
 "cette quantité. Les valeurs négatives réduisent la température de la buse"
 
 #: fdmprinter.def.json
-#, fuzzy
 msgctxt "mesh_temperature_dawdle_speed label"
 msgid "Mesh Dawdle Speed"
 msgstr "Vitesse de la pause du Maillage"
 
 #: fdmprinter.def.json
-#, fuzzy
 msgctxt "mesh_temperature_dawdle_speed description"
 msgid "Print speed used when waiting for the temperature to change at the start and end of the mesh."
 msgstr ""
@@ -7429,13 +7412,11 @@ msgstr ""
 "début et à la fin du maillage."
 
 #: fdmprinter.def.json
-#, fuzzy
 msgctxt "mesh_temperature_dawdle_time label"
 msgid "Mesh Dawdle Time"
 msgstr "L'heure de la pause maillage"
 
 #: fdmprinter.def.json
-#, fuzzy
 msgctxt "mesh_temperature_dawdle_time description"
 msgid "The amount of time to print using Mesh Dawdle Speed when waiting for the temperature to change at the start and end of the mesh."
 msgstr ""
@@ -7443,7 +7424,6 @@ msgstr ""
 "attendant que la température change au début et à la fin du maillage."
 
 #: fdmprinter.def.json
-#, fuzzy
 msgctxt "skin_lines_boost_flow label"
 msgid "Travel Compensate Skin Lines"
 msgstr "Lignes de compensation de voyage pour la peau"
@@ -7469,7 +7449,6 @@ msgid "Maximum compensated travel distance"
 msgstr "Distance maximale de déplacement compensé"
 
 #: fdmprinter.def.json
-#, fuzzy
 msgctxt "skin_lines_boost_max_travel_len description"
 msgid "Limits the travel distance used to calculate the amount of boost applied to skin lines. Travels longer than this distance are treated as if they are this length."
 msgstr ""
@@ -7478,13 +7457,11 @@ msgstr ""
 "distance sont traités comme s'ils étaient de cette longueur."
 
 #: fdmprinter.def.json
-#, fuzzy
 msgctxt "skin_lines_max_flow_boost label"
 msgid "Skin Lines Max Flow"
 msgstr "Débit maximal Lignes de peau "
 
 #: fdmprinter.def.json
-#, fuzzy
 msgctxt "skin_lines_max_flow_boost description"
 msgid "The maximum flow multiplier used when printing skin lines."
 msgstr ""
@@ -7492,7 +7469,6 @@ msgstr ""
 "de peau."
 
 #: fdmprinter.def.json
-#, fuzzy
 msgctxt "skin_lines_max_flow_boost_0 label"
 msgid "Skin Lines Initial Layer Max Flow"
 msgstr "Débit maximal Lignes Couche initiale "
