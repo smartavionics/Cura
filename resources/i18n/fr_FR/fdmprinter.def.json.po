@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Cura 4.20.10\n"
 "Report-Msgid-Bugs-To: p5axes@free.fr\n"
 "POT-Creation-Date: 2021-12-10 11:59+0000\n"
-"PO-Revision-Date: 2023-01-04 20:00+0200\n"
+"PO-Revision-Date: 2023-01-04 20:10+0200\n"
 "Last-Translator: 5axes <5axes@free.fr>\n"
 "Language-Team: 5axes\n"
 "Language: fr\n"
@@ -1107,7 +1107,7 @@ msgstr "Partout"
 #: fdmprinter.def.json
 msgctxt "fill_perimeter_gaps option only_wall_gaps"
 msgid "Only Wall Gaps"
-msgstr "Les espaces entre les murs"
+msgstr "Les espaces entre les parois"
 
 #: fdmprinter.def.json
 msgctxt "filter_out_tiny_gaps label"
@@ -6578,14 +6578,14 @@ msgstr "Matrice de transformation à appliquer au modèle lors de son chargement
 #: fdmprinter.def.json
 msgctxt "only_one_wall_top label"
 msgid "Visible Top Skins Have Only One Wall"
-msgstr "Les peaux supérieures visibles n'ont qu'un seul mur"
+msgstr "Une seule Paroi sur couches supérieures visibles"
 
 #: fdmprinter.def.json
 msgctxt "only_one_wall_top description"
 msgid "When enabled, visible top skins are surrounded by only one wall."
 msgstr ""
-"Lorsqu'il est activé, les habillages supérieurs visibles sont entourés d'un "
-"seul mur."
+"Lorsqu'il est activé, les habillages supérieurs visibles sont entourés d'une "
+"seul paroi."
 
 #: fdmprinter.def.json
 msgctxt "only_one_wall_bottom label"
@@ -6731,7 +6731,15 @@ msgstr "Pourcentage de chevauchement de la peau de la surface supérieure"
 #: fdmprinter.def.json
 msgctxt "roofing_overlap description"
 msgid "Adjust the amount of overlap between the walls and (the endpoints of) the top surface skin-centerlines, as a percentage of the line widths of the skin lines and the innermost wall. A slight overlap allows the walls to connect firmly to the skin. Note that, given an equal skin and wall line-width, any percentage over 50% may already cause any skin to go past the wall, because at that point the position of the nozzle of the skin-extruder may already reach past the middle of the wall."
-msgstr "Ajustez la quantité de chevauchement entre les murs et (les points d'extrémité) des lignes centrales de la peau de la surface supérieure, en tant que pourcentage des largeurs de ligne des lignes de la peau et du mur le plus intérieur. Un léger chevauchement permet aux murs de se connecter fermement à la peau. Notez que, pour une largeur de ligne égale de la peau et de la paroi, tout pourcentage supérieur à 50 % peut déjà faire en sorte que la peau dépasse la paroi, car à ce moment-là, la position de la buse de l'extrudeuse de peau peut déjà dépasser le milieu de la paroi."
+msgstr ""
+"Ajustez la quantité de chevauchement entre les parois et (les points "
+"d'extrémité) des lignes centrales de la peau de la surface supérieure, en "
+"tant que pourcentage des largeurs de ligne des lignes de la peau et du mur "
+"le plus intérieur. Un léger chevauchement permet aux murs de se connecter "
+"fermement à la peau. Notez que, pour une largeur de ligne égale de la peau "
+"et de la paroi, tout pourcentage supérieur à 50 % peut déjà faire en sorte "
+"que la peau dépasse la paroi, car à ce moment-là, la position de la buse de "
+"l'extrudeuse de peau peut déjà dépasser le milieu de la paroi."
 
 #: fdmprinter.def.json
 msgctxt "roofing_overlap_mm label"
@@ -6741,7 +6749,14 @@ msgstr "Chevauchement de la peau de la surface supérieure"
 #: fdmprinter.def.json
 msgctxt "roofing_overlap_mm description"
 msgid "Adjust the amount of overlap between the walls and (the endpoints of) the top surface skin-centerlines. A slight overlap allows the walls to connect firmly to the skin. Note that, given an equal skin and wall line-width, any value over half the width of the wall may already cause any skin to go past the wall, because at that point the position of the nozzle of the skin-extruder may already reach past the middle of the wall."
-msgstr "Ajustez la quantité de chevauchement entre les murs et (les points d'extrémité) des lignes centrales de la peau de la surface supérieure. Un léger chevauchement permet aux murs de se connecter fermement à la peau. Notez qu'à largeur égale des lignes de la peau et de la paroi, toute valeur supérieure à la moitié de la largeur de la paroi peut déjà faire en sorte que la peau dépasse la paroi, car à ce moment-là, la position de la buse de l'extrudeuse de peau peut déjà dépasser le milieu de la paroi."
+msgstr ""
+"Ajustez la quantité de chevauchement entre les parois et (les points "
+"d'extrémité) des lignes centrales de la peau de la surface supérieure. Un "
+"léger chevauchement permet aux murs de se connecter fermement à la peau. "
+"Notez qu'à largeur égale des lignes de la peau et de la paroi, toute valeur "
+"supérieure à la moitié de la largeur de la paroi peut déjà faire en sorte "
+"que la peau dépasse la paroi, car à ce moment-là, la position de la buse de "
+"l'extrudeuse de peau peut déjà dépasser le milieu de la paroi."
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern_resolution label"
@@ -6836,7 +6851,10 @@ msgstr "Couche initiale Vitesse de la paroi"
 #: fdmprinter.def.json
 msgctxt "speed_walls_layer_0 description"
 msgid "The speed used to print walls in the initial layer. Reducing this speed may increase adhesion to the build plate while still allowing the skin areas to be printed at a faster speed."
-msgstr "La vitesse utilisée pour imprimer les murs dans la couche initiale. Réduire cette vitesse peut augmenter l'adhérence à la plaque de construction tout en permettant d'imprimer les zones de peau à une vitesse plus rapide."
+msgstr ""
+"La vitesse utilisée pour imprimer les parois dans la couche initiale. "
+"Réduire cette vitesse peut augmenter l'adhérence à la plaque de construction "
+"tout en permettant d'imprimer les zones de peau à une vitesse plus rapide."
 
 #: fdmprinter.def.json
 msgctxt "acceleration_walls_layer_0 label"
@@ -6851,7 +6869,7 @@ msgstr "L'accélération pendant l'impression des murs dans la couche initiale."
 #: fdmprinter.def.json
 msgctxt "jerk_walls_layer_0 label"
 msgid "Initial Layer Walls Jerk"
-msgstr "Saccade Couche initiale Murs"
+msgstr "Saccade Parois Couche initiale"
 
 #: fdmprinter.def.json
 msgctxt "jerk_walls_layer_0 description"
@@ -6961,22 +6979,30 @@ msgstr "Faible"
 #: fdmprinter.def.json
 msgctxt "support_interface_wall_count label"
 msgid "Support Interface Wall Line Count"
-msgstr "Nombre de lignes Support Interface Murale "
+msgstr "Interface de support Nombre de parois"
 
 #: fdmprinter.def.json
 msgctxt "support_interface_wall_count description"
 msgid "The number of walls with which to surround support interface. Adding a wall can make support print more reliably and can support overhangs better, but increases print time and material used."
-msgstr "Le nombre de murs avec lesquels entourer l'interface du support. L'ajout d'un mur peut rendre l'impression du support plus fiable et mieux supporter les porte-à-faux, mais augmente le temps d'impression et le matériel utilisé."
+msgstr ""
+"Le nombre de parois avec lesquels entourer l'interface du support. L'ajout "
+"d'une paroi peut rendre l'impression du support plus fiable et mieux "
+"supporter les porte-à-faux, mais augmente le temps d'impression et le "
+"matériel utilisé."
 
 #: fdmprinter.def.json
 msgctxt "support_roof_wall_count label"
 msgid "Support Roof Wall Line Count"
-msgstr "Nombre de lignes Mur Support Toit"
+msgstr "Nombre de lignes des Mur Support Sommet"
 
 #: fdmprinter.def.json
 msgctxt "support_roof_wall_count description"
 msgid "The number of walls with which to surround support interface roof. Adding a wall can make support print more reliably and can support overhangs better, but increases print time and material used."
-msgstr "Le nombre de murs avec lesquels il faut entourer le toit de l'interface du support. L'ajout d'un mur peut rendre l'impression du support plus fiable et peut mieux supporter les surplombs, mais augmente le temps d'impression et le matériel utilisé."
+msgstr ""
+"Le nombre de parois avec lesquels il faut entourer le sommet de l'interface "
+"du support. L'ajout d'un mur peut rendre l'impression du support plus fiable "
+"et peut mieux supporter les surplombs, mais augmente le temps d'impression "
+"et le matériel utilisé."
 
 #: fdmprinter.def.json
 msgctxt "support_bottom_wall_count label"
@@ -6986,7 +7012,11 @@ msgstr "Support de la paroi inférieure Ligne de comptage"
 #: fdmprinter.def.json
 msgctxt "support_bottom_wall_count description"
 msgid "The number of walls with which to surround support interface floor. Adding a wall can make support print more reliably and can support overhangs better, but increases print time and material used."
-msgstr "Le nombre de murs avec lesquels il faut entourer le plancher de l'interface du support. L'ajout d'un mur peut rendre l'impression du support plus fiable et mieux supporter les porte-à-faux, mais augmente le temps d'impression et le matériel utilisé."
+msgstr ""
+"Le nombre de parois avec lesquels il faut entourer le bas de l'interface du "
+"support. L'ajout d'une paroi peut rendre l'impression du support plus fiable "
+"et mieux supporter les porte-à-faux, mais augmente le temps d'impression et "
+"le matériel utilisé."
 
 #: fdmprinter.def.json
 msgctxt "support_roof_top_layer_density label"
@@ -7096,7 +7126,19 @@ msgstr "Type de remplissage Graduel"
 #: fdmprinter.def.json
 msgctxt "gradient_infill_type description"
 msgid "The type of gradient infill to use. All types modify the infill line flow in proportion to the distance to the model outline. At the model outline, the infill line flow will be gradient infill max flow. Away from the model outline, the infill line flow will be gradient infill min flow. 1D simply uses the distance to the nearest end of the current infill line. 2D differs in that the distance is measured to the nearest wall on the same layer. 2D+ also takes into account the distance to the build plate and the distance to the top layer of the model. 3D uses the distance to the nearest wall or skin on any layer."
-msgstr "Le type de remplissage en gradient à utiliser. Tous les types modifient le débit de la ligne de remplissage en fonction de la distance au contour du modèle. Au niveau du contour du modèle, l'écoulement de la ligne de remplissage sera l'écoulement maximal de la ligne de remplissage en dégradé. En s'éloignant du contour du modèle, le flux de la ligne de remplissage sera le flux minimal de remplissage en gradient. 1D utilise simplement la distance jusqu'à l'extrémité la plus proche de la ligne de remplissage actuelle. Le 2D diffère en ce que la distance est mesurée jusqu'au mur le plus proche sur la même couche. 2D+ prend également en compte la distance à la plaque de construction et la distance à la couche supérieure du modèle. La 3D utilise la distance au mur ou à la peau la plus proche sur n'importe quelle couche."
+msgstr ""
+"Le type de remplissage en gradient à utiliser. Tous les types modifient le "
+"débit de la ligne de remplissage en fonction de la distance au contour du "
+"modèle. Au niveau du contour du modèle, l'écoulement de la ligne de "
+"remplissage sera l'écoulement maximal de la ligne de remplissage en dégradé. "
+"En s'éloignant du contour du modèle, le flux de la ligne de remplissage "
+"sera le flux minimal de remplissage en gradient. 1D utilise simplement la "
+"distance jusqu'à l'extrémité la plus proche de la ligne de remplissage "
+"actuelle. Le 2D diffère en ce que la distance est mesurée jusqu'à la paroi "
+"plus proche sur la même couche. 2D+ prend également en compte la distance à "
+"la plaque de construction et la distance à la couche supérieure du modèle. "
+"La 3D utilise la distance au mur ou à la peau la plus proche sur n'importe "
+"quelle couche."
 
 #: fdmprinter.def.json
 msgctxt "gradient_infill_type option none"
@@ -7214,12 +7256,14 @@ msgstr "Lorsqu'il est activé, le support est ignoré et les surplombs au-dessus
 #: fdmprinter.def.json
 msgctxt "wall_overhang_fan_speed label"
 msgid "Overhanging Wall Fan Speed"
-msgstr "Vitesse du ventilateur Mur en surplomb"
+msgstr "Vitesse du ventilateur Paroi en surplomb"
 
 #: fdmprinter.def.json
 msgctxt "wall_overhang_fan_speed description"
 msgid "Percentage fan speed to use when printing overhanging walls."
-msgstr "Pourcentage de la vitesse du ventilateur à utiliser lors de l'impression de murs en surplomb."
+msgstr ""
+"Pourcentage de la vitesse du ventilateur à utiliser lors de l'impression de "
+"parois en surplomb."
 
 #: fdmprinter.def.json
 msgctxt "wall_overhang_material_flow label"
@@ -7229,7 +7273,9 @@ msgstr "Débit du mur en surplomb"
 #: fdmprinter.def.json
 msgctxt "wall_overhang_material_flow description"
 msgid "When printing overhanging walls, the amount of material extruded is multiplied by this value."
-msgstr "Lors de l'impression de murs en surplomb, la quantité de matériau extrudé est multipliée par cette valeur."
+msgstr ""
+"Lors de l'impression de parois en surplomb, la quantité de matériau extrudé "
+"est multipliée par cette valeur."
 
 #: fdmprinter.def.json
 msgctxt "bridge_skin_min_area label"
@@ -7254,7 +7300,7 @@ msgstr "Ignorez tout support afin que des ponts soient créés au-dessus du supp
 #: fdmprinter.def.json
 msgctxt "bridge_extend_floating_walls label"
 msgid "Bridge Extend Floating Walls"
-msgstr "Les ponts prolongent les murs flottants"
+msgstr "Les ponts prolongent les Parois flottants"
 
 #: fdmprinter.def.json
 msgctxt "bridge_extend_floating_walls description"
@@ -7267,7 +7313,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "bridge_wall_end_boost label"
 msgid "Bridge Wall End Boost"
-msgstr "Boost des Bout de Mur de Pont "
+msgstr "Boost des extrémités des Parois de Pont "
 
 #: fdmprinter.def.json
 msgctxt "bridge_wall_end_boost description"
@@ -7277,7 +7323,7 @@ msgstr "Ceci contrôle l'augmentation du taux d'extrusion immédiatement après 
 #: fdmprinter.def.json
 msgctxt "bridge_wall_acceleration label"
 msgid "Bridge Wall Acceleration"
-msgstr "Accélération du Mur du Pont"
+msgstr "Accélération Paroi du Pont"
 
 #: fdmprinter.def.json
 msgctxt "bridge_wall_acceleration description"
@@ -7287,7 +7333,7 @@ msgstr "L'accélération avec laquelle tous les murs du pont sont imprimés."
 #: fdmprinter.def.json
 msgctxt "bridge_wall_jerk label"
 msgid "Bridge Wall Jerk"
-msgstr "Saccade au mur sur pont"
+msgstr "Saccade Paroi de pont"
 
 #: fdmprinter.def.json
 msgctxt "bridge_wall_jerk description"
@@ -7357,7 +7403,7 @@ msgstr "Recouvrement de la peau utilisé pour la deuxième couche de peau du pon
 #: fdmprinter.def.json
 msgctxt "bridge_skin_overlap_mm_2 label"
 msgid "Bridge Second Skin Overlap"
-msgstr "Pont Second Skin Overlap"
+msgstr "Chevauchement de la seconde peau du pont"
 
 #: fdmprinter.def.json
 msgctxt "bridge_skin_overlap_mm_2 description"
@@ -7414,7 +7460,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "mesh_temperature_dawdle_time label"
 msgid "Mesh Dawdle Time"
-msgstr "L'heure de la pause maillage"
+msgstr "Tempo de la pause maillage"
 
 #: fdmprinter.def.json
 msgctxt "mesh_temperature_dawdle_time description"
