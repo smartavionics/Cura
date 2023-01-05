@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Cura 4.20.10\n"
 "Report-Msgid-Bugs-To: p5axes@free.fr\n"
 "POT-Creation-Date: 2021-12-10 11:59+0000\n"
-"PO-Revision-Date: 2023-01-04 20:10+0200\n"
+"PO-Revision-Date: 2023-01-05 01:51+0200\n"
 "Last-Translator: 5axes <5axes@free.fr>\n"
 "Language-Team: 5axes\n"
 "Language: fr\n"
@@ -1324,7 +1324,9 @@ msgstr "Extrudeuse de couche extérieure de la surface supérieure"
 #: fdmprinter.def.json
 msgctxt "roofing_extruder_nr description"
 msgid "The extruder train used for printing the top most skin. This is used in multi-extrusion."
-msgstr "Le train d'extrudeuse utilisé pour l'impression de la couche extérieure supérieure. Cela est utilisé en multi-extrusion."
+msgstr ""
+"Le train d'extrudeuse utilisé pour l'impression de la couche extérieure "
+"supérieure. Cela est utilisé en multi-extrusion."
 
 #: fdmprinter.def.json
 msgctxt "roofing_layer_count label"
@@ -1334,7 +1336,9 @@ msgstr "Couches extérieures de la surface supérieure"
 #: fdmprinter.def.json
 msgctxt "roofing_layer_count description"
 msgid "The number of top most skin layers. Usually only one top most layer is sufficient to generate higher quality top surfaces."
-msgstr "Nombre de couches extérieures supérieures. En général, une seule couche supérieure est suffisante pour générer des surfaces supérieures de qualité."
+msgstr ""
+"Nombre de couches extérieures supérieures. En général, une seule couche "
+"supérieure est suffisante pour générer des surfaces supérieures de qualité."
 
 #: fdmprinter.def.json
 msgctxt "top_bottom_extruder_nr label"
@@ -1344,7 +1348,9 @@ msgstr "Extrudeuse du dessus/dessous"
 #: fdmprinter.def.json
 msgctxt "top_bottom_extruder_nr description"
 msgid "The extruder train used for printing the top and bottom skin. This is used in multi-extrusion."
-msgstr "Le train d'extrudeuse utilisé pour l'impression de la couche extérieure du haut et du bas. Cela est utilisé en multi-extrusion."
+msgstr ""
+"Le train d'extrudeuse utilisé pour l'impression de la couche extérieure du "
+"haut et du bas. Cela est utilisé en multi-extrusion."
 
 #: fdmprinter.def.json
 msgctxt "top_bottom_thickness label"
@@ -1457,6 +1463,11 @@ msgid "Zig Zag"
 msgstr "Zig Zag"
 
 #: fdmprinter.def.json
+msgctxt "top_bottom_pattern_0 option hilbert"
+msgid "Hilbert Curve"
+msgstr "Courbe de Hilbert"
+
+#: fdmprinter.def.json
 msgctxt "connect_skin_polygons label"
 msgid "Connect Top/Bottom Polygons"
 msgstr "Relier les polygones supérieurs / inférieurs"
@@ -1464,7 +1475,12 @@ msgstr "Relier les polygones supérieurs / inférieurs"
 #: fdmprinter.def.json
 msgctxt "connect_skin_polygons description"
 msgid "Connect top/bottom skin paths where they run next to each other. For the concentric pattern enabling this setting greatly reduces the travel time, but because the connections can happen midway over infill this feature can reduce the top surface quality."
-msgstr "Relier les voies de couche extérieure supérieures / inférieures lorsqu'elles sont côte à côte. Pour le motif concentrique, ce paramètre réduit considérablement le temps de parcours, mais comme les liens peuvent se trouver à mi-chemin sur le remplissage, cette fonctionnalité peut réduire la qualité de la surface supérieure."
+msgstr ""
+"Relier les parois de couche extérieure supérieures / inférieures "
+"lorsqu'elles sont côte à côte. Pour le motif concentrique, ce paramètre "
+"réduit considérablement le temps de parcours, mais comme les liens peuvent "
+"se trouver à mi-chemin sur le remplissage, cette fonctionnalité peut réduire "
+"la qualité de la surface supérieure."
 
 #: fdmprinter.def.json
 msgctxt "skin_monotonic label"
@@ -1498,7 +1514,12 @@ msgstr "Aucune couche dans les trous en Z"
 #: fdmprinter.def.json
 msgctxt "skin_no_small_gaps_heuristic description"
 msgid "When the model has small vertical gaps of only a few layers, there should normally be skin around those layers in the narrow space. Enable this setting to not generate skin if the vertical gap is very small. This improves printing time and slicing time, but technically leaves infill exposed to the air."
-msgstr "Lorsque le modèle comporte de petits trous verticaux de quelques couches seulement, il doit normalement y avoir une couche autour de celles-ci dans l'espace étroit. Activez ce paramètre pour ne pas générer de couche si le trou vertical est très petit. Cela améliore le temps d'impression et le temps de découpage, mais laisse techniquement le remplissage exposé à l'air."
+msgstr ""
+"Lorsque le modèle comporte de petits trous verticaux de quelques couches "
+"seulement, il doit normalement y avoir une couche autour de celles-ci dans "
+"l'espace étroit. Activez ce paramètre pour ne pas générer de couche si le "
+"trou vertical est très petit. Cela améliore le temps d'impression et le "
+"temps de découpage, mais laisse techniquement le remplissage exposé à l'air."
 
 #: fdmprinter.def.json
 msgctxt "skin_outline_count label"
@@ -1587,7 +1608,12 @@ msgstr "Flux d'étirage"
 #: fdmprinter.def.json
 msgctxt "ironing_flow description"
 msgid "The amount of material, relative to a normal skin line, to extrude during ironing. Keeping the nozzle filled helps filling some of the crevices of the top surface, but too much results in overextrusion and blips on the side of the surface."
-msgstr "La quantité de matériau, relative à une ligne de couche extérieure normale, à extruder pendant l'étirage. Le fait de garder la buse pleine aide à remplir certaines des crevasses de la surface supérieure ; mais si la quantité est trop importante, cela entraînera une surextrusion et l'apparition de coupures sur le côté de la surface."
+msgstr ""
+"La quantité de matériau, relative à une ligne de couche extérieure normale, "
+"à extruder pendant l'étirage. Le fait de garder la buse pleine aide à "
+"remplir certaines des crevasses de la surface supérieure ; mais si la "
+"quantité est trop importante, cela entraînera une surextrusion et "
+"l'apparition de coupures sur le côté de la surface."
 
 #: fdmprinter.def.json
 msgctxt "ironing_inset label"
@@ -1639,7 +1665,15 @@ msgstr "Pourcentage de chevauchement de la couche extérieure"
 #: fdmprinter.def.json
 msgctxt "skin_overlap description"
 msgid "Adjust the amount of overlap between the walls and (the endpoints of) the skin-centerlines, as a percentage of the line widths of the skin lines and the innermost wall. A slight overlap allows the walls to connect firmly to the skin. Note that, given an equal skin and wall line-width, any percentage over 50% may already cause any skin to go past the wall, because at that point the position of the nozzle of the skin-extruder may already reach past the middle of the wall."
-msgstr "Ajuster le degré de chevauchement entre les parois et les (extrémités des) lignes centrales de la couche extérieure, en pourcentage de la largeur des lignes de la couche extérieure et de la paroi intérieure. Un chevauchement léger permet de relier fermement les parois à la couche extérieure. Notez que, si la largeur de la couche extérieure est égale à celle de la ligne de la paroi, un pourcentage supérieur à 50 % peut déjà faire dépasser la couche extérieure de la paroi, car dans ce cas la position de la buse de l'extrudeuse peut déjà atteindre le milieu de la paroi."
+msgstr ""
+"Ajuster le degré de chevauchement entre les parois et les (extrémités des) "
+"lignes centrales de la couche extérieure, en pourcentage de la largeur des "
+"lignes de la couche extérieure et de la paroi intérieure. Un chevauchement "
+"léger permet de relier fermement les parois à la couche extérieure. Notez "
+"que, si la largeur de la couche extérieure est égale à celle de la ligne de "
+"la paroi, un pourcentage supérieur à 50 % peut déjà faire dépasser la couche "
+"extérieure de la paroi, car dans ce cas la position de la buse de "
+"l'extrudeuse peut déjà atteindre le milieu de la paroi."
 
 #: fdmprinter.def.json
 msgctxt "skin_overlap_mm label"
@@ -1649,7 +1683,14 @@ msgstr "Chevauchement de la couche extérieure"
 #: fdmprinter.def.json
 msgctxt "skin_overlap_mm description"
 msgid "Adjust the amount of overlap between the walls and (the endpoints of) the skin-centerlines. A slight overlap allows the walls to connect firmly to the skin. Note that, given an equal skin and wall line-width, any value over half the width of the wall may already cause any skin to go past the wall, because at that point the position of the nozzle of the skin-extruder may already reach past the middle of the wall."
-msgstr "Ajuster le degré de chevauchement entre les parois et les (extrémités des) lignes centrales de la couche extérieure. Un chevauchement léger permet de relier fermement les parois à la couche extérieure. Notez que, si la largeur de la couche extérieure est égale à celle de la ligne de la paroi, une valeur supérieure à la moitié de la largeur de la paroi peut déjà faire dépasser la couche extérieure de la paroi, car dans ce cas la position de la buse de l'extrudeuse peut déjà atteindre le milieu de la paroi."
+msgstr ""
+"Ajuster le degré de chevauchement entre les parois et les (extrémités des) "
+"lignes centrales de la couche extérieure. Un chevauchement léger permet de "
+"relier fermement les parois à la couche extérieure. Notez que, si la largeur "
+"de la couche extérieure est égale à celle de la ligne de la paroi, une "
+"valeur supérieure à la moitié de la largeur de la paroi peut déjà faire "
+"dépasser la couche extérieure de la paroi, car dans ce cas la position de la "
+"buse de l'extrudeuse peut déjà atteindre le milieu de la paroi."
 
 #: fdmprinter.def.json
 msgctxt "skin_preshrink label"
@@ -1659,7 +1700,12 @@ msgstr "Largeur de retrait de la couche extérieure"
 #: fdmprinter.def.json
 msgctxt "skin_preshrink description"
 msgid "The largest width of skin areas which are to be removed. Every skin area smaller than this value will disappear. This can help in limiting the amount of time and material spent on printing top/bottom skin at slanted surfaces in the model."
-msgstr "La plus grande largeur des zones de la couche extérieure à faire disparaître. Toute zone de la couche extérieure plus étroite que cette valeur disparaîtra. Ceci peut aider à limiter le temps et la quantité de matière utilisés pour imprimer la couche extérieure supérieure/inférieure sur les surfaces obliques du modèle."
+msgstr ""
+"La plus grande largeur des zones de la couche extérieure à faire "
+"disparaître. Toute zone de la couche extérieure plus étroite que cette "
+"valeur disparaîtra. Ceci peut aider à limiter le temps et la quantité de "
+"matière utilisés pour imprimer la couche extérieure supérieure/inférieure "
+"sur les surfaces obliques du modèle."
 
 #: fdmprinter.def.json
 msgctxt "top_skin_preshrink label"
@@ -1669,7 +1715,12 @@ msgstr "Largeur de retrait de la couche extérieure supérieure"
 #: fdmprinter.def.json
 msgctxt "top_skin_preshrink description"
 msgid "The largest width of top skin areas which are to be removed. Every skin area smaller than this value will disappear. This can help in limiting the amount of time and material spent on printing top skin at slanted surfaces in the model."
-msgstr "La plus grande largeur des zones de la couche extérieure supérieure à faire disparaître. Toute zone de la couche extérieure plus étroite que cette valeur disparaîtra. Ceci peut aider à limiter le temps et la quantité de matière utilisés pour imprimer la couche extérieure supérieure sur les surfaces obliques du modèle."
+msgstr ""
+"La plus grande largeur des zones de la couche extérieure supérieure à faire "
+"disparaître. Toute zone de la couche extérieure plus étroite que cette "
+"valeur disparaîtra. Ceci peut aider à limiter le temps et la quantité de "
+"matière utilisés pour imprimer la couche extérieure supérieure sur les "
+"surfaces obliques du modèle."
 
 #: fdmprinter.def.json
 msgctxt "bottom_skin_preshrink label"
@@ -1689,7 +1740,11 @@ msgstr "Distance d'expansion de la couche extérieure"
 #: fdmprinter.def.json
 msgctxt "expand_skins_expand_distance description"
 msgid "The distance the skins are expanded into the infill. Higher values makes the skin attach better to the infill pattern and makes the walls on neighboring layers adhere better to the skin. Lower values save amount of material used."
-msgstr "La distance à laquelle les couches extérieures s'étendent à l'intérieur du remplissage. Des valeurs élevées lient mieux la couche extérieure au motif de remplissage et font mieux adhérer à cette couche les parois des couches voisines. Des valeurs faibles économisent la quantité de matériau utilisé."
+msgstr ""
+"La distance à laquelle les couches extérieures s'étendent à l'intérieur du "
+"remplissage. Des valeurs élevées lient mieux la couche extérieure au motif "
+"de remplissage et font mieux adhérer à cette couche les parois des couches "
+"voisines. Des valeurs faibles économisent la quantité de matériau utilisé."
 
 #: fdmprinter.def.json
 msgctxt "top_skin_expand_distance label"
@@ -1960,8 +2015,15 @@ msgid ""
 "Add extra walls around the infill area. Such walls can make top/bottom skin lines sag down less which means you need less top/bottom skin layers for the same quality at the cost of some extra material.\n"
 "This feature can combine with the Connect Infill Polygons to connect all the infill into a single extrusion path without the need for travels or retractions if configured right."
 msgstr ""
-"Ajoutez des parois supplémentaires autour de la zone de remplissage. De telles parois peuvent réduire l'affaissement des lignes de couche extérieure supérieure / inférieure, réduisant le nombre de couches extérieures supérieures / inférieures nécessaires pour obtenir la même qualité, au prix d'un peu de matériau supplémentaire.\n"
-"Configurée correctement, cette fonctionnalité peut être combinée avec « Relier les polygones de remplissage » pour relier tous les remplissages en un seul mouvement d'extrusion sans avoir besoin de déplacements ou de rétractions."
+"Ajoutez des parois supplémentaires autour de la zone de remplissage. De "
+"telles parois peuvent réduire l'affaissement des lignes de couche extérieure "
+"supérieure / inférieure, réduisant le nombre de couches extérieures "
+"supérieures / inférieures nécessaires pour obtenir la même qualité, au prix "
+"d'un peu de matériau supplémentaire.\n"
+"Configurée correctement, cette fonctionnalité peut être combinée avec "
+"« Relier les polygones de remplissage » pour relier tous les remplissages en "
+"un seul mouvement d'extrusion sans avoir besoin de déplacements ou de "
+"rétractions."
 
 #: fdmprinter.def.json
 msgctxt "sub_div_rad_add label"
@@ -1981,7 +2043,10 @@ msgstr "Pourcentage de chevauchement du remplissage"
 #: fdmprinter.def.json
 msgctxt "infill_overlap description"
 msgid "The amount of overlap between the infill and the walls as a percentage of the infill line width. A slight overlap allows the walls to connect firmly to the infill."
-msgstr "Le degré de chevauchement entre le remplissage et les parois exprimé en pourcentage de la largeur de ligne de remplissage. Un chevauchement faible permet aux parois de se connecter fermement au remplissage."
+msgstr ""
+"Le degré de chevauchement entre le remplissage et les parois exprimé en "
+"pourcentage de la largeur de ligne de remplissage. Un chevauchement faible "
+"permet aux parois de se connecter fermement au remplissage."
 
 #: fdmprinter.def.json
 msgctxt "infill_overlap_mm label"
@@ -1991,7 +2056,9 @@ msgstr "Chevauchement du remplissage"
 #: fdmprinter.def.json
 msgctxt "infill_overlap_mm description"
 msgid "The amount of overlap between the infill and the walls. A slight overlap allows the walls to connect firmly to the infill."
-msgstr "Le degré de chevauchement entre le remplissage et les parois. Un léger chevauchement permet de lier fermement les parois au remplissage."
+msgstr ""
+"Le degré de chevauchement entre le remplissage et les parois. Un léger "
+"chevauchement permet de lier fermement les parois au remplissage."
 
 #: fdmprinter.def.json
 msgctxt "infill_wipe_dist label"
@@ -2001,7 +2068,11 @@ msgstr "Distance de remplissage"
 #: fdmprinter.def.json
 msgctxt "infill_wipe_dist description"
 msgid "Distance of a travel move inserted after every infill line, to make the infill stick to the walls better. This option is similar to infill overlap, but without extrusion and only on one end of the infill line."
-msgstr "Distance de déplacement à insérer après chaque ligne de remplissage, pour s'assurer que le remplissage collera mieux aux parois externes. Cette option est similaire au chevauchement du remplissage, mais sans extrusion et seulement à l'une des deux extrémités de la ligne de remplissage."
+msgstr ""
+"Distance de déplacement à insérer après chaque ligne de remplissage, pour "
+"s'assurer que le remplissage collera mieux aux parois externes. Cette option "
+"est similaire au chevauchement du remplissage, mais sans extrusion et "
+"seulement à l'une des deux extrémités de la ligne de remplissage."
 
 #: fdmprinter.def.json
 msgctxt "infill_sparse_thickness label"
@@ -2051,7 +2122,9 @@ msgstr "Zone de remplissage minimum"
 #: fdmprinter.def.json
 msgctxt "min_infill_area description"
 msgid "Don't generate areas of infill smaller than this (use skin instead)."
-msgstr "Ne pas générer de zones de remplissage plus petites que cela (utiliser plutôt une couche extérieure)"
+msgstr ""
+"Ne pas générer de zones de remplissage plus petites que cela (utiliser "
+"plutôt une couche extérieure)"
 
 #: fdmprinter.def.json
 msgctxt "infill_support_enabled label"
@@ -2637,7 +2710,7 @@ msgstr "La vitesse à laquelle toutes les parois internes seront imprimées. L�
 #: fdmprinter.def.json
 msgctxt "speed_roofing label"
 msgid "Top Surface Skin Speed"
-msgstr "Vitesse de la couche extérieure de la surface supérieure"
+msgstr "Vitesse de la couche extérieure supérieure"
 
 #: fdmprinter.def.json
 msgctxt "speed_roofing description"
@@ -3805,6 +3878,11 @@ msgid "Gyroid"
 msgstr "Gyroïde"
 
 #: fdmprinter.def.json
+msgctxt "support_pattern option honeycomb"
+msgid "Honeycomb"
+msgstr "Nid d'abeille"
+
+#: fdmprinter.def.json
 msgctxt "support_wall_count label"
 msgid "Support Wall Line Count"
 msgstr "Nombre de lignes de la paroi du support"
@@ -4082,7 +4160,9 @@ msgstr "Activer les plafonds de support"
 #: fdmprinter.def.json
 msgctxt "support_roof_enable description"
 msgid "Generate a dense slab of material between the top of support and the model. This will create a skin between the model and support."
-msgstr "Générer une plaque dense de matériau entre le plafond du support et le modèle. Cela créera une couche extérieure entre le modèle et le support."
+msgstr ""
+"Générer une plaque dense de matériau entre le plafond du support et le "
+"modèle. Cela créera une couche extérieure entre le modèle et le support."
 
 #: fdmprinter.def.json
 msgctxt "support_bottom_enable label"
@@ -4092,7 +4172,9 @@ msgstr "Activer les bas de support"
 #: fdmprinter.def.json
 msgctxt "support_bottom_enable description"
 msgid "Generate a dense slab of material between the bottom of the support and the model. This will create a skin between the model and support."
-msgstr "Générer une plaque dense de matériau entre le bas du support et le modèle. Cela créera une couche extérieure entre le modèle et le support."
+msgstr ""
+"Générer une plaque dense de matériau entre le bas du support et le modèle. "
+"Cela créera une couche extérieure entre le modèle et le support."
 
 #: fdmprinter.def.json
 msgctxt "support_interface_height label"
@@ -4392,7 +4474,10 @@ msgstr "Annulation de la vitesse du ventilateur"
 #: fdmprinter.def.json
 msgctxt "support_fan_enable description"
 msgid "When enabled, the print cooling fan speed is altered for the skin regions immediately above the support."
-msgstr "Lorsque cette fonction est activée, la vitesse du ventilateur de refroidissement de l'impression est modifiée pour les régions de la couche extérieure situées immédiatement au-dessus du support."
+msgstr ""
+"Lorsque cette fonction est activée, la vitesse du ventilateur de "
+"refroidissement de l'impression est modifiée pour les régions de la couche "
+"extérieure situées immédiatement au-dessus du support."
 
 #: fdmprinter.def.json
 msgctxt "support_supported_skin_fan_speed label"
@@ -4402,7 +4487,10 @@ msgstr "Vitesse du ventilateur de couche extérieure supportée"
 #: fdmprinter.def.json
 msgctxt "support_supported_skin_fan_speed description"
 msgid "Percentage fan speed to use when printing the skin regions immediately above the support. Using a high fan speed can make the support easier to remove."
-msgstr "Pourcentage de la vitesse du ventilateur à utiliser lors de l'impression des zones de couche extérieure situées immédiatement au-dessus du support. Une vitesse de ventilateur élevée facilite le retrait du support."
+msgstr ""
+"Pourcentage de la vitesse du ventilateur à utiliser lors de l'impression des "
+"zones de couche extérieure situées immédiatement au-dessus du support. Une "
+"vitesse de ventilateur élevée facilite le retrait du support."
 
 #: fdmprinter.def.json
 msgctxt "support_use_towers label"
@@ -5166,7 +5254,12 @@ msgstr "Alterner le retrait des maillages"
 #: fdmprinter.def.json
 msgctxt "alternate_carve_order description"
 msgid "Switch to which mesh intersecting volumes will belong with every layer, so that the overlapping meshes become interwoven. Turning this setting off will cause one of the meshes to obtain all of the volume in the overlap, while it is removed from the other meshes."
-msgstr "Passe aux volumes d'intersection de maille qui appartiennent à chaque couche, de manière à ce que les mailles qui se chevauchent soient entrelacées. Si vous désactivez ce paramètre, l'une des mailles obtiendra tout le volume dans le chevauchement tandis qu'il est retiré des autres mailles."
+msgstr ""
+"Passe aux volumes d'intersection de maille qui appartiennent à chaque "
+"couche, de manière à ce que les mailles qui se chevauchent soient "
+"entrelacées. Si vous désactivez ce paramètre, l'une des mailles obtiendra "
+"tout le volume dans le chevauchement tandis qu'il est retiré des autres "
+"mailles."
 
 #: fdmprinter.def.json
 msgctxt "remove_empty_first_layers label"
@@ -5261,7 +5354,13 @@ msgstr "Rang de traitement du maillage"
 #: fdmprinter.def.json
 msgctxt "infill_mesh_order description"
 msgid "Determines the priority of this mesh when considering multiple overlapping infill meshes. Areas where multiple infill meshes overlap will take on the settings of the mesh with the highest rank. An infill mesh with a higher rank will modify the infill of infill meshes with lower rank and normal meshes."
-msgstr "Détermine la priorité de cette maille lorsque plusieurs chevauchements de mailles de remplissage sont pris en considération. Les zones comportant plusieurs chevauchements de mailles de remplissage prendront en compte les paramètres du maillage ayant l'ordre le plus élevé. Une maille de remplissage possédant un ordre plus élevé modifiera le remplissage des mailles de remplissage ayant un ordre plus bas et des mailles normales."
+msgstr ""
+"Détermine la priorité de cette maille lorsque plusieurs chevauchements de "
+"mailles de remplissage sont pris en considération. Les zones comportant "
+"plusieurs chevauchements de mailles de remplissage prendront en compte les "
+"paramètres du maillage ayant l'ordre le plus élevé. Une maille de "
+"remplissage possédant un ordre plus élevé modifiera le remplissage des "
+"mailles de remplissage ayant un ordre plus bas et des mailles normales."
 
 #: fdmprinter.def.json
 msgctxt "cutting_mesh label"
@@ -5367,7 +5466,7 @@ msgstr "Les deux"
 #: fdmprinter.def.json
 msgctxt "magic_spiralize label"
 msgid "Spiralize Outer Contour"
-msgstr "Spiraliser le contour extérieur"
+msgstr "Spiraler le contour extérieur"
 
 #: fdmprinter.def.json
 msgctxt "magic_spiralize description"
@@ -5377,12 +5476,16 @@ msgstr "Cette fonction ajuste le déplacement en Z sur le bord extérieur. Cela 
 #: fdmprinter.def.json
 msgctxt "smooth_spiralized_contours label"
 msgid "Smooth Spiralized Contours"
-msgstr "Lisser les contours spiralisés"
+msgstr "Lisser les contours spiralés"
 
 #: fdmprinter.def.json
 msgctxt "smooth_spiralized_contours description"
 msgid "Smooth the spiralized contours to reduce the visibility of the Z seam (the Z seam should be barely visible on the print but will still be visible in the layer view). Note that smoothing will tend to blur fine surface details."
-msgstr "Lisser les contours spiralisés pour réduire la visibilité de la jointure en Z (la jointure en Z doit être à peine visible sur l'impression mais sera toujours visible dans la vue en couches). Veuillez remarquer que le lissage aura tendance à estomper les détails très fins de la surface."
+msgstr ""
+"Lisser les contours spiralés pour réduire la visibilité de la jointure en Z "
+"(la jointure en Z doit être à peine visible sur l'impression mais sera "
+"toujours visible dans la vue en couches). Veuillez remarquer que le lissage "
+"aura tendance à estomper les détails très fins de la surface."
 
 #: fdmprinter.def.json
 msgctxt "relative_extrusion label"
@@ -5463,6 +5566,11 @@ msgstr "Concentrique"
 msgctxt "roofing_pattern option zigzag"
 msgid "Zig Zag"
 msgstr "Zig Zag"
+
+#: fdmprinter.def.json
+msgctxt "roofing_pattern option hilbert"
+msgid "Hilbert Curve"
+msgstr "Courbe de Hilbert"
 
 #: fdmprinter.def.json
 msgctxt "roofing_monotonic label"
@@ -5742,7 +5850,9 @@ msgstr "Surfaces floues"
 #: fdmprinter.def.json
 msgctxt "magic_fuzzy_skin_enabled description"
 msgid "Randomly jitter while printing the outer wall, so that the surface has a rough and fuzzy look."
-msgstr "Produit une agitation aléatoire lors de l'impression de la paroi extérieure, ce qui lui donne une apparence rugueuse et floue."
+msgstr ""
+"Produit une agitation aléatoire lors de l'impression de la paroi extérieure, "
+"ce qui lui donne une apparence rugueuse et floue."
 
 #: fdmprinter.def.json
 msgctxt "magic_fuzzy_skin_outside_only label"
@@ -6141,7 +6251,23 @@ msgstr "Longueur minimale de la paroi du pont"
 #: fdmprinter.def.json
 msgctxt "bridge_wall_min_length description"
 msgid "Unsupported walls shorter than this will be printed using the normal wall settings. Longer unsupported walls will be printed using the bridge wall settings."
-msgstr "Les parois non supportées dont la longueur est inférieure à cette valeur seront imprimées selon les paramètres de parois normaux, tandis que celles dont la longueur est supérieure à cette valeur seront imprimées selon les paramètres de parois du pont."
+msgstr ""
+"Les parois non supportées dont la longueur est inférieure à cette valeur "
+"seront imprimées selon les paramètres de parois normaux, tandis que celles "
+"dont la longueur est supérieure à cette valeur seront imprimées selon les "
+"paramètres de parois du pont."
+
+#: fdmprinter.def.json
+msgctxt "bridge_wall_max_length label"
+msgid "Maximum Bridge Wall Length"
+msgstr "Longueur maximale de la paroi du pont"
+
+#: fdmprinter.def.json
+msgctxt "bridge_wall_max_length description"
+msgid "When non-zero, unsupported walls longer than this will be printed using the normal wall settings."
+msgstr ""
+"Lorsqu'elle est différente de zéro, les parois non soutenus plus longs que "
+"cette valeur seront imprimés en utilisant les paramètres normaux des parois."
 
 #: fdmprinter.def.json
 msgctxt "bridge_skin_support_threshold label"
@@ -6151,7 +6277,11 @@ msgstr "Limite de support de la couche extérieure du pont"
 #: fdmprinter.def.json
 msgctxt "bridge_skin_support_threshold description"
 msgid "If a skin region is supported for less than this percentage of its area, print it using the bridge settings. Otherwise it is printed using the normal skin settings."
-msgstr "Si une région de couche extérieure est supportée pour une valeur inférieure à ce pourcentage de sa surface, elle sera imprimée selon les paramètres du pont. Sinon, elle sera imprimée selon les paramètres normaux de la couche extérieure."
+msgstr ""
+"Si une région de couche extérieure est supportée pour une valeur inférieure "
+"à ce pourcentage de sa surface, elle sera imprimée selon les paramètres du "
+"pont. Sinon, elle sera imprimée selon les paramètres normaux de la couche "
+"extérieure."
 
 #: fdmprinter.def.json
 msgctxt "bridge_sparse_infill_max_density label"
@@ -6161,7 +6291,10 @@ msgstr "Densité maximale du remplissage mince du pont"
 #: fdmprinter.def.json
 msgctxt "bridge_sparse_infill_max_density description"
 msgid "Maximum density of infill considered to be sparse. Skin over sparse infill is considered to be unsupported and so may be treated as a bridge skin."
-msgstr "Densité maximale du remplissage considéré comme étant mince. La couche sur le remplissage mince est considérée comme non soutenue et peut donc être traitée comme une couche du pont."
+msgstr ""
+"Densité maximale du remplissage considéré comme étant mince. La couche sur "
+"le remplissage mince est considérée comme non soutenue et peut donc être "
+"traitée comme une couche du pont."
 
 #: fdmprinter.def.json
 msgctxt "bridge_wall_coast label"
@@ -6196,32 +6329,36 @@ msgstr "Lors de l'impression des parois de pont, la quantité de matériau extru
 #: fdmprinter.def.json
 msgctxt "bridge_skin_speed label"
 msgid "Bridge Skin Speed"
-msgstr "Vitesse de la couche extérieure du pont"
+msgstr "Vitesse du remplissage du pont"
 
 #: fdmprinter.def.json
 msgctxt "bridge_skin_speed description"
 msgid "The speed at which bridge skin regions are printed."
-msgstr "Vitesse à laquelle les régions de la couche extérieure du pont sont imprimées."
+msgstr "Vitesse à laquelle les régions du remplissage du pont sont imprimées."
 
 #: fdmprinter.def.json
 msgctxt "bridge_skin_material_flow label"
 msgid "Bridge Skin Flow"
-msgstr "Débit de la couche extérieure du pont"
+msgstr "Débit du remplissage du pont"
 
 #: fdmprinter.def.json
 msgctxt "bridge_skin_material_flow description"
 msgid "When printing bridge skin regions, the amount of material extruded is multiplied by this value."
-msgstr "Lors de l'impression des régions de la couche extérieure du pont, la quantité de matériau extrudé est multipliée par cette valeur."
+msgstr ""
+"Lors de l'impression des régions du remplissage du pont, la quantité de "
+"matériau extrudé est multipliée par cette valeur."
 
 #: fdmprinter.def.json
 msgctxt "bridge_skin_density label"
 msgid "Bridge Skin Density"
-msgstr "Densité de la couche extérieure du pont"
+msgstr "Densité du remplissage du pont"
 
 #: fdmprinter.def.json
 msgctxt "bridge_skin_density description"
 msgid "The density of the bridge skin layer. Values less than 100 will increase the gaps between the skin lines."
-msgstr "Densité de la couche extérieure du pont. Des valeurs inférieures à 100 augmenteront les écarts entre les lignes de la couche extérieure."
+msgstr ""
+"Densité du remplissage du pont. Des valeurs inférieures à 100 augmenteront "
+"les écarts entre les lignes du remplissage."
 
 #: fdmprinter.def.json
 msgctxt "bridge_fan_speed label"
@@ -6231,7 +6368,9 @@ msgstr "Vitesse du ventilateur du pont"
 #: fdmprinter.def.json
 msgctxt "bridge_fan_speed description"
 msgid "Percentage fan speed to use when printing bridge walls and skin."
-msgstr "Vitesse du ventilateur en pourcentage à utiliser pour l'impression des parois et de la couche extérieure du pont."
+msgstr ""
+"Vitesse du ventilateur en pourcentage à utiliser pour l'impression des "
+"parois et du remplissage du pont."
 
 #: fdmprinter.def.json
 msgctxt "bridge_enable_more_layers label"
@@ -6241,87 +6380,106 @@ msgstr "Le pont possède plusieurs couches"
 #: fdmprinter.def.json
 msgctxt "bridge_enable_more_layers description"
 msgid "If enabled, the second and third layers above the air are printed using the following settings. Otherwise, those layers are printed using the normal settings."
-msgstr "Si cette option est activée, les deuxième et troisième couches au-dessus de la zone d'air seront imprimées selon les paramètres suivants. Sinon, ces couches seront imprimées selon les paramètres normaux."
+msgstr ""
+"Si cette option est activée, les deuxième et troisième couches au-dessus de "
+"la zone d'air seront imprimées selon les paramètres suivants. Sinon, ces "
+"couches seront imprimées selon les paramètres normaux."
 
 #: fdmprinter.def.json
 msgctxt "bridge_skin_speed_2 label"
 msgid "Bridge Second Skin Speed"
-msgstr "Vitesse de la deuxième couche extérieure du pont"
+msgstr "Vitesse deuxième couche du pont"
 
 #: fdmprinter.def.json
 msgctxt "bridge_skin_speed_2 description"
 msgid "Print speed to use when printing the second bridge skin layer."
-msgstr "Vitesse d'impression à utiliser lors de l'impression de la deuxième couche extérieure du pont."
+msgstr ""
+"Vitesse d'impression à utiliser lors de l'impression de la deuxième couche  "
+"du pont."
 
 #: fdmprinter.def.json
 msgctxt "bridge_skin_material_flow_2 label"
 msgid "Bridge Second Skin Flow"
-msgstr "Débit de la deuxième couche extérieure du pont"
+msgstr "Débit deuxième couche du pont"
 
 #: fdmprinter.def.json
 msgctxt "bridge_skin_material_flow_2 description"
 msgid "When printing the second bridge skin layer, the amount of material extruded is multiplied by this value."
-msgstr "Lors de l'impression de la deuxième couche extérieure du pont, la quantité de matériau extrudé est multipliée par cette valeur."
+msgstr ""
+"Lors de l'impression de la deuxième couche  du pont, la quantité de matériau "
+"extrudé est multipliée par cette valeur."
 
 #: fdmprinter.def.json
 msgctxt "bridge_skin_density_2 label"
 msgid "Bridge Second Skin Density"
-msgstr "Densité de la deuxième couche extérieure du pont"
+msgstr "Densité deuxième couche du pont"
 
 #: fdmprinter.def.json
 msgctxt "bridge_skin_density_2 description"
 msgid "The density of the second bridge skin layer. Values less than 100 will increase the gaps between the skin lines."
-msgstr "Densité de la deuxième couche extérieure du pont. Des valeurs inférieures à 100 augmenteront les écarts entre les lignes de la couche extérieure."
+msgstr ""
+"Densité de la deuxième couche de remplissage du pont. Des valeurs "
+"inférieures à 100 augmenteront les écarts entre les lignes de la couche ."
 
 #: fdmprinter.def.json
 msgctxt "bridge_fan_speed_2 label"
 msgid "Bridge Second Skin Fan Speed"
-msgstr "Vitesse du ventilateur de la deuxième couche extérieure du pont"
+msgstr "Vitesse ventilateur deuxième couche du pont"
 
 #: fdmprinter.def.json
 msgctxt "bridge_fan_speed_2 description"
 msgid "Percentage fan speed to use when printing the second bridge skin layer."
-msgstr "Vitesse du ventilateur en pourcentage à utiliser pour l'impression de la deuxième couche extérieure du pont."
+msgstr ""
+"Vitesse du ventilateur en pourcentage à utiliser pour l'impression de la "
+"deuxième couche  du pont."
 
 #: fdmprinter.def.json
 msgctxt "bridge_skin_speed_3 label"
 msgid "Bridge Third Skin Speed"
-msgstr "Vitesse de la troisième couche extérieure du pont"
+msgstr "Vitesse troisième couche du pont"
 
 #: fdmprinter.def.json
 msgctxt "bridge_skin_speed_3 description"
 msgid "Print speed to use when printing the third bridge skin layer."
-msgstr "Vitesse d'impression à utiliser lors de l'impression de la troisième couche extérieure du pont."
+msgstr ""
+"Vitesse d'impression à utiliser lors de l'impression de la troisième couche "
+" du pont."
 
 #: fdmprinter.def.json
 msgctxt "bridge_skin_material_flow_3 label"
 msgid "Bridge Third Skin Flow"
-msgstr "Débit de la troisième couche extérieure du pont"
+msgstr "Débit troisième couche du pont"
 
 #: fdmprinter.def.json
 msgctxt "bridge_skin_material_flow_3 description"
 msgid "When printing the third bridge skin layer, the amount of material extruded is multiplied by this value."
-msgstr "Lors de l'impression de la troisième couche extérieure du pont, la quantité de matériau extrudé est multipliée par cette valeur."
+msgstr ""
+"Lors de l'impression de la troisième couche  du pont, la quantité de "
+"matériau extrudé est multipliée par cette valeur."
 
 #: fdmprinter.def.json
 msgctxt "bridge_skin_density_3 label"
 msgid "Bridge Third Skin Density"
-msgstr "Densité de la troisième couche extérieure du pont"
+msgstr "Densité troisième couche du pont"
 
 #: fdmprinter.def.json
 msgctxt "bridge_skin_density_3 description"
 msgid "The density of the third bridge skin layer. Values less than 100 will increase the gaps between the skin lines."
-msgstr "Densité de la troisième couche extérieure du pont. Des valeurs inférieures à 100 augmenteront les écarts entre les lignes de la couche extérieure."
+msgstr ""
+"Densité de la troisième couche  du pont. Des valeurs inférieures à 100 "
+"augmenteront les écarts entre les lignes de la couche ."
 
 #: fdmprinter.def.json
 msgctxt "bridge_fan_speed_3 label"
 msgid "Bridge Third Skin Fan Speed"
-msgstr "Vitesse du ventilateur de la troisième couche extérieure du pont"
+msgstr "Vitesse ventilateur troisième couche du pont"
 
 #: fdmprinter.def.json
 msgctxt "bridge_fan_speed_3 description"
 msgid "Percentage fan speed to use when printing the third bridge skin layer."
-msgstr "Vitesse du ventilateur en pourcentage à utiliser pour l'impression de la troisième couche extérieure du pont."
+msgstr ""
+"Vitesse du ventilateur en pourcentage à utiliser pour l'impression de la "
+"troisième couche  du pont."
 
 #: fdmprinter.def.json
 msgctxt "clean_between_layers label"
@@ -6585,7 +6743,7 @@ msgctxt "only_one_wall_top description"
 msgid "When enabled, visible top skins are surrounded by only one wall."
 msgstr ""
 "Lorsqu'il est activé, les habillages supérieurs visibles sont entourés d'une "
-"seul paroi."
+"seule paroi."
 
 #: fdmprinter.def.json
 msgctxt "only_one_wall_bottom label"
@@ -6596,7 +6754,8 @@ msgstr "Couche Inférieure avec Une Seule Paroi"
 msgctxt "only_one_wall_bottom description"
 msgid "When enabled, the bottom skin is surrounded by only one wall."
 msgstr ""
-"Lorsqu'elle est activée, la peau inférieure est entourée d'une seule paroi."
+"Lorsqu'elle est activée, la couche inférieure est entourée d'une seule "
+"paroi."
 
 #: fdmprinter.def.json
 msgctxt "min_gap_area label"
@@ -6671,16 +6830,6 @@ msgstr ""
 "possible)."
 
 #: fdmprinter.def.json
-msgctxt "top_bottom_pattern_0 option hilbert"
-msgid "Hilbert Curve"
-msgstr "Courbe de Hilbert"
-
-#: fdmprinter.def.json
-msgctxt "roofing_pattern option hilbert"
-msgid "hilbert"
-msgstr "Courbe de Hilbert"
-
-#: fdmprinter.def.json
 msgctxt "monotonic_skin_lines label"
 msgid "Monotonic Skin Lines (mb-master)"
 msgstr "Remplissage monotone (mb-master)"
@@ -6689,9 +6838,9 @@ msgstr "Remplissage monotone (mb-master)"
 msgctxt "monotonic_skin_lines description"
 msgid "Print the skin lines monotonically. This may improve the visual quality of the skin. Only applied when the 'Lines' skin pattern is used."
 msgstr ""
-"Imprimez les lignes de la peau de manière monotone. Cela peut améliorer la "
-"qualité visuelle de la peau. S'applique uniquement lorsque le motif de peau "
-"'Ligne' est utilisé."
+"Imprimez les lignes des couches extérieures de manière monotone. Cela peut "
+"améliorer la qualité visuelle des couches extérieures. S'applique uniquement "
+"lorsque le motif de couche 'Ligne' est utilisé."
 
 #: fdmprinter.def.json
 msgctxt "monotonic_skin_lines_reversed label"
@@ -6701,7 +6850,9 @@ msgstr "Ordre linéaire monotone inversé"
 #: fdmprinter.def.json
 msgctxt "monotonic_skin_lines_reversed description"
 msgid "Print the skin lines monotonically in reverse order."
-msgstr "Imprimez les lignes de peau de façon monotone dans l'ordre inverse."
+msgstr ""
+"Imprimez les lignes de couches externes de façon monotone dans l'ordre "
+"inverse."
 
 #: fdmprinter.def.json
 msgctxt "ironing_fan_enable label"
@@ -6716,7 +6867,7 @@ msgstr "Lorsqu'elle est activée, la vitesse du ventilateur de refroidissement d
 #: fdmprinter.def.json
 msgctxt "ironing_fan_speed label"
 msgid "Ironing Fan Speed"
-msgstr "Vitesse du ventilateur de repassage"
+msgstr "Vitesse du ventilateur pour l'étirage"
 
 #: fdmprinter.def.json
 msgctxt "ironing_fan_speed description"
@@ -6726,25 +6877,26 @@ msgstr "Pourcentage de la vitesse du ventilateur à utiliser lors de l'impressio
 #: fdmprinter.def.json
 msgctxt "roofing_overlap label"
 msgid "Top Surface Skin Overlap Percentage"
-msgstr "Pourcentage de chevauchement de la peau de la surface supérieure"
+msgstr "Pourcentage chevauchement de la couche externe supérieure"
 
 #: fdmprinter.def.json
 msgctxt "roofing_overlap description"
 msgid "Adjust the amount of overlap between the walls and (the endpoints of) the top surface skin-centerlines, as a percentage of the line widths of the skin lines and the innermost wall. A slight overlap allows the walls to connect firmly to the skin. Note that, given an equal skin and wall line-width, any percentage over 50% may already cause any skin to go past the wall, because at that point the position of the nozzle of the skin-extruder may already reach past the middle of the wall."
 msgstr ""
 "Ajustez la quantité de chevauchement entre les parois et (les points "
-"d'extrémité) des lignes centrales de la peau de la surface supérieure, en "
-"tant que pourcentage des largeurs de ligne des lignes de la peau et du mur "
-"le plus intérieur. Un léger chevauchement permet aux murs de se connecter "
-"fermement à la peau. Notez que, pour une largeur de ligne égale de la peau "
-"et de la paroi, tout pourcentage supérieur à 50 % peut déjà faire en sorte "
-"que la peau dépasse la paroi, car à ce moment-là, la position de la buse de "
-"l'extrudeuse de peau peut déjà dépasser le milieu de la paroi."
+"d'extrémité) des lignes centrales de la couche externe supérieure, en tant "
+"que pourcentage des largeurs de ligne des lignes de la peau et du mur le "
+"plus intérieur. Un léger chevauchement permet aux murs de se connecter "
+"fermement aux couches externes. Notez que, pour une largeur de ligne égale "
+"de la peau et de la paroi, tout pourcentage supérieur à 50 % peut déjà faire "
+"en sorte que la couche externe dépasse la paroi, car à ce moment-là, la "
+"position de la buse de l'extrudeuse de la couche externe peut déjà dépasser "
+"le milieu de la paroi."
 
 #: fdmprinter.def.json
 msgctxt "roofing_overlap_mm label"
 msgid "Top Surface Skin Overlap"
-msgstr "Chevauchement de la peau de la surface supérieure"
+msgstr "Chevauchement Couche externe supérieure"
 
 #: fdmprinter.def.json
 msgctxt "roofing_overlap_mm description"
@@ -6853,8 +7005,9 @@ msgctxt "speed_walls_layer_0 description"
 msgid "The speed used to print walls in the initial layer. Reducing this speed may increase adhesion to the build plate while still allowing the skin areas to be printed at a faster speed."
 msgstr ""
 "La vitesse utilisée pour imprimer les parois dans la couche initiale. "
-"Réduire cette vitesse peut augmenter l'adhérence à la plaque de construction "
-"tout en permettant d'imprimer les zones de peau à une vitesse plus rapide."
+"Réduire cette vitesse peut augmenter l'adhérence au plateau d'impression "
+"tout en permettant d'imprimer les surfaces internes à une vitesse plus "
+"rapide."
 
 #: fdmprinter.def.json
 msgctxt "acceleration_walls_layer_0 label"
@@ -6869,7 +7022,7 @@ msgstr "L'accélération pendant l'impression des murs dans la couche initiale."
 #: fdmprinter.def.json
 msgctxt "jerk_walls_layer_0 label"
 msgid "Initial Layer Walls Jerk"
-msgstr "Saccade Parois Couche initiale"
+msgstr "Saccade Paroi Couche initiale"
 
 #: fdmprinter.def.json
 msgctxt "jerk_walls_layer_0 description"
@@ -6884,7 +7037,11 @@ msgstr "Éviter la fréquence"
 #: fdmprinter.def.json
 msgctxt "avoid_frequency description"
 msgid "When non-zero, this specifies a resonant frequency to be avoided when printing using the lines and zig zag patterns. To stop the print head oscillating at that frequency, the print speed is reduced where appropriate."
-msgstr "Lorsqu'il est différent de zéro, ce paramètre indique une fréquence de résonance à éviter lors de l'impression à l'aide des lignes et des motifs en zigzag. Pour empêcher la tête d'impression d'osciller à cette fréquence, la vitesse d'impression est réduite le cas échéant."
+msgstr ""
+"Lorsqu'il est différent de zéro, ce paramètre indique une fréquence de "
+"résonance à éviter lors de l'impression à l'aide des lignes et des motifs en "
+"zigzag. Pour empêcher la tête d'impression d'osciller à cette fréquence, la "
+"vitesse d'impression est réduite le cas échéant."
 
 #: fdmprinter.def.json
 msgctxt "travel_no_combing_on_initial_layer label"
@@ -6909,7 +7066,7 @@ msgstr "Lorsqu'elle est différente de zéro, les déplacements en peigne qui d�
 #: fdmprinter.def.json
 msgctxt "retraction_hop_initial_layers label"
 msgid "Z Hop Initial Layers"
-msgstr "Couches initiales du Z Hop"
+msgstr "Couches initiales du Décalage Z"
 
 #: fdmprinter.def.json
 msgctxt "retraction_hop_initial_layers description"
@@ -6919,7 +7076,7 @@ msgstr "Le nombre de couches initiales qui utilisent Z Hop. Une valeur différen
 #: fdmprinter.def.json
 msgctxt "cool_fan_min_at_height label"
 msgid "Initial Fan Speed at Height"
-msgstr "Vitesse initiale du ventilateur en hauteur"
+msgstr "Vitesse initiale du ventilateur à la hauteur"
 
 #: fdmprinter.def.json
 msgctxt "cool_fan_min_at_height description"
@@ -6939,17 +7096,12 @@ msgstr "La hauteur à laquelle les ventilateurs tournent à la vitesse initiale 
 #: fdmprinter.def.json
 msgctxt "cool_fan_lag label"
 msgid "Cooling Fan Lag"
-msgstr "Lag du ventilateur de refroidissement"
+msgstr "Retard du ventilateur de refroidissement"
 
 #: fdmprinter.def.json
 msgctxt "cool_fan_lag description"
 msgid "The time it takes the cooling fan to accelerate from 0 to 100%."
 msgstr "Le temps qu'il faut au ventilateur de refroidissement pour accélérer de 0 à 100%."
-
-#: fdmprinter.def.json
-msgctxt "support_pattern option honeycomb"
-msgid "Honeycomb"
-msgstr "Nid d'abeille"
 
 #: fdmprinter.def.json
 msgctxt "support_pattern_resolution label"
@@ -7127,18 +7279,17 @@ msgstr "Type de remplissage Graduel"
 msgctxt "gradient_infill_type description"
 msgid "The type of gradient infill to use. All types modify the infill line flow in proportion to the distance to the model outline. At the model outline, the infill line flow will be gradient infill max flow. Away from the model outline, the infill line flow will be gradient infill min flow. 1D simply uses the distance to the nearest end of the current infill line. 2D differs in that the distance is measured to the nearest wall on the same layer. 2D+ also takes into account the distance to the build plate and the distance to the top layer of the model. 3D uses the distance to the nearest wall or skin on any layer."
 msgstr ""
-"Le type de remplissage en gradient à utiliser. Tous les types modifient le "
-"débit de la ligne de remplissage en fonction de la distance au contour du "
-"modèle. Au niveau du contour du modèle, l'écoulement de la ligne de "
-"remplissage sera l'écoulement maximal de la ligne de remplissage en dégradé. "
-"En s'éloignant du contour du modèle, le flux de la ligne de remplissage "
-"sera le flux minimal de remplissage en gradient. 1D utilise simplement la "
-"distance jusqu'à l'extrémité la plus proche de la ligne de remplissage "
-"actuelle. Le 2D diffère en ce que la distance est mesurée jusqu'à la paroi "
-"plus proche sur la même couche. 2D+ prend également en compte la distance à "
-"la plaque de construction et la distance à la couche supérieure du modèle. "
-"La 3D utilise la distance au mur ou à la peau la plus proche sur n'importe "
-"quelle couche."
+"Le type de remplissage graduel à utiliser. Tous les types modifient le débit "
+"de la ligne de remplissage en fonction de la distance au contour du modèle. "
+"Au niveau du contour du modèle, le débit de la ligne de remplissage sera le "
+"débit maximal de la ligne de remplissage. En s'éloignant du contour du "
+"modèle, le débit de la ligne de remplissage sera le débit minimal de "
+"remplissage graduel. 1D utilise simplement la distance jusqu'à l'extrémité "
+"la plus proche de la ligne de remplissage actuelle. Le 2D diffère en ce que "
+"la distance est mesurée jusqu'à la paroi plus proche sur la même couche. 2D+ "
+"prend également en compte la distance au plateau d'impression et la "
+"distance à la couche supérieure du modèle. La 3D utilise la distance au mur "
+"ou à la surface externe la plus proche sur n'importe quelle couche."
 
 #: fdmprinter.def.json
 msgctxt "gradient_infill_type option none"
@@ -7190,7 +7341,7 @@ msgstr "Le débit maximal utilisé lors de l'impression d'une ligne de remplissa
 #: fdmprinter.def.json
 msgctxt "gradient_infill_speed_scheme label"
 msgid "Gradient Infill Speed Scheme"
-msgstr "Régime de vitesse de remplissage en gradient"
+msgstr "Régime de vitesse de remplissage Graduel"
 
 #: fdmprinter.def.json
 msgctxt "gradient_infill_speed_scheme description"
@@ -7226,7 +7377,7 @@ msgstr "Sur changement de débit"
 #: fdmprinter.def.json
 msgctxt "gradient_infill_speed_factor label"
 msgid "Gradient Infill Speed Factor"
-msgstr "Facteur de vitesse Remplissage graduel"
+msgstr "Facteur de vitesse Remplissage Graduel"
 
 #: fdmprinter.def.json
 msgctxt "gradient_infill_speed_factor description"
@@ -7236,12 +7387,13 @@ msgstr "Échelonne l'effet du schéma de vitesse de remplissage sur la vitesse d
 #: fdmprinter.def.json
 msgctxt "gradient_infill_dist label"
 msgid "Gradient Infill Distance"
-msgstr "Distance de remplissage graduel"
+msgstr "Distance de remplissage Graduel"
 
 #: fdmprinter.def.json
 msgctxt "gradient_infill_dist description"
 msgid "The distance over which the infill flow is reduced from max to min."
-msgstr "La distance sur laquelle le flux de remplissage est réduit de max à min."
+msgstr ""
+"La distance sur laquelle le débit de remplissage est réduit de max à min."
 
 #: fdmprinter.def.json
 msgctxt "wall_overhang_over_support label"
@@ -7251,7 +7403,10 @@ msgstr "Ignorer le support sous les surplombs"
 #: fdmprinter.def.json
 msgctxt "wall_overhang_over_support description"
 msgid "When enabled, support is ignored and so overhangs over support are printed using overhanging wall settings."
-msgstr "Lorsqu'il est activé, le support est ignoré et les surplombs au-dessus du support sont donc imprimés en utilisant les paramètres de murs en surplomb."
+msgstr ""
+"Lorsqu'il est activé, le support est ignoré et les surplombs au-dessus du "
+"support sont donc imprimés en utilisant les paramètres de parois en "
+"surplomb."
 
 #: fdmprinter.def.json
 msgctxt "wall_overhang_fan_speed label"
@@ -7268,7 +7423,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "wall_overhang_material_flow label"
 msgid "Overhanging Wall Flow"
-msgstr "Débit du mur en surplomb"
+msgstr "Débit de la paroi en surplomb"
 
 #: fdmprinter.def.json
 msgctxt "wall_overhang_material_flow description"
@@ -7280,12 +7435,16 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "bridge_skin_min_area label"
 msgid "Minimum Bridge Skin Area"
-msgstr "Surface minimale de la peau du pont"
+msgstr "Surface minimale du remplissage du pont"
 
 #: fdmprinter.def.json
 msgctxt "bridge_skin_min_area description"
 msgid "Unsupported skin regions whose area is less than this will be printed using the normal skin settings. Larger unsupported skin regions will be printed using the bridge skin settings."
-msgstr "Les régions de peau sans support dont la surface est inférieure à cette valeur seront imprimées en utilisant les paramètres de peau normaux. Les régions cutanées non prises en charge de plus grande taille seront imprimées en utilisant les paramètres de la peau de pont."
+msgstr ""
+"Les régions de couche externe sans support dont la surface est inférieure à "
+"cette valeur seront imprimées en utilisant les paramètres de couche externe "
+"normaux. Les régions extérieures non prises en charge de plus grande taille "
+"seront imprimées en utilisant les paramètres de la couche externe de pont."
 
 #: fdmprinter.def.json
 msgctxt "bridge_over_support label"
@@ -7300,7 +7459,7 @@ msgstr "Ignorez tout support afin que des ponts soient créés au-dessus du supp
 #: fdmprinter.def.json
 msgctxt "bridge_extend_floating_walls label"
 msgid "Bridge Extend Floating Walls"
-msgstr "Les ponts prolongent les Parois flottants"
+msgstr "Les ponts prolongent les Parois flottantes"
 
 #: fdmprinter.def.json
 msgctxt "bridge_extend_floating_walls description"
@@ -7313,7 +7472,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "bridge_wall_end_boost label"
 msgid "Bridge Wall End Boost"
-msgstr "Boost des extrémités des Parois de Pont "
+msgstr "Sur-Extrusion des extrémités des Parois de Pont"
 
 #: fdmprinter.def.json
 msgctxt "bridge_wall_end_boost description"
@@ -7343,47 +7502,56 @@ msgstr "La variation maximale de la vitesse instantanée avec laquelle tous les 
 #: fdmprinter.def.json
 msgctxt "bridge_skin_acceleration label"
 msgid "Bridge Skin Acceleration"
-msgstr "Accélération de la peau du pont"
+msgstr "Accélération du remplissage du pont"
 
 #: fdmprinter.def.json
 msgctxt "bridge_skin_acceleration description"
 msgid "The acceleration with which all bridge skins are printed."
-msgstr "L'accélération avec laquelle toutes les peaux de pont sont imprimées."
+msgstr ""
+"L'accélération avec laquelle toutes les couches extérieures de pont sont "
+"imprimées."
 
 #: fdmprinter.def.json
 msgctxt "bridge_skin_jerk label"
 msgid "Bridge Skin Jerk"
-msgstr "Saccade de la peau du pont"
+msgstr "Saccade de la couche externe du pont"
 
 #: fdmprinter.def.json
 msgctxt "bridge_skin_jerk description"
 msgid "The maximum instantaneous velocity change with which all bridge skins are printed."
-msgstr "La variation maximale de la vitesse instantanée avec laquelle toutes les peaux de pont sont imprimées."
+msgstr ""
+"La variation maximale de la vitesse instantanée avec laquelle toutes les "
+"couches exterérieures de pont sont imprimées."
 
 #: fdmprinter.def.json
 msgctxt "bridge_skin_overlap label"
 msgid "Bridge Skin Overlap Percentage"
-msgstr "Pourcentage de chevauchement de la peau du pont"
+msgstr "Pourcentage chevauchement couche du pont"
 
 #: fdmprinter.def.json
 msgctxt "bridge_skin_overlapdescription"
 msgid "Skin overlap used for bridge skins expressed as a percentage of the outer wall line width."
-msgstr "Recouvrement de la peau utilisé pour les peaux de pont, exprimé en pourcentage de la largeur de la ligne de paroi extérieure."
+msgstr ""
+"Recouvrement du remplissage utilisé pour les couches externe de pont, "
+"exprimé en pourcentage de la largeur de la ligne de paroi extérieure."
 
 #: fdmprinter.def.json
 msgctxt "bridge_skin_overlap_mm label"
 msgid "Bridge Skin Overlap"
-msgstr "Chevauchement de la peau du pont"
+msgstr "Chevauchement de la couche externe du pont"
 
 #: fdmprinter.def.json
 msgctxt "bridge_skin_overlap_mm description"
 msgid "Skin overlap distance used for bridge skins. Ideally, this should be less than Bottom Skin Expand Distance."
-msgstr "Distance de chevauchement des peaux utilisée pour les peaux de pont. Idéalement, cette distance devrait être inférieure à la distance de chevauchement des peaux de fond."
+msgstr ""
+"Distance de chevauchement des couches extérieures utilisée pour les couches "
+"extérieures de pont. Idéalement, cette distance devrait être inférieure à la "
+"distance de chevauchement des couches inférieures."
 
 #: fdmprinter.def.json
 msgctxt "bridge_wall_layers label"
 msgid "Bridge Wall Layers"
-msgstr "Couches de la paroi du pont"
+msgstr "Nombre de Couche du pont"
 
 #: fdmprinter.def.json
 msgctxt "bridge_wall_layers description"
@@ -7393,7 +7561,7 @@ msgstr "Le nombre de couches au-dessus de l'air qui sont imprimées en utilisant
 #: fdmprinter.def.json
 msgctxt "bridge_skin_overlap_2 label"
 msgid "Bridge Second Skin Overlap Percentage"
-msgstr "Pourcentage de chevauchement de la seconde peau du pont"
+msgstr "Pourcentage chevauchement Seconde couche du pont"
 
 #: fdmprinter.def.json
 msgctxt "bridge_skin_overlap_2 description"
@@ -7403,17 +7571,20 @@ msgstr "Recouvrement de la peau utilisé pour la deuxième couche de peau du pon
 #: fdmprinter.def.json
 msgctxt "bridge_skin_overlap_mm_2 label"
 msgid "Bridge Second Skin Overlap"
-msgstr "Chevauchement de la seconde peau du pont"
+msgstr "Chevauchement Seconde couche du pont"
 
 #: fdmprinter.def.json
 msgctxt "bridge_skin_overlap_mm_2 description"
 msgid "Skin overlap distance used for the second bridge skin layer. Ideally, this should be less than Bottom Skin Expand Distance."
-msgstr "Distance de chevauchement de la peau utilisée pour la deuxième couche de peau du pont. Idéalement, cette distance devrait être inférieure à la distance de chevauchement de la peau du bas."
+msgstr ""
+"Distance de chevauchement de la peau utilisée pour la deuxième couche de "
+"peau du pont. Idéalement, cette distance devrait être inférieure à la "
+"distance de chevauchement de la peau du bas."
 
 #: fdmprinter.def.json
 msgctxt "bridge_skin_overlap_3 label"
 msgid "Bridge Third Skin Overlap Percentage"
-msgstr "Pourcentage de chevauchement de la troisième peau du pont"
+msgstr "Pourcentage chevauchement Troisième couche du pont"
 
 #: fdmprinter.def.json
 msgctxt "bridge_skin_overlap_3 description"
@@ -7423,15 +7594,15 @@ msgstr "Recouvrement de la peau utilisé pour la troisième couche de peau du po
 #: fdmprinter.def.json
 msgctxt "bridge_skin_overlap_mm_3 label"
 msgid "Bridge Third Skin Overlap"
-msgstr "Chevauchement Pont Troisième Peau"
+msgstr "Chevauchement Troisième couche Pont"
 
 #: fdmprinter.def.json
 msgctxt "bridge_skin_overlap_mm_3 description"
 msgid "Skin overlap distance used for the third bridge skin layer. Ideally, this should be less than Bottom Skin Expand Distance."
 msgstr ""
-"Distance de chevauchement de la peau utilisée pour la troisième couche de "
-"peau du pont. Idéalement, cette distance devrait être inférieure à la "
-"distance de chevauchement de la peau du bas."
+"Distance de chevauchement de la peau utilisée pour la troisième couche  du "
+"pont. Idéalement, cette distance devrait être inférieure à la distance de "
+"chevauchement de la couche du bas."
 
 #: fdmprinter.def.json
 msgctxt "mesh_temperature_delta label"
@@ -7448,7 +7619,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "mesh_temperature_dawdle_speed label"
 msgid "Mesh Dawdle Speed"
-msgstr "Vitesse de la pause du Maillage"
+msgstr "Vitesse d'attente du Maillage"
 
 #: fdmprinter.def.json
 msgctxt "mesh_temperature_dawdle_speed description"
@@ -7460,24 +7631,30 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "mesh_temperature_dawdle_time label"
 msgid "Mesh Dawdle Time"
-msgstr "Tempo de la pause maillage"
+msgstr "Temps d'attente de maillage"
 
 #: fdmprinter.def.json
 msgctxt "mesh_temperature_dawdle_time description"
 msgid "The amount of time to print using Mesh Dawdle Speed when waiting for the temperature to change at the start and end of the mesh."
 msgstr ""
-"Le temps d'impression en utilisant la 'Vitesse de la pause du maillage' en "
+"Le temps d'impression en utilisant la 'Vitesse d'attente du Maillage' en "
 "attendant que la température change au début et à la fin du maillage."
 
 #: fdmprinter.def.json
 msgctxt "skin_lines_boost_flow label"
 msgid "Travel Compensate Skin Lines"
-msgstr "Lignes de compensation de voyage pour la peau"
+msgstr "Compensation du déplacement pour Lignes extérieures"
 
 #: fdmprinter.def.json
 msgctxt "skin_lines_boost_flow description"
 msgid "When enabled, skin line flow is progressively increased to compensate for the nozzle pressure loss that occurs during the preceding travel move. This pressure loss can result in reduced skin print quality. The longer the preceding travel move or shorter the skin line, the more the flow is increased."
-msgstr "Lorsqu'il est activé, le débit de la ligne de peau est progressivement augmenté pour compenser la perte de pression de la buse qui se produit pendant le mouvement de déplacement précédent. Cette perte de pression peut entraîner une réduction de la qualité d'impression de la peau. Plus le déplacement précédent est long ou plus la ligne de peau est courte, plus le débit est augmenté."
+msgstr ""
+"Lorsqu'il est activé, le débit de la ligne externe est progressivement "
+"augmenté pour compenser la perte de pression de la buse qui se produit "
+"pendant le mouvement de déplacement précédent. Cette perte de pression peut "
+"entraîner une réduction de la qualité d'impression des couches extérieures. "
+"Plus le déplacement précédent est long ou plus la ligne extérieure est "
+"courte, plus le débit est augmenté."
 
 #: fdmprinter.def.json
 msgctxt "skin_lines_boost_flow_scaling label"
@@ -7487,7 +7664,11 @@ msgstr "Facteur d'échelle de la compensation des déplacements"
 #: fdmprinter.def.json
 msgctxt "skin_lines_boost_flow_scaling description"
 msgid "The amount the skin line flow is increased in proportion to the length of the preceding travel move is multiplied by this factor. Larger values increase the amount the flow is boosted for a given travel distance."
-msgstr "La quantité d'augmentation du débit de la ligne de peau proportionnelle à la longueur du déplacement précédent est multipliée par ce facteur. Des valeurs plus grandes augmentent la quantité de flux augmentée pour une distance de déplacement donnée."
+msgstr ""
+"La quantité d'augmentation du débit de la ligne extérieur proportionnelle à "
+"la longueur du déplacement précédent est multipliée par ce facteur. Des "
+"valeurs plus grandes augmentent le débit augmentée pour une distance de "
+"déplacement donnée."
 
 #: fdmprinter.def.json
 msgctxt "skin_lines_boost_max_travel_len label"
@@ -7498,21 +7679,21 @@ msgstr "Distance maximale de déplacement compensé"
 msgctxt "skin_lines_boost_max_travel_len description"
 msgid "Limits the travel distance used to calculate the amount of boost applied to skin lines. Travels longer than this distance are treated as if they are this length."
 msgstr ""
-"Limite la distance de déplacement utilisée pour calculer le montant du boost "
-"appliqué aux lignes de la peau. Les déplacements plus longs que cette "
-"distance sont traités comme s'ils étaient de cette longueur."
+"Limite la distance de déplacement utilisée pour calculer le montant de la "
+"sur-extrusion appliquée aux lignes extérieures. Les déplacements plus longs "
+"que cette distance sont traités comme s'ils étaient de cette longueur."
 
 #: fdmprinter.def.json
 msgctxt "skin_lines_max_flow_boost label"
 msgid "Skin Lines Max Flow"
-msgstr "Débit maximal Lignes de peau "
+msgstr "Débit maximal Lignes extérieurs "
 
 #: fdmprinter.def.json
 msgctxt "skin_lines_max_flow_boost description"
 msgid "The maximum flow multiplier used when printing skin lines."
 msgstr ""
 "Le multiplicateur de débit maximal utilisé lors de l'impression des lignes "
-"de peau."
+"extérieurs."
 
 #: fdmprinter.def.json
 msgctxt "skin_lines_max_flow_boost_0 label"
@@ -7522,7 +7703,9 @@ msgstr "Débit maximal Lignes Couche initiale "
 #: fdmprinter.def.json
 msgctxt "skin_lines_max_flow_boost_0 description"
 msgid "The maximum flow multiplier used when printing skin lines on the initial layer."
-msgstr "Le multiplicateur de débit maximal utilisé lors de l'impression des lignes de peau sur la couche initiale."
+msgstr ""
+"Le multiplicateur de débit maximal utilisé lors de l'impression des lignes "
+"externe sur la couche initiale."
 
 #: fdmprinter.def.json
 msgctxt "arrange_model_spacing_mm label"
@@ -7534,7 +7717,8 @@ msgctxt "arrange_model_spacing_mm description"
 msgid "The spacing distance between arranged objects. After changing this setting, do 'Arrange All Models' to re-arrange the models."
 msgstr ""
 "La distance d'espacement entre les objets disposés. Après avoir modifié ce "
-"paramètre, cliquez sur  pour réorganiser les modèles."
+"paramètre, cliquez sur 'Réorganiser tous les modèles' pour réorganiser les "
+"modèles."
 
 #: fdmprinter.def.json
 msgctxt "arrange_disable_model_rotations label"
