@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Cura 4.20.10\n"
 "Report-Msgid-Bugs-To: 5axes@free.fr\n"
 "POT-Creation-Date: 2021-12-10 11:59+0000\n"
-"PO-Revision-Date: 2023-01-05 12:04+0200\n"
+"PO-Revision-Date: 2023-01-05 13:17+0200\n"
 "Last-Translator: 5axes <5axes@free.fr>\n"
 "Language-Team: 5axes\n"
 "Language: fr\n"
@@ -1919,7 +1919,7 @@ msgid "Lightning"
 msgstr "Éclair"
 
 #: fdmprinter.def.json
-msgctxt "infill_pattern option Honeycomb"
+msgctxt "infill_pattern option honeycomb"
 msgid "Honeycomb"
 msgstr "Nid d'abeille"
 
@@ -7093,12 +7093,14 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "travel_no_combing_on_initial_layer label"
 msgid "Disable combing on the initial layer"
-msgstr "Désactiver le peignage sur la couche initiale"
+msgstr "Désactiver les détours sur la couche initiale"
 
 #: fdmprinter.def.json
 msgctxt "travel_no_combing_on_initial_layer description"
 msgid "Disabling combing on the initial layer can improve the adhesion of wall lines to the build plate."
-msgstr "La désactivation du peignage sur la couche initiale peut améliorer l'adhésion des lignes murales à la plaque de construction (mb-master)."
+msgstr ""
+"La désactivation des détours sur la couche initiale peut améliorer "
+"l'adhésion des lignes murales à la plaque de construction (mb-master)."
 
 #: fdmprinter.def.json
 msgctxt "retraction_combing_max_extra_distance label"
