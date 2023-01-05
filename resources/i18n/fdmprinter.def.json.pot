@@ -7934,7 +7934,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "support_pattern_resolution description"
 msgid "The resolution of the support pattern of the print. High resolution produces the most accurate pattern, low resolution generates the fewest lines."
-msgstr "La résolution du motif de support de l'impression. La haute résolution produit le motif le plus précis, la basse résolution génère le moins de lignes (mb-master)."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "support_pattern_resolution option high_resolution"
@@ -8344,7 +8344,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "bridge_skin_overlap_3 label"
 msgid "Bridge Third Skin Overlap Percentage"
-msgstr "Pourcentage chevauchement 3ème couche du pont"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "bridge_skin_overlap_3 description"
@@ -8380,8 +8380,6 @@ msgstr ""
 msgctxt "mesh_temperature_dawdle_speed description"
 msgid "Print speed used when waiting for the temperature to change at the start and end of the mesh."
 msgstr ""
-"Vitesse d'impression utilisée lorsqu'on attend que la température change au "
-"début et à la fin du maillage (mb-master)."
 
 #: fdmprinter.def.json
 msgctxt "mesh_temperature_dawdle_time label"
@@ -8416,7 +8414,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "skin_lines_boost_max_travel_len label"
 msgid "Maximum compensated travel distance"
-msgstr "Distance maximale de déplacement compensé"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "skin_lines_boost_max_travel_len description"
