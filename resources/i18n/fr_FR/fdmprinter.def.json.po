@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Cura 4.20.10\n"
 "Report-Msgid-Bugs-To: 5axes@free.fr\n"
 "POT-Creation-Date: 2021-12-10 11:59+0000\n"
-"PO-Revision-Date: 2023-01-05 13:17+0200\n"
+"PO-Revision-Date: 2023-01-05 19:59+0200\n"
 "Last-Translator: 5axes <5axes@free.fr>\n"
 "Language-Team: 5axes\n"
 "Language: fr\n"
@@ -46,7 +46,9 @@ msgstr "Afficher les variantes de la machine"
 #: fdmprinter.def.json
 msgctxt "machine_show_variants description"
 msgid "Whether to show the different variants of this machine, which are described in separate json files."
-msgstr "Afficher ou non les différentes variantes de cette machine qui sont décrites dans des fichiers json séparés."
+msgstr ""
+"Afficher ou non les différentes variantes de cette machine qui sont décrites "
+"dans des fichiers json séparés."
 
 #: fdmprinter.def.json
 msgctxt "machine_start_gcode label"
@@ -58,7 +60,9 @@ msgctxt "machine_start_gcode description"
 msgid ""
 "G-code commands to be executed at the very start - separated by \n"
 "."
-msgstr "Commandes G-Code à exécuter au tout début, séparées par \n."
+msgstr ""
+"Commandes G-Code à exécuter au tout début, séparées par \n"
+"."
 
 #: fdmprinter.def.json
 msgctxt "machine_end_gcode label"
@@ -70,7 +74,9 @@ msgctxt "machine_end_gcode description"
 msgid ""
 "G-code commands to be executed at the very end - separated by \n"
 "."
-msgstr "Commandes G-Code à exécuter tout à la fin, séparées par \n."
+msgstr ""
+"Commandes G-Code à exécuter tout à la fin, séparées par \n"
+"."
 
 #: fdmprinter.def.json
 msgctxt "material_guid label"
@@ -90,7 +96,9 @@ msgstr "Diamètre"
 #: fdmprinter.def.json
 msgctxt "material_diameter description"
 msgid "Adjusts the diameter of the filament used. Match this value with the diameter of the used filament."
-msgstr "Ajuste le diamètre du filament utilisé. Faites correspondre cette valeur au diamètre du filament utilisé."
+msgstr ""
+"Ajuste le diamètre du filament utilisé. Faites correspondre cette valeur au "
+"diamètre du filament utilisé."
 
 #: fdmprinter.def.json
 msgctxt "material_bed_temp_wait label"
@@ -100,7 +108,9 @@ msgstr "Attendre le chauffage du plateau"
 #: fdmprinter.def.json
 msgctxt "material_bed_temp_wait description"
 msgid "Whether to insert a command to wait until the build plate temperature is reached at the start."
-msgstr "Insérer ou non une commande pour attendre que la température du plateau soit atteinte au démarrage."
+msgstr ""
+"Insérer ou non une commande pour attendre que la température du plateau soit "
+"atteinte au démarrage."
 
 #: fdmprinter.def.json
 msgctxt "material_print_temp_wait label"
@@ -110,7 +120,8 @@ msgstr "Attendre le chauffage de la buse"
 #: fdmprinter.def.json
 msgctxt "material_print_temp_wait description"
 msgid "Whether to wait until the nozzle temperature is reached at the start."
-msgstr "Attendre ou non que la température de la buse soit atteinte au démarrage."
+msgstr ""
+"Attendre ou non que la température de la buse soit atteinte au démarrage."
 
 #: fdmprinter.def.json
 msgctxt "material_print_temp_prepend label"
@@ -120,7 +131,10 @@ msgstr "Inclure les températures du matériau"
 #: fdmprinter.def.json
 msgctxt "material_print_temp_prepend description"
 msgid "Whether to include nozzle temperature commands at the start of the gcode. When the start_gcode already contains nozzle temperature commands Cura frontend will automatically disable this setting."
-msgstr "Inclure ou non les commandes de température de la buse au début du gcode. Si le gcode_démarrage contient déjà les commandes de température de la buse, l'interface Cura désactive automatiquement ce paramètre."
+msgstr ""
+"Inclure ou non les commandes de température de la buse au début du gcode. Si "
+"le gcode_démarrage contient déjà les commandes de température de la buse, "
+"l'interface Cura désactive automatiquement ce paramètre."
 
 #: fdmprinter.def.json
 msgctxt "material_bed_temp_prepend label"
@@ -130,7 +144,10 @@ msgstr "Inclure la température du plateau"
 #: fdmprinter.def.json
 msgctxt "material_bed_temp_prepend description"
 msgid "Whether to include build plate temperature commands at the start of the gcode. When the start_gcode already contains build plate temperature commands Cura frontend will automatically disable this setting."
-msgstr "Inclure ou non les commandes de température du plateau au début du gcode. Si le gcode_démarrage contient déjà les commandes de température du plateau, l'interface Cura désactive automatiquement ce paramètre."
+msgstr ""
+"Inclure ou non les commandes de température du plateau au début du gcode. Si "
+"le gcode_démarrage contient déjà les commandes de température du plateau, "
+"l'interface Cura désactive automatiquement ce paramètre."
 
 #: fdmprinter.def.json
 msgctxt "machine_width label"
@@ -7045,7 +7062,7 @@ msgstr "Lorsqu'il est différent de zéro, définit le débit maximum de filamen
 #: fdmprinter.def.json
 msgctxt "speed_walls_layer_0 label"
 msgid "Initial Layer Wall Speed"
-msgstr "Couche initiale Vitesse de la paroi"
+msgstr "Vitesse de paroi Couche initiale"
 
 #: fdmprinter.def.json
 msgctxt "speed_walls_layer_0 description"
@@ -7064,7 +7081,9 @@ msgstr "Accélération de la paroi de la couche initiale"
 #: fdmprinter.def.json
 msgctxt "acceleration_walls_layer_0 description"
 msgid "The acceleration during the printing of walls in the initial layer."
-msgstr "L'accélération pendant l'impression des murs dans la couche initiale (mb-master)."
+msgstr ""
+"L'accélération pendant l'impression des parois de la couche initiale (mb-"
+"master)."
 
 #: fdmprinter.def.json
 msgctxt "jerk_walls_layer_0 label"
@@ -7120,7 +7139,10 @@ msgstr "Couches initiales du Décalage Z"
 #: fdmprinter.def.json
 msgctxt "retraction_hop_initial_layers description"
 msgid "The number of initial layers that use Z Hop. A non-zero value reduces the chance of the initial layer lines coming away from the build plate."
-msgstr "Le nombre de couches initiales qui utilisent Z Hop. Une valeur différente de zéro réduit le risque que les lignes de la couche initiale s'éloignent de la plaque de construction (mb-master)."
+msgstr ""
+"Le nombre de couches initiales qui utilisent Z Hop. Une valeur différente de "
+"zéro réduit le risque que les lignes de la couche initiale s'éloignent de "
+"la plaque de construction (mb-master)."
 
 #: fdmprinter.def.json
 msgctxt "cool_fan_min_at_height label"
@@ -7155,7 +7177,7 @@ msgstr "Le temps qu'il faut au ventilateur de refroidissement pour accélérer d
 #: fdmprinter.def.json
 msgctxt "support_pattern_resolution label"
 msgid "Support Pattern Resolution"
-msgstr "Résolution des motifs de soutien"
+msgstr "Résolution des motifs de Support"
 
 #: fdmprinter.def.json
 msgctxt "support_pattern_resolution description"
@@ -7232,7 +7254,12 @@ msgstr "La densité de la couche supérieure du toit de la structure porteuse. U
 #: fdmprinter.def.json
 msgctxt "support_roof_top_layer_line_distance label"
 msgid "Support Roof Top Layer Line Distance"
-msgstr "Distance de la ligne de la couche supérieure du toit de support"
+msgstr "Distance des lignes de la couche supérieure du toit de support"
+
+#: fdmprinter.def.json
+msgctxt "support_roof_top_layer_line_distance description"
+msgid "Distance between the printed support lines on the top roof layer. This setting is calculated by the Support Roof Top Layer Density, but can be adjusted separately."
+msgstr "Distance entre les lignes de support imprimées sur la couche supérieure du toit. Ce paramètre est calculé par la densité de la couche supérieure du toit de support, mais il peut être réglé séparément."
 
 #: fdmprinter.def.json
 msgctxt "skirt_brim_z_offset label"
@@ -7242,7 +7269,10 @@ msgstr "Décalage Z pour jupe/bordure"
 #: fdmprinter.def.json
 msgctxt "skirt_brim_z_offset description"
 msgid "Offset the nozzle height by this amount when printing skirt or brim lines (negative values move the nozzle down)."
-msgstr "Décalez la hauteur de la buse de cette valeur lors de l'impression de lignes de jupe ou de bordures (les valeurs négatives déplacent la buse vers le bas) (mb-master)."
+msgstr ""
+"Décalez la hauteur de la buse de cette valeur lors de l'impression de lignes "
+"de jupe ou de bordures (les valeurs négatives déplacent la buse vers le "
+"bas) (mb-master)."
 
 #: fdmprinter.def.json
 msgctxt "brim_inside_only label"
@@ -7404,22 +7434,22 @@ msgstr ""
 "est réduite lorsque le débit de remplissage change (mb-master)."
 
 #: fdmprinter.def.json
-msgctxt "gradient_infill_type option none"
+msgctxt "gradient_infill_speed_scheme option none"
 msgid "None"
 msgstr "Aucun"
 
 #: fdmprinter.def.json
-msgctxt "gradient_infill_type option constant_fast"
+msgctxt "gradient_infill_speed_scheme option constant_fast"
 msgid "Fast"
 msgstr "Rapide"
 
 #: fdmprinter.def.json
-msgctxt "gradient_infill_type option constant_slow"
+msgctxt "gradient_infill_speed_scheme option constant_slow"
 msgid "Slow"
 msgstr "Lent"
 
 #: fdmprinter.def.json
-msgctxt "gradient_infill_type option flow_change"
+msgctxt "gradient_infill_speed_scheme option flow_change"
 msgid "On Flow Change"
 msgstr "Sur changement de débit"
 
@@ -7789,7 +7819,8 @@ msgctxt "arrange_disable_model_rotations description"
 msgid "When enabled, models are not rotated when they are arranged. Does not alter any existing rotation the models may have."
 msgstr ""
 "Lorsqu'elle est activée, les modèles ne subissent pas de rotation lorsqu'ils "
-"sont ré-arrangé. Cela ne modifie pas la rotation existante des modèles (mb-master)."
+"sont ré-arrangé. Cela ne modifie pas la rotation existante des modèles (mb-"
+"master)."
 
 #~ msgctxt "machine_start_gcode description"
 #~ msgid "G-code commands to be executed at the very start - separated by \\n."
