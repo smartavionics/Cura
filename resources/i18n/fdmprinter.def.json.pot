@@ -7997,6 +7997,11 @@ msgid "Support Roof Top Layer Line Distance"
 msgstr ""
 
 #: fdmprinter.def.json
+msgctxt "support_roof_top_layer_line_distance description"
+msgid "Distance between the printed support lines on the top roof layer. This setting is calculated by the Support Roof Top Layer Density, but can be adjusted separately."
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "skirt_brim_z_offset label"
 msgid "Skirt/Brim Z Offset"
 msgstr ""
@@ -8142,22 +8147,22 @@ msgid "The speed modification scheme to use when printing gradient infill. Fast 
 msgstr ""
 
 #: fdmprinter.def.json
-msgctxt "gradient_infill_type option none"
+msgctxt "gradient_infill_speed_scheme option none"
 msgid "None"
 msgstr ""
 
 #: fdmprinter.def.json
-msgctxt "gradient_infill_type option constant_fast"
+msgctxt "gradient_infill_speed_scheme option constant_fast"
 msgid "Fast"
 msgstr ""
 
 #: fdmprinter.def.json
-msgctxt "gradient_infill_type option constant_slow"
+msgctxt "gradient_infill_speed_scheme option constant_slow"
 msgid "Slow"
 msgstr ""
 
 #: fdmprinter.def.json
-msgctxt "gradient_infill_type option flow_change"
+msgctxt "gradient_infill_speed_scheme option flow_change"
 msgid "On Flow Change"
 msgstr ""
 
