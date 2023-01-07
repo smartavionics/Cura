@@ -2062,6 +2062,31 @@ msgid "Lightning"
 msgstr ""
 
 #: fdmprinter.def.json
+msgctxt "infill_pattern option honeycomb"
+msgid "Honeycomb"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "infill_pattern option hilbert"
+msgid "Hilbert Curve"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "infill_pattern option schwarz_d"
+msgid "Schwarz D"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "infill_pattern option schwarz_p"
+msgid "Schwarz P"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "infill_pattern option discrete_lines"
+msgid "Discrete Lines"
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "zig_zaggify_infill label"
 msgid "Connect Infill Lines"
 msgstr ""
@@ -4290,6 +4315,11 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "support_pattern option gyroid"
 msgid "Gyroid"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_pattern option honeycomb"
+msgid "Honeycomb"
 msgstr ""
 
 #: fdmprinter.def.json
@@ -7568,6 +7598,870 @@ msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "mesh_rotation_matrix description"
-msgid ""
-"Transformation matrix to be applied to the model when loading it from file."
+msgid "Transformation matrix to be applied to the model when loading it from file."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "only_one_wall_top label"
+msgid "Visible Top Skins Have Only One Wall"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "only_one_wall_top description"
+msgid "When enabled, visible top skins are surrounded by only one wall."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "only_one_wall_bottom label"
+msgid "Bottom Skin Has Only One Wall"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "only_one_wall_bottom description"
+msgid "When enabled, the bottom skin is surrounded by only one wall."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "min_gap_area label"
+msgid "Minimum Gap Area"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "min_gap_area description"
+msgid "Filter out gaps whose area is less than this."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "inner_layer_min_gap_area label"
+msgid "Inner Layer Minimum Gap Area"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "inner_layer_min_gap_area description"
+msgid "Filter out gaps on inner layers whose area is less than this."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "xy_offset_taper_layers label"
+msgid "Horizontal Expansion Taper Layers"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "xy_offset_taper_layers description"
+msgid "The horizontal expansion tapers from the value used for the initial layer to the value used for the above layers over this many layers."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "hole_xy_offset_max_size label"
+msgid "Hole Horizontal Expansion Max Size"msgstr ""
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "hole_xy_offset_max_size description"
+msgid "When non-zero, horizontal expansion is only applied to holes whose diameter is less than this value."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "hole_xy_offset_max_path_len label"
+msgid "Hole Horizontal Expansion Max Length"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "hole_xy_offset_max_path_len description"
+msgid "When non-zero, horizontal expansion is only applied to holes whose perimeter length is less than this value."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "z_seam_not_over_air label"
+msgid "Z Seam Not Over Air"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "z_seam_not_over_air description"
+msgid "When enabled, if the z seam location is above air, it is moved so that it is not above air (if possible)."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "monotonic_skin_lines label"
+msgid "Monotonic Skin Lines (mb-master)"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "monotonic_skin_lines description"
+msgid "Print the skin lines monotonically. This may improve the visual quality of the skin. Only applied when the 'Lines' skin pattern is used."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "monotonic_skin_lines_reversed label"
+msgid "Reverse Monotonic Line Order"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "monotonic_skin_lines_reversed description"
+msgid "Print the skin lines monotonically in reverse order."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "ironing_fan_enable label"
+msgid "Ironing Fan Speed Override"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "ironing_fan_enable description"
+msgid "When enabled, the print cooling fan speed is altered for the ironed regions."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "ironing_fan_speed label"
+msgid "Ironing Fan Speed"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "ironing_fan_speed description"
+msgid "Percentage fan speed to use when printing ironed regions."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "roofing_overlap label"
+msgid "Top Surface Skin Overlap Percentage"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "roofing_overlap description"
+msgid "Adjust the amount of overlap between the walls and (the endpoints of) the top surface skin-centerlines, as a percentage of the line widths of the skin lines and the innermost wall. A slight overlap allows the walls to connect firmly to the skin. Note that, given an equal skin and wall line-width, any percentage over 50% may already cause any skin to go past the wall, because at that point the position of the nozzle of the skin-extruder may already reach past the middle of the wall."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "roofing_overlap_mm label"
+msgid "Top Surface Skin Overlap"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "roofing_overlap_mm description"
+msgid "Adjust the amount of overlap between the walls and (the endpoints of) the top surface skin-centerlines. A slight overlap allows the walls to connect firmly to the skin. Note that, given an equal skin and wall line-width, any value over half the width of the wall may already cause any skin to go past the wall, because at that point the position of the nozzle of the skin-extruder may already reach past the middle of the wall."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "infill_pattern_resolution label"
+msgid "Infill Pattern Resolution"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "infill_pattern_resolution description"
+msgid "The resolution of the infill pattern of the print. High resolution produces the most accurate pattern, low resolution generates the fewest lines."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "infill_pattern_resolution option high_resolution"
+msgid "High"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "infill_pattern_resolution option medium_resolution"
+msgid "Medium"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "infill_pattern_resolution option low_resolution"
+msgid "Low"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "infill_constrain_gyroid_pitch label"
+msgid "Minimise Gyroid Holes"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "infill_constrain_gyroid_pitch description"
+msgid "When enabled, the gyroid line pitch is altered to ensure that the lines 'cross' twice per gyroid cycle. This will partially fill the holes that often appear where the line orientation changes. Note that enabling this will make some infill densities impossible to print so a higher density that is printable will be used instead. This feature is disabled when adaptive layer heights are enabled."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "discrete_lines_infill_definition label"
+msgid "Discrete Lines Definition"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "discrete_lines_infill_definition description"
+msgid "Either a definition written as a JSON string or an @ followed by the name of a JSON file that contains the definition. The definition file name can either be absolute or relative to the current project file's directory or the user's home directory. Note that even when the Infill Density setting is not explicitly used when generating discrete lines, a density value of 0 will still generate no infill and a density value of 100 will generate completely solid infill."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "infill_scaling_z label"
+msgid "Infill Vertical Scaling"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "infill_scaling_z description"
+msgid "Scales the vertical infill pattern. Values larger than 100% stretch the pattern, values less than 100% compress the pattern. Note that some infill patterns do not work well with scaling values that differ greatly from 100%."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "infill_fan_enable label"
+msgid "Infill Fan Speed Override"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "infill_fan_enable description"
+msgid "When enabled, the print cooling fan speed is altered for the infill."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "infill_fan_speed label"
+msgid "Infill Fan Speed"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "infill_fan_speed description"
+msgid "Percentage fan speed to use when printing infill. Using a reduced or even zero fan speed when printing infill can make the part stronger."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "material_max_mm3_per_sec label"
+msgid "Max Filament Flow Rate"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "material_max_mm3_per_sec description"
+msgid "When non-zero, sets the maximum allowed filament flow rate (in mm^3/S). The filament flow rate of each printed line is calculated as layer height * line width * print speed. The flow rate limit is enforced by reducing the print speed."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "speed_walls_layer_0 label"
+msgid "Initial Layer Wall Speed"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "speed_walls_layer_0 description"
+msgid "The speed used to print walls in the initial layer. Reducing this speed may increase adhesion to the build plate while still allowing the skin areas to be printed at a faster speed."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "acceleration_walls_layer_0 label"
+msgid "Initial Layer Wall Acceleration"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "acceleration_walls_layer_0 description"
+msgid "The acceleration during the printing of walls in the initial layer."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "jerk_walls_layer_0 label"
+msgid "Initial Layer Walls Jerk"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "jerk_walls_layer_0 description"
+msgid "The maximum instantaneous velocity change during the printing of walls in the initial layer."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "avoid_frequency label"
+msgid "Avoid Frequency"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "avoid_frequency description"
+msgid "When non-zero, this specifies a resonant frequency to be avoided when printing using the lines and zig zag patterns. To stop the print head oscillating at that frequency, the print speed is reduced where appropriate."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "travel_no_combing_on_initial_layer label"
+msgid "Disable combing on the initial layer"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "travel_no_combing_on_initial_layer description"
+msgid "Disabling combing on the initial layer can improve the adhesion of wall lines to the build plate."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "retraction_combing_max_extra_distance label"
+msgid "Max Comb Extra Distance"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "retraction_combing_max_extra_distance description"
+msgid "When non-zero, combing travel moves that exceed the straight line distance by this amount or more will be replaced with a straight line travel move."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "retraction_hop_initial_layers label"
+msgid "Z Hop Initial Layers"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "retraction_hop_initial_layers description"
+msgid "The number of initial layers that use Z Hop. A non-zero value reduces the chance of the initial layer lines coming away from the build plate."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "cool_fan_min_at_height label"
+msgid "Initial Fan Speed at Height"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "cool_fan_min_at_height description"
+msgid "The height at which the fans spin at Initial Fan Speed. The fans are off below this height."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "cool_fan_min_layer label"
+msgid "Initial Fan Speed at Layer"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "cool_fan_min_layer description"
+msgid "The layer at which the fans spin at Initial Fan Speed. If Initial Fan Speed at Height is set, this value is calculated and rounded to a whole number."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "cool_fan_lag label"
+msgid "Cooling Fan Lag"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "cool_fan_lag description"
+msgid "The time it takes the cooling fan to accelerate from 0 to 100%."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_pattern_resolution label"
+msgid "Support Pattern Resolution"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_pattern_resolution description"
+msgid "The resolution of the support pattern of the print. High resolution produces the most accurate pattern, low resolution generates the fewest lines."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_pattern_resolution option high_resolution"
+msgid "High"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_pattern_resolution option medium_resolution"
+msgid "Medium"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_pattern_resolution option low_resolution"
+msgid "Low"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_interface_wall_count label"
+msgid "Support Interface Wall Line Count"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_interface_wall_count description"
+msgid "The number of walls with which to surround support interface. Adding a wall can make support print more reliably and can support overhangs better, but increases print time and material used."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_roof_wall_count label"
+msgid "Support Roof Wall Line Count"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_roof_wall_count description"
+msgid "The number of walls with which to surround support interface roof. Adding a wall can make support print more reliably and can support overhangs better, but increases print time and material used."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_bottom_wall_count label"
+msgid "Support Bottom Wall Line Count"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_bottom_wall_count description"
+msgid "The number of walls with which to surround support interface floor. Adding a wall can make support print more reliably and can support overhangs better, but increases print time and material used."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_roof_top_layer_density label"
+msgid "Support Roof Top Layer Density"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_roof_top_layer_density description"
+msgid "The density of the top layer of the roof of the support structure. A higher value results in better overhangs, but the supports are harder to remove."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_roof_top_layer_line_distance label"
+msgid "Support Roof Top Layer Line Distance"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_roof_top_layer_line_distance description"
+msgid "Distance between the printed support lines on the top roof layer. This setting is calculated by the Support Roof Top Layer Density, but can be adjusted separately."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "skirt_brim_z_offset label"
+msgid "Skirt/Brim Z Offset"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "skirt_brim_z_offset description"
+msgid "Offset the nozzle height by this amount when printing skirt or brim lines (negative values move the nozzle down)."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "brim_inside_only label"
+msgid "Brim Only on Inside"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "brim_inside_only description"
+msgid "Only print the brim on the inside of the model. This reduces the amount of brim you need to remove afterwards, while it doesn't reduce the bed adhesion that much."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "extruder_min_volume label"
+msgid "Extruder Minimum Volume"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "extruder_min_volume description"
+msgid "The minimum volume to be extruded for each layer the extruder is used. The combined volume of the print and the prime tower will be greater or equal to this."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "prime_tower_compact label"
+msgid "Compact Prime Tower"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "prime_tower_compact description"
+msgid "When enabled, all extruders share the same prime tower area rather than each extruder having its own area (mb-master)."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "prime_all_extruders_on_layer_0 label"
+msgid "Prime All Extruders Used On Initial Layer"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "prime_all_extruders_on_layer_0 description"
+msgid "When enabled, all extruders used on the initial layer are primed. Otherwise, only the outermost extruder is primed (mb-master)."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "meshfix_remove_holes_above_air label"
+msgid "Remove Holes Above Air"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "meshfix_remove_holes_above_air description"
+msgid "Remove the holes in each layer that are not supported by the layer below. This blanks off the bottom of the hole and provides support for the hole's perimeter walls on the next layer."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "spiralize_min_line_width label"
+msgid "Minimum Spiralized Line Width"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "spiralize_min_line_width description"
+msgid "The minimum width of a spiralized contour line as a percentage of the normal line width. Setting this to a value less than 100 enables variable width spiralized contours."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "spiralize_max_line_width label"
+msgid "Maximum Spiralized Line Width"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "spiralize_max_line_width description"
+msgid "The maximum width of a spiralized contour line as a percentage of the normal line width. Setting this to a value greater than 100 enables variable width spiralized contours."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "gradient_infill_type label"
+msgid "Gradient Infill Type"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "gradient_infill_type description"
+msgid "The type of gradient infill to use. All types modify the infill line flow in proportion to the distance to the model outline. At the model outline, the infill line flow will be gradient infill max flow. Away from the model outline, the infill line flow will be gradient infill min flow. 1D simply uses the distance to the nearest end of the current infill line. 2D differs in that the distance is measured to the nearest wall on the same layer. 2D+ also takes into account the distance to the build plate and the distance to the top layer of the model. 3D uses the distance to the nearest wall or skin on any layer."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "gradient_infill_type option none"
+msgid "None"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "gradient_infill_type option linear_1d"
+msgid "1D"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "gradient_infill_type option linear_2d"
+msgid "2D"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "gradient_infill_type option linear_2d+"
+msgid "2D+"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "gradient_infill_type option linear_3d"
+msgid "3D"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "gradient_infill_min_flow label"
+msgid "Gradient Infill Min Flow"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "gradient_infill_min_flow description"
+msgid "The minimum flow used when printing a gradient infill line. Expressed as a percentage of the normal infill line flow."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "gradient_infill_max_flow label"
+msgid "Gradient Infill Max Flow"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "gradient_infill_max_flow description"
+msgid "The maximum flow used when printing a gradient infill line. Expressed as a percentage of the normal infill line flow."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "gradient_infill_speed_scheme label"
+msgid "Gradient Infill Speed Scheme"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "gradient_infill_speed_scheme description"
+msgid "The speed modification scheme to use when printing gradient infill. Fast alters the print speed to keep the extrusion rate constant, the print speed can both increase and decrease. Slow is similar except the print speed can only decrease. On flow change reduces the print speed where the infill flow is changing."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "gradient_infill_speed_scheme option none"
+msgid "None"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "gradient_infill_speed_scheme option constant_fast"
+msgid "Fast"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "gradient_infill_speed_scheme option constant_slow"
+msgid "Slow"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "gradient_infill_speed_scheme option flow_change"
+msgid "On Flow Change"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "gradient_infill_speed_factor label"
+msgid "Gradient Infill Speed Factor"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "gradient_infill_speed_factor description"
+msgid "Scales the effect the infill speed scheme has on the print speed."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "gradient_infill_dist label"
+msgid "Gradient Infill Distance"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "gradient_infill_dist description"
+msgid "The distance over which the infill flow is reduced from max to min."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "wall_overhang_over_support label"
+msgid "Ignore Support Below Overhangs"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "wall_overhang_over_support description"
+msgid "When enabled, support is ignored and so overhangs over support are printed using overhanging wall settings."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "wall_overhang_fan_speed label"
+msgid "Overhanging Wall Fan Speed"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "wall_overhang_fan_speed description"
+msgid "Percentage fan speed to use when printing overhanging walls."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "wall_overhang_material_flow label"
+msgid "Overhanging Wall Flow"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "wall_overhang_material_flow description"
+msgid "When printing overhanging walls, the amount of material extruded is multiplied by this value."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "bridge_skin_min_area label"
+msgid "Minimum Bridge Skin Area"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "bridge_skin_min_area description"
+msgid "Unsupported skin regions whose area is less than this will be printed using the normal skin settings. Larger unsupported skin regions will be printed using the bridge skin settings."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "bridge_over_support label"
+msgid "Bridge Over Support"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "bridge_over_support description"
+msgid "Ignore any support so that bridges are created over support."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "bridge_extend_floating_walls label"
+msgid "Bridge Extend Floating Walls"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "bridge_extend_floating_walls description"
+msgid "Extend bridge wall lines that start/end above air so that they are anchored to the part outline. The amount a line is extended is limited to twice the original length."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "bridge_wall_end_boost label"
+msgid "Bridge Wall End Boost"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "bridge_wall_end_boost description"
+msgid "This controls the amount the extrusion rate is increased immediately after a bridge wall ends. Increasing the extrusion rate can stop under-extrusion occurring at the start of the following line."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "bridge_wall_acceleration label"
+msgid "Bridge Wall Acceleration"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "bridge_wall_acceleration description"
+msgid "The acceleration with which all bridge walls are printed."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "bridge_wall_jerk label"
+msgid "Bridge Wall Jerk"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "bridge_wall_jerk description"
+msgid "The maximum instantaneous velocity change with which all bridge walls are printed."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "bridge_skin_acceleration label"
+msgid "Bridge Skin Acceleration"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "bridge_skin_acceleration description"
+msgid "The acceleration with which all bridge skins are printed."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "bridge_skin_jerk label"
+msgid "Bridge Skin Jerk"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "bridge_skin_jerk description"
+msgid "The maximum instantaneous velocity change with which all bridge skins are printed."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "bridge_skin_overlap label"
+msgid "Bridge Skin Overlap Percentage"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "bridge_skin_overlapdescription"
+msgid "Skin overlap used for bridge skins expressed as a percentage of the outer wall line width."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "bridge_skin_overlap_mm label"
+msgid "Bridge Skin Overlap"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "bridge_skin_overlap_mm description"
+msgid "Skin overlap distance used for bridge skins. Ideally, this should be less than Bottom Skin Expand Distance."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "bridge_wall_layers label"
+msgid "Bridge Wall Layers"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "bridge_wall_layers description"
+msgid "The number of layers above air that are printed using the bridge wall settings."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "bridge_skin_overlap_2 label"
+msgid "Bridge Second Skin Overlap Percentage"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "bridge_skin_overlap_2 description"
+msgid "Skin overlap used for the second bridge skin layer expressed as a percentage of the outer wall line width."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "bridge_skin_overlap_mm_2 label"
+msgid "Bridge Second Skin Overlap"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "bridge_skin_overlap_mm_2 description"
+msgid "Skin overlap distance used for the second bridge skin layer. Ideally, this should be less than Bottom Skin Expand Distance."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "bridge_skin_overlap_3 label"
+msgid "Bridge Third Skin Overlap Percentage"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "bridge_skin_overlap_3 description"
+msgid "Skin overlap used for the third bridge skin layer expressed as a percentage of the outer wall line width."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "bridge_skin_overlap_mm_3 label"
+msgid "Bridge Third Skin Overlap"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "bridge_skin_overlap_mm_3 description"
+msgid "Skin overlap distance used for the third bridge skin layer. Ideally, this should be less than Bottom Skin Expand Distance."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "mesh_temperature_delta label"
+msgid "Mesh Temperature Delta"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "mesh_temperature_delta description"
+msgid "The nozzle temperature used for the current mesh is increased by this amount. Negative values reduce the nozzle temperature"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "mesh_temperature_dawdle_speed label"
+msgid "Mesh Dawdle Speed"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "mesh_temperature_dawdle_speed description"
+msgid "Print speed used when waiting for the temperature to change at the start and end of the mesh."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "mesh_temperature_dawdle_time label"
+msgid "Mesh Dawdle Time"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "mesh_temperature_dawdle_time description"
+msgid "The amount of time to print using Mesh Dawdle Speed when waiting for the temperature to change at the start and end of the mesh."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "skin_lines_boost_flow label"
+msgid "Travel Compensate Skin Lines"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "skin_lines_boost_flow description"
+msgid "When enabled, skin line flow is progressively increased to compensate for the nozzle pressure loss that occurs during the preceding travel move. This pressure loss can result in reduced skin print quality. The longer the preceding travel move or shorter the skin line, the more the flow is increased."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "skin_lines_boost_flow_scaling label"
+msgid "Travel Compensation Scaling Factor"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "skin_lines_boost_flow_scaling description"
+msgid "The amount the skin line flow is increased in proportion to the length of the preceding travel move is multiplied by this factor. Larger values increase the amount the flow is boosted for a given travel distance."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "skin_lines_boost_max_travel_len label"
+msgid "Maximum compensated travel distance"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "skin_lines_boost_max_travel_len description"
+msgid "Limits the travel distance used to calculate the amount of boost applied to skin lines. Travels longer than this distance are treated as if they are this length."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "skin_lines_max_flow_boost label"
+msgid "Skin Lines Max Flow"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "skin_lines_max_flow_boost description"
+msgid "The maximum flow multiplier used when printing skin lines."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "skin_lines_max_flow_boost_0 label"
+msgid "Skin Lines Initial Layer Max Flow"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "skin_lines_max_flow_boost_0 description"
+msgid "The maximum flow multiplier used when printing skin lines on the initial layer."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "arrange_model_spacing_mm label"
+msgid "Model Spacing Distance"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "arrange_model_spacing_mm description"
+msgid "The spacing distance between arranged objects. After changing this setting, do 'Arrange All Models' to re-arrange the models."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "arrange_disable_model_rotations label"
+msgid "Disable Model Rotations"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "arrange_disable_model_rotations description"
+msgid "When enabled, models are not rotated when they are arranged. Does not alter any existing rotation the models may have."
 msgstr ""
