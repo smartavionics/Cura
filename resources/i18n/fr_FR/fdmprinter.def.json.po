@@ -6861,7 +6861,7 @@ msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "hole_xy_offset_max_size label"
-msgid "Hole Horizontal Expansion Max Size"msgstr ""
+msgid "Hole Horizontal Expansion Max Size"
 msgstr "Taille Maxi Expansion horizontale des trous"
 
 #: fdmprinter.def.json
