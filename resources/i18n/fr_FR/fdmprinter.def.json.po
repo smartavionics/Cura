@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Cura 4.20.10\n"
 "Report-Msgid-Bugs-To: 5axes@free.fr\n"
 "POT-Creation-Date: 2021-12-10 11:59+0000\n"
-"PO-Revision-Date: 2023-01-05 19:59+0200\n"
+"PO-Revision-Date: 2023-01-08 11:30+0200\n"
 "Last-Translator: 5axes <5axes@free.fr>\n"
 "Language-Team: 5axes\n"
 "Language: fr\n"
@@ -1182,7 +1182,10 @@ msgstr "Expansion horizontale des trous"
 #: fdmprinter.def.json
 msgctxt "hole_xy_offset description"
 msgid "Amount of offset applied to all holes in each layer. Positive values increase the size of the holes, negative values reduce the size of the holes."
-msgstr "Le décalage appliqué à tous les trous dans chaque couche. Les valeurs positives augmentent la taille des trous ; les valeurs négatives réduisent la taille des trous."
+msgstr ""
+"Le décalage appliqué à tous les trous dans chaque couche. Les valeurs "
+"positives augmentent la taille des trous ; les valeurs négatives réduisent "
+"la taille des trous."
 
 #: fdmprinter.def.json
 msgctxt "z_seam_type label"
@@ -6859,7 +6862,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "hole_xy_offset_max_size label"
 msgid "Hole Horizontal Expansion Max Size"
-msgstr "Taille maximale Expansion horizontale des trou"
+msgstr "Taille Maxi Expansion horizontale des trous"
 
 #: fdmprinter.def.json
 msgctxt "hole_xy_offset_max_size description"
@@ -6871,7 +6874,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "hole_xy_offset_max_path_len label"
 msgid "Hole Horizontal Expansion Max Length"
-msgstr "Trou Expansion horizontale Longueur Maximale"
+msgstr "Longueur Maxi Expansion horizontale des trous"
 
 #: fdmprinter.def.json
 msgctxt "hole_xy_offset_max_path_len description"
@@ -6889,8 +6892,8 @@ msgstr "Pas de Jonction dans le Vide"
 msgctxt "z_seam_not_over_air description"
 msgid "When enabled, if the z seam location is above air, it is moved so that it is not above air (if possible)."
 msgstr ""
-"Lorsqu'il est activé, si l'emplacement de la couture z est au-dessus de "
-"l'air, il est déplacé de manière à ne pas être au-dessus de l'air (si "
+"Lorsqu'il est activé, si l'emplacement de la couture z est au-dessus du "
+"vide, elle est déplacée de manière à ne pas être au-dessus du vide (si "
 "possible) (mb-master)."
 
 #: fdmprinter.def.json
@@ -6921,12 +6924,14 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "ironing_fan_enable label"
 msgid "Ironing Fan Speed Override"
-msgstr "Commande de la vitesse du ventilateur de repassage"
+msgstr "Commande de la vitesse du ventilateur d'étirage"
 
 #: fdmprinter.def.json
 msgctxt "ironing_fan_enable description"
 msgid "When enabled, the print cooling fan speed is altered for the ironed regions."
-msgstr "Lorsqu'elle est activée, la vitesse du ventilateur de refroidissement de l'impression est modifiée pour les régions repassées (mb-master)."
+msgstr ""
+"Lorsque l'option est activée, la vitesse du ventilateur de refroidissement "
+"de l'impression est modifiée pour les régions étirées (mb-master)."
 
 #: fdmprinter.def.json
 msgctxt "ironing_fan_speed label"
@@ -6941,7 +6946,7 @@ msgstr "Pourcentage de la vitesse du ventilateur à utiliser lors de l'impressio
 #: fdmprinter.def.json
 msgctxt "roofing_overlap label"
 msgid "Top Surface Skin Overlap Percentage"
-msgstr "Pourcentage chevauchement de la couche externe supérieure"
+msgstr "Pourcentage chevauchement de la couche supérieure"
 
 #: fdmprinter.def.json
 msgctxt "roofing_overlap description"
@@ -6960,19 +6965,20 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "roofing_overlap_mm label"
 msgid "Top Surface Skin Overlap"
-msgstr "Chevauchement Couche externe supérieure"
+msgstr "Chevauchement Couche supérieure"
 
 #: fdmprinter.def.json
 msgctxt "roofing_overlap_mm description"
 msgid "Adjust the amount of overlap between the walls and (the endpoints of) the top surface skin-centerlines. A slight overlap allows the walls to connect firmly to the skin. Note that, given an equal skin and wall line-width, any value over half the width of the wall may already cause any skin to go past the wall, because at that point the position of the nozzle of the skin-extruder may already reach past the middle of the wall."
 msgstr ""
 "Ajustez la quantité de chevauchement entre les parois et (les points "
-"d'extrémité) des lignes centrales de la peau de la surface supérieure. Un "
-"léger chevauchement permet aux murs de se connecter fermement à la peau. "
-"Notez qu'à largeur égale des lignes de la peau et de la paroi, toute valeur "
-"supérieure à la moitié de la largeur de la paroi peut déjà faire en sorte "
-"que la peau dépasse la paroi, car à ce moment-là, la position de la buse de "
-"l'extrudeuse de peau peut déjà dépasser le milieu de la paroi (mb-master)."
+"d'extrémité) des lignes centrales de la couche de la surface supérieure. Un "
+"léger chevauchement permet aux parois de se connecter fermement à la couche. "
+"Notez qu'à largeur égale des lignes du remplissage et de la paroi, toute "
+"valeur supérieure à la moitié de la largeur de la paroi peut déjà faire en "
+"sorte que le remplissage dépasse la paroi, car à ce moment-là, la position "
+"de la buse de l'extrudeuse du remplissage peut déjà dépasser le milieu de la "
+"paroi (mb-master)."
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern_resolution label"
@@ -7076,7 +7082,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "acceleration_walls_layer_0 label"
 msgid "Initial Layer Wall Acceleration"
-msgstr "Accélération de la paroi de la couche initiale"
+msgstr "Accélération de Paroi de la couche initiale"
 
 #: fdmprinter.def.json
 msgctxt "acceleration_walls_layer_0 description"
@@ -7502,7 +7508,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "wall_overhang_material_flow label"
 msgid "Overhanging Wall Flow"
-msgstr "Débit de la paroi en surplomb"
+msgstr "Débit de Paroi en surplomb"
 
 #: fdmprinter.def.json
 msgctxt "wall_overhang_material_flow description"
