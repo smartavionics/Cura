@@ -1114,7 +1114,7 @@
                },
                "remove_floating_inner_walls":
                {
-                    "label": "Remove floating inner walls",
+                    "label": "Remove Floating Inner Walls",
                     "description": "When enabled, inner walls that are completely above air are removed.",
                     "type": "bool",
                     "default_value": false,
@@ -1123,7 +1123,7 @@
                },
                "remove_floating_inner_walls_margin":
                {
-                    "label": "Floating inner walls margin",
+                    "label": "Floating Inner Walls Margin",
                     "description": "Shrink the outline of the layer below by this much when removing floating inner walls. Using a margin will allow the ends of inner walls and skin lines to extend further into the supported regions.",
                     "unit": "mm",
                     "type": "float",
