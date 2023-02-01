@@ -1,4 +1,14 @@
 
+[4.20.11]
+* New features
+- Added Remove Floating Inner Walls & Floating Inner Walls settings.
+
+* Bug fixes and improvements.
+- Combed travel moves should now be routed slightly further away from outer walls.
+- Updated FR translation (contributed by 5axes)
+- Added Mb-master setting visibility (contributed by 5axes)
+
+
 [4.20.10]
 * New features
 - Added Bridge Wall Layers setting.
