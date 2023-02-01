@@ -1,7 +1,7 @@
 
 [4.20.11]
 * New features
-- Added Remove Floating Inner Walls & Floating Inner Walls settings.
+- Added Remove Floating Inner Walls & Floating inner walls margin settings.
 
 * Bug fixes and improvements.
 - Combed travel moves should now be routed slightly further away from outer walls.
