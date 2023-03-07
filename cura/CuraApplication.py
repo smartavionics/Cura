@@ -432,6 +432,13 @@ class CuraApplication(QtApplication):
         Resources.addType(self.ResourceTypes.QmlFiles, "qml")
         Resources.addType(self.ResourceTypes.Firmware, "firmware")
 
+        try:
+            self._dli_definitions_path = os.path.join(Resources.getDataStoragePath(), "dli_definitions")
+            if not os.path.exists(self._dli_definitions_path):
+                os.makedirs(self._dli_definitions_path)
+        except (OSError, ValueError) as e:
+            Logger.error(str(e))
+
     def __addAllEmptyContainers(self) -> None:
         """Adds all empty containers."""
 

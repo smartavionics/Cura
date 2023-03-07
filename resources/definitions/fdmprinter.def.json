@@ -2201,7 +2201,7 @@
                 "discrete_lines_infill_definition":
                 {
                     "label": "Discrete Lines Definition",
-                    "description": "Either a definition written as a JSON string or an @ followed by the name of a JSON file that contains the definition. The definition file name can either be absolute or relative to the current project file's directory or the user's home directory. Note that even when the Infill Density setting is not explicitly used when generating discrete lines, a density value of 0 will still generate no infill and a density value of 100 will generate completely solid infill.",
+                    "description": "Either a definition written as a JSON string or an @ followed by the name of a JSON file. The file name can either be an absolute path name or it can name a file located in one of these directories: the current project file's directory, the dli_definitions directory within the Cura data directory or the user's home directory. Note that even when the Infill Density setting is not explicitly used when generating discrete lines, a density value of 0 will still generate no infill and a density value of 100 will generate completely solid infill.",
                     "type": "str",
                     "default_value": "",
                     "enabled": "infill_pattern == 'discrete_lines'",

@@ -13,6 +13,7 @@ from PyQt5.QtCore import QCoreApplication
 
 from UM.Job import Job
 from UM.Logger import Logger
+from UM.Resources import Resources
 from UM.Scene.SceneNode import SceneNode
 from UM.Settings.ContainerStack import ContainerStack #For typing.
 from UM.Settings.InstanceContainer import InstanceContainer
@@ -496,8 +497,10 @@ class StartSliceJob(Job):
         settings["machine_end_gcode"] = self._expandGcodeTokens(settings["machine_end_gcode"], initial_extruder_nr)
 
         last_loaded_filename = CuraApplication.getInstance()._last_loaded_filename
-        settings["project_file_dir"] = os.path.dirname(last_loaded_filename) if last_loaded_filename else ""
-        settings["home_dir"] = os.path.expanduser("~")
+        dli_dirs = os.path.dirname(last_loaded_filename) + ";" if last_loaded_filename else ""
+        dli_dirs += CuraApplication.getInstance()._dli_definitions_path + ";"
+        dli_dirs += os.path.expanduser("~")
+        settings["dli_dirs"] = dli_dirs
 
         # Add all sub-messages for each individual setting.
         for key, value in settings.items():
