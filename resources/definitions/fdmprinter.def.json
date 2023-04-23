@@ -1660,6 +1660,16 @@
                     "settable_per_mesh": true,
                     "enabled": "roofing_layer_count > 0 and top_layers > 0"
                 },
+                "top_bottom_overlap_concentric":
+                {
+                    "label": "Overlap Concentric Skin Lines",
+                    "description": "Print concentric skin lines on even numbered layers so they overlap the lines on the odd numbered layers. This setting is ignored if the Fill Gaps Between Walls setting is set to Nowhere.",
+                    "type": "bool",
+                    "default_value": false,
+                    "enabled": "(top_layers > 0 or bottom_layers > 0) and (top_bottom_pattern == 'concentric' or top_bottom_pattern_0 == 'concentric')",
+                    "limit_to_extruder": "top_bottom_extruder_nr",
+                    "settable_per_mesh": true
+                },
                 "monotonic_skin_lines":
                 {
                     "label": "Monotonic Skin Lines (mb-master)",
