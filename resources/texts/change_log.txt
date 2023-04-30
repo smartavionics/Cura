@@ -1,4 +1,13 @@
 
+[4.20.12]
+* New features
+- Added Overlap Concentric Skin Lines setting that makes concentric skin lines on even layers overlap the skin lines on odd layers.
+
+* Bug fixes and improvements.
+- Now outputs FILAMENT_USED comment before each layer to report total filament used so far (suggested by PhilBaz).
+- Now looks for Discrete Lines infill definition files in CURA_DIR/dli_definitions (suggested by 5axes).
+- Reduced likelihood of jaggies occuring in concentric infill.
+
 [4.20.11]
 * New features
 - Added Remove Floating Inner Walls & Floating Inner Walls Margin settings.
