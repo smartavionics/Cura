@@ -190,20 +190,26 @@ class SimulationPass(RenderPass):
                                 # The head position is calculated and translated
                                 head_position = Vector(polygon.data[index+offset][0], polygon.data[index+offset][1], polygon.data[index+offset][2]) + node.getWorldPosition()
                                 if index+offset > 0 and index+offset < len(polygon.types):
-                                    current_line_location = polygon.data[index+offset];
-                                    current_line_type = polygon.types[index+offset-1][0]
-                                    current_line_feedrate = polygon.lineFeedrates[index+offset-1][0]
-                                    current_line_width = polygon.lineWidths[index+offset-1][0]
-                                    current_line_depth = polygon.lineThicknesses[index+offset-1][0]
-                                    prev_position = Vector(polygon.data[index+offset-1][0], polygon.data[index+offset-1][1], polygon.data[index+offset-1][2]) + node.getWorldPosition()
-                                    current_line_length = (head_position - prev_position).length()
-                                    types = [ "None", "OuterWall", "InnerWall", "Skin", "Support", "SkirtBrim", "Infill", "SupportInfill", "Travel", "Travel (retracted)", "SupportInterface", "PrimeTower"]
-                                    flow = current_line_feedrate * current_line_width * current_line_depth
-                                    location = "[{:.3g},{:.3g},{:.3g}]".format(current_line_location[0], current_line_location[2], current_line_location[1])
-                                    if flow != 0:
-                                        self._layer_view._current_path_label = types[current_line_type] + " to: " + location + ", len: {:.3g}, rate: {:.3g}, width: {:.3g}, depth: {:.3g}, flow: {:.3g}".format(current_line_length, current_line_feedrate, current_line_width, current_line_depth, flow)
-                                    else:
-                                        self._layer_view._current_path_label = types[current_line_type] + " to: " + location + ", len: {:.3g}, rate: {:.3g}".format(current_line_length, current_line_feedrate)
+                                    from_location = polygon.data[index+offset-1];
+                                    to_location = polygon.data[index+offset];
+                                    line_type = polygon.types[index+offset-1][0]
+                                    line_feedrate = polygon.lineFeedrates[index+offset-1][0]
+                                    line_width = polygon.lineWidths[index+offset-1][0]
+                                    line_depth = polygon.lineThicknesses[index+offset-1][0]
+                                    prev_position = Vector(from_location[0], from_location[1], from_location[2]) + node.getWorldPosition()
+                                    line_length = (head_position - prev_position).length()
+                                    types = [ "None", "Outer wall", "Inner wall", "Skin", "Support", "Skirt/Brim", "Infill", "Support infill", "Travel", "Travel (retracted)", "Support interface", "Prime tower"]
+                                    line_flow = line_feedrate * line_width * line_depth
+                                    # why is python number formatting so crap?
+                                    def f(x):
+                                        if x == int(x):
+                                            return str(int(x))
+                                        return "{:.3f}".format(x)
+                                    from_coords = "[{0},{1},{2}]".format(f(from_location[0]), f(from_location[2]), f(from_location[1]))
+                                    to_coords = "[{0},{1},{2}]".format(f(to_location[0]), f(to_location[2]), f(to_location[1]))
+                                    self._layer_view._current_path_label = types[line_type] + " from: " + from_coords + " to: " + to_coords + " length: {0} speed: {1}".format(f(line_length), f(line_feedrate))
+                                    if line_flow != 0:
+                                        self._layer_view._current_path_label += " width: {0} depth: {1} flow: {2}".format(f(line_width), f(line_depth), f(line_flow))
                                 if ride_the_nozzle and index+offset > 0:
                                     prev_position = Vector(polygon.data[index+offset-1][0], polygon.data[index+offset-1][1], polygon.data[index+offset-1][2]) + node.getWorldPosition()
                                     camera_position = head_position - (head_position - prev_position).normalized() * trail_by
