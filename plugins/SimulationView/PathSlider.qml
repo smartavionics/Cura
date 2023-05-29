@@ -1,7 +1,7 @@
 // Copyright (c) 2017 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
-import QtQuick 2.2
+import QtQuick 2.5
 import QtQuick.Controls 1.2
 import QtQuick.Layouts 1.1
 import QtQuick.Controls.Styles 1.1
@@ -54,6 +54,11 @@ Item
     function normalizeValue(value)
     {
         return Math.min(Math.max(value, sliderRoot.minimumValue), sliderRoot.maximumValue)
+    }
+
+    function setHandleLabel(value)
+    {
+        handle.setHandleLabel(value)
     }
 
     onWidthChanged : {
@@ -148,10 +153,25 @@ Item
 
             // update the range handle
             sliderRoot.updateRangeHandle()
+            handleValue = value
         }
 
-        Keys.onRightPressed: handleLabel.setValue(handleLabel.value + ((event.modifiers & Qt.ShiftModifier) ? 10 : 1))
-        Keys.onLeftPressed: handleLabel.setValue(handleLabel.value - ((event.modifiers & Qt.ShiftModifier) ? 10 : 1))
+        function setHandleLabel(value)
+        {
+            handleLabel.value = value
+            handleLabel.visible = value.length > 0
+            handleLabelMetrics.text = value
+            handleLabel.width = handleLabelMetrics.width + UM.Theme.getSize("default_margin").width
+        }
+
+        Keys.onRightPressed: handle.setValueManually(handleValue + ((event.modifiers & Qt.ShiftModifier) ? 10 : 1))
+        Keys.onLeftPressed: handle.setValueManually(handleValue - ((event.modifiers & Qt.ShiftModifier) ? 10 : 1))
+
+        TextMetrics {
+            id:     handleLabelMetrics
+            font:   valueLabel.font
+            text:   ""
+        }
 
         // dragging
         MouseArea
@@ -169,22 +189,58 @@ Item
             onPositionChanged: parent.onHandleDragged()
         }
 
-        SimulationSliderLabel
-        {
+        UM.PointingRectangle {
             id: handleLabel
+
+            property string value: ""
 
             height: sliderRoot.handleSize + UM.Theme.getSize("default_margin").height
             y: parent.y + sliderRoot.handleSize + UM.Theme.getSize("default_margin").height
             anchors.horizontalCenter: parent.horizontalCenter
-            target: Qt.point(x + width / 2, sliderRoot.height)
-            visible: false
-            startFrom: 0
+            anchors.bottom:parent.top
+            anchors.bottomMargin: UM.Theme.getSize("narrow_margin").height
+            target: Qt.point(x + width / 2, parent.top)
 
-            // custom properties
-            maximumValue: sliderRoot.maximumValue
-            value: sliderRoot.handleValue
-            busy: UM.SimulationView.busy
-            setValue: handle.setValueManually // connect callback functions
+            arrowSize: UM.Theme.getSize("button_tooltip_arrow").height
+            width: valueLabel.width
+            visible: false
+
+            color: UM.Theme.getColor("tool_panel_background")
+            borderColor: UM.Theme.getColor("lining")
+            borderWidth: UM.Theme.getSize("default_lining").width
+
+            Behavior on height {
+                NumberAnimation {
+                    duration: 50
+                }
+            }
+
+            // catch all mouse events so they're not handled by underlying 3D scene
+            MouseArea {
+                anchors.fill: parent
+            }
+
+            TextField {
+                id: valueLabel
+
+                anchors {
+                    verticalCenter: parent.verticalCenter
+                    horizontalCenter: parent.horizontalCenter
+                    alignWhenCentered: false
+                }
+
+                width: handleLabelMetrics.width + UM.Theme.getSize("default_margin").width
+                text: handleLabel.value
+                horizontalAlignment: TextInput.AlignHCenter
+
+                style: TextFieldStyle {
+                    textColor: UM.Theme.getColor("text")
+                    font: UM.Theme.getFont("default")
+                    renderType: Text.NativeRendering
+                    background: Item {  }
+                }
+
+            }
         }
     }
 }

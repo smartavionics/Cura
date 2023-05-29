@@ -150,6 +150,8 @@ class SimulationPass(RenderPass):
         if not ride_the_nozzle and self._scene.getActiveCamera().getName() != "3d":
             self._scene.setActiveCamera("3d")
 
+        self._layer_view._current_path_label = ""
+
         for node in DepthFirstIterator(self._scene.getRoot()):
 
             if isinstance(node, ToolHandle):
@@ -187,6 +189,21 @@ class SimulationPass(RenderPass):
                                     continue
                                 # The head position is calculated and translated
                                 head_position = Vector(polygon.data[index+offset][0], polygon.data[index+offset][1], polygon.data[index+offset][2]) + node.getWorldPosition()
+                                if index+offset > 0 and index+offset < len(polygon.types):
+                                    current_line_location = polygon.data[index+offset];
+                                    current_line_type = polygon.types[index+offset-1][0]
+                                    current_line_feedrate = polygon.lineFeedrates[index+offset-1][0]
+                                    current_line_width = polygon.lineWidths[index+offset-1][0]
+                                    current_line_depth = polygon.lineThicknesses[index+offset-1][0]
+                                    prev_position = Vector(polygon.data[index+offset-1][0], polygon.data[index+offset-1][1], polygon.data[index+offset-1][2]) + node.getWorldPosition()
+                                    current_line_length = (head_position - prev_position).length()
+                                    types = [ "None", "OuterWall", "InnerWall", "Skin", "Support", "SkirtBrim", "Infill", "SupportInfill", "Travel", "Travel (retracted)", "SupportInterface", "PrimeTower"]
+                                    flow = current_line_feedrate * current_line_width * current_line_depth
+                                    location = "[{:.3g},{:.3g},{:.3g}]".format(current_line_location[0], current_line_location[2], current_line_location[1])
+                                    if flow != 0:
+                                        self._layer_view._current_path_label = types[current_line_type] + " to: " + location + ", len: {:.3g}, rate: {:.3g}, width: {:.3g}, depth: {:.3g}, flow: {:.3g}".format(current_line_length, current_line_feedrate, current_line_width, current_line_depth, flow)
+                                    else:
+                                        self._layer_view._current_path_label = types[current_line_type] + " to: " + location + ", len: {:.3g}, rate: {:.3g}".format(current_line_length, current_line_feedrate)
                                 if ride_the_nozzle and index+offset > 0:
                                     prev_position = Vector(polygon.data[index+offset-1][0], polygon.data[index+offset-1][1], polygon.data[index+offset-1][2]) + node.getWorldPosition()
                                     camera_position = head_position - (head_position - prev_position).normalized() * trail_by
@@ -321,6 +338,8 @@ class SimulationPass(RenderPass):
                 nozzle_batch = RenderBatch(self._nozzle_shader, type = RenderBatch.RenderType.Transparent)
                 nozzle_batch.addItem(nozzle_node.getWorldTransformation(), mesh = nozzle_node.getMeshData())
                 nozzle_batch.render(self._scene.getActiveCamera())
+
+        self._layer_view.currentPathLabelChanged.emit()
 
         if len(disabled_batch.items) > 0:
             disabled_batch.render(self._scene.getActiveCamera())

@@ -65,6 +65,10 @@ Item
                 }
                 pathSlider.setHandleValue(UM.SimulationView.currentPath)
             }
+            function onCurrentPathLabelChanged()
+            {
+                pathSlider.setHandleLabel(UM.SimulationView.currentPathLabel)
+            }
         }
 
         // Ensure that the slider handlers show the correct value after switching views.

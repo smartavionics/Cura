@@ -22,6 +22,7 @@ class SimulationViewProxy(QObject):
 
     currentLayerChanged = pyqtSignal()
     currentPathChanged = pyqtSignal()
+    currentPathLabelChanged = pyqtSignal()
     maxLayersChanged = pyqtSignal()
     maxPathsChanged = pyqtSignal()
     activityChanged = pyqtSignal()
@@ -53,6 +54,10 @@ class SimulationViewProxy(QObject):
     @pyqtProperty(int, notify=currentPathChanged)
     def currentPath(self):
         return self._simulation_view.getCurrentPath()
+
+    @pyqtProperty(str, notify=currentPathLabelChanged)
+    def currentPathLabel(self):
+        return self._simulation_view.getCurrentPathLabel()
 
     @pyqtProperty(int, notify=currentPathChanged)
     def minimumPath(self):
@@ -172,6 +177,9 @@ class SimulationViewProxy(QObject):
         scene = Application.getInstance().getController().getScene()
         scene.sceneChanged.emit(scene.getRoot())
 
+    def _onPathLabelChanged(self):
+        self.currentPathLabelChanged.emit()
+
     def _onMaxLayersChanged(self):
         self.maxLayersChanged.emit()
 
@@ -196,6 +204,7 @@ class SimulationViewProxy(QObject):
             self._simulation_view.currentLayerNumChanged.connect(self._onLayerChanged)
             self._simulation_view.colorSchemeLimitsChanged.connect(self._onColorSchemeLimitsChanged)
             self._simulation_view.currentPathNumChanged.connect(self._onPathChanged)
+            self._simulation_view.currentPathLabelChanged.connect(self._onPathLabelChanged)
             self._simulation_view.maxLayersChanged.connect(self._onMaxLayersChanged)
             self._simulation_view.maxPathsChanged.connect(self._onMaxPathsChanged)
             self._simulation_view.busyChanged.connect(self._onBusyChanged)
@@ -209,6 +218,7 @@ class SimulationViewProxy(QObject):
             self._simulation_view.currentLayerNumChanged.disconnect(self._onLayerChanged)
             self._simulation_view.colorSchemeLimitsChanged.connect(self._onColorSchemeLimitsChanged)
             self._simulation_view.currentPathNumChanged.disconnect(self._onPathChanged)
+            self._simulation_view.currentPathLabelChanged.disconnect(self._onPathLabelChanged)
             self._simulation_view.maxLayersChanged.disconnect(self._onMaxLayersChanged)
             self._simulation_view.maxPathsChanged.disconnect(self._onMaxPathsChanged)
             self._simulation_view.busyChanged.disconnect(self._onBusyChanged)
