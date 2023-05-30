@@ -212,7 +212,7 @@ Item
             target: Qt.point(x + width / 2, parent.top)
 
             arrowSize: UM.Theme.getSize("button_tooltip_arrow").height
-            width: childrenRect.width
+            width: childrenRect.width + Math.round(UM.Theme.getSize("default_margin").width / 2)
             visible: false
 
             color: UM.Theme.getColor("tool_panel_background")
@@ -229,6 +229,7 @@ Item
                 columns: 2
                 columnSpacing: Math.round(UM.Theme.getSize("default_margin").width / 2)
                 rowSpacing: 0
+                anchors.centerIn: handleLabel
 
                 Label
                 {
