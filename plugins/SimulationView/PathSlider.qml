@@ -35,6 +35,15 @@ Item
     property bool pathsVisible: true
     property bool manuallyChanged: true     // Indicates whether the value was changed manually or during simulation
 
+    property string line_type
+    property string line_from
+    property string line_to
+    property string line_length
+    property string line_feedrate
+    property string line_width
+    property string line_depth
+    property string line_flow
+
     function getHandleValueFromSliderHandle()
     {
         return handle.getValue()
@@ -158,20 +167,21 @@ Item
 
         function setHandleLabel(value)
         {
-            handleLabel.value = value
+            var vals = value.split(";");
+            sliderRoot.line_type = (vals.length > 0) ? vals[0] : "";
+            sliderRoot.line_from = (vals.length > 1) ? vals[1] : "";
+            sliderRoot.line_to = (vals.length > 2) ? vals[2] : "";
+            sliderRoot.line_length = (vals.length > 3) ? (vals[3] + " mm") : "";
+            sliderRoot.line_feedrate = (vals.length > 4) ? (vals[4] + " mm/S") : "";
+            sliderRoot.line_width = (vals.length > 5) ? (vals[5] + " mm") : "";
+            sliderRoot.line_depth = (vals.length > 6) ? (vals[6] + " mm") : "";
+            sliderRoot.line_flow = (vals.length > 7) ? (vals[7]  + " mm\u00B3/S") : "";
+
             handleLabel.visible = value.length > 0
-            handleLabelMetrics.text = value
-            handleLabel.width = handleLabelMetrics.width + UM.Theme.getSize("default_margin").width
         }
 
         Keys.onRightPressed: handle.setValueManually(handleValue + ((event.modifiers & Qt.ShiftModifier) ? 10 : 1))
         Keys.onLeftPressed: handle.setValueManually(handleValue - ((event.modifiers & Qt.ShiftModifier) ? 10 : 1))
-
-        TextMetrics {
-            id:     handleLabelMetrics
-            font:   valueLabel.font
-            text:   ""
-        }
 
         // dragging
         MouseArea
@@ -194,7 +204,7 @@ Item
 
             property string value: ""
 
-            height: sliderRoot.handleSize + UM.Theme.getSize("default_margin").height
+            height: childrenRect.height
             y: parent.y + sliderRoot.handleSize + UM.Theme.getSize("default_margin").height
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.bottom:parent.top
@@ -202,44 +212,167 @@ Item
             target: Qt.point(x + width / 2, parent.top)
 
             arrowSize: UM.Theme.getSize("button_tooltip_arrow").height
-            width: valueLabel.width
+            width: childrenRect.width
             visible: false
 
             color: UM.Theme.getColor("tool_panel_background")
             borderColor: UM.Theme.getColor("lining")
             borderWidth: UM.Theme.getSize("default_lining").width
 
-            Behavior on height {
-                NumberAnimation {
-                    duration: 50
-                }
-            }
-
             // catch all mouse events so they're not handled by underlying 3D scene
             MouseArea {
                 anchors.fill: parent
             }
 
-            TextField {
-                id: valueLabel
+            GridLayout {
+                id: grid
+                columns: 2
+                columnSpacing: Math.round(UM.Theme.getSize("default_margin").width / 2)
+                rowSpacing: 0
 
-                anchors {
-                    verticalCenter: parent.verticalCenter
-                    horizontalCenter: parent.horizontalCenter
-                    alignWhenCentered: false
-                }
-
-                width: handleLabelMetrics.width + UM.Theme.getSize("default_margin").width
-                text: handleLabel.value
-                horizontalAlignment: TextInput.AlignHCenter
-
-                style: TextFieldStyle {
-                    textColor: UM.Theme.getColor("text")
-                    font: UM.Theme.getFont("default")
+                Label
+                {
+                    text: "Type"
+                    font: UM.Theme.getFont("default_bold")
+                    color: UM.Theme.getColor("text")
+                    verticalAlignment: Text.AlignVCenter
                     renderType: Text.NativeRendering
-                    background: Item {  }
                 }
 
+                Label
+                {
+                    text: sliderRoot.line_type
+                    font: UM.Theme.getFont("default")
+                    color: UM.Theme.getColor("text")
+                    verticalAlignment: Text.AlignVCenter
+                    renderType: Text.NativeRendering
+                }
+
+                Label
+                {
+                    text: "From"
+                    font: UM.Theme.getFont("default_bold")
+                    color: UM.Theme.getColor("text")
+                    verticalAlignment: Text.AlignVCenter
+                    renderType: Text.NativeRendering
+                }
+
+                Label
+                {
+                    text: sliderRoot.line_from
+                    font: UM.Theme.getFont("default")
+                    color: UM.Theme.getColor("text")
+                    verticalAlignment: Text.AlignVCenter
+                    renderType: Text.NativeRendering
+                }
+
+                Label
+                {
+                    text: "To"
+                    font: UM.Theme.getFont("default_bold")
+                    color: UM.Theme.getColor("text")
+                    verticalAlignment: Text.AlignVCenter
+                    renderType: Text.NativeRendering
+                }
+
+                Label
+                {
+                    text: sliderRoot.line_to
+                    font: UM.Theme.getFont("default")
+                    color: UM.Theme.getColor("text")
+                    verticalAlignment: Text.AlignVCenter
+                    renderType: Text.NativeRendering
+                }
+
+                Label
+                {
+                    text: "Length"
+                    font: UM.Theme.getFont("default_bold")
+                    color: UM.Theme.getColor("text")
+                    verticalAlignment: Text.AlignVCenter
+                    renderType: Text.NativeRendering
+                }
+
+                Label
+                {
+                    text: sliderRoot.line_length
+                    font: UM.Theme.getFont("default")
+                    color: UM.Theme.getColor("text")
+                    verticalAlignment: Text.AlignVCenter
+                    renderType: Text.NativeRendering
+                }
+
+                Label
+                {
+                    text: "Speed"
+                    font: UM.Theme.getFont("default_bold")
+                    color: UM.Theme.getColor("text")
+                    verticalAlignment: Text.AlignVCenter
+                    renderType: Text.NativeRendering
+                }
+
+                Label
+                {
+                    text: sliderRoot.line_feedrate
+                    font: UM.Theme.getFont("default")
+                    color: UM.Theme.getColor("text")
+                    verticalAlignment: Text.AlignVCenter
+                    renderType: Text.NativeRendering
+                }
+
+                Label
+                {
+                    text: "Width"
+                    font: UM.Theme.getFont("default_bold")
+                    color: UM.Theme.getColor("text")
+                    verticalAlignment: Text.AlignVCenter
+                    renderType: Text.NativeRendering
+                }
+
+                Label
+                {
+                    text: sliderRoot.line_width
+                    font: UM.Theme.getFont("default")
+                    color: UM.Theme.getColor("text")
+                    verticalAlignment: Text.AlignVCenter
+                    renderType: Text.NativeRendering
+                }
+
+                Label
+                {
+                    text: "Depth"
+                    font: UM.Theme.getFont("default_bold")
+                    color: UM.Theme.getColor("text")
+                    verticalAlignment: Text.AlignVCenter
+                    renderType: Text.NativeRendering
+                }
+
+                Label
+                {
+                    text: sliderRoot.line_depth
+                    font: UM.Theme.getFont("default")
+                    color: UM.Theme.getColor("text")
+                    verticalAlignment: Text.AlignVCenter
+                    renderType: Text.NativeRendering
+                }
+
+                Label
+                {
+                    text: "Flow"
+                    font: UM.Theme.getFont("default_bold")
+                    color: UM.Theme.getColor("text")
+                    verticalAlignment: Text.AlignVCenter
+                    renderType: Text.NativeRendering
+                }
+
+                Label
+                {
+                    text: sliderRoot.line_flow
+                    font: UM.Theme.getFont("default")
+                    color: UM.Theme.getColor("text")
+                    verticalAlignment: Text.AlignVCenter
+                    renderType: Text.NativeRendering
+                }
             }
         }
     }
