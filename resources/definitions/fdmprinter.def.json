@@ -8288,6 +8288,20 @@
                         }
                     }
                 },
+                "bridge_skin_pattern":
+                {
+                    "label": "Bridge Skin Pattern",
+                    "description": "The pattern of the bridge skins.",
+                    "type": "enum",
+                    "options":
+                    {
+                        "lines": "Lines",
+                        "zigzag": "Zig Zag"
+                    },
+                    "default_value": "lines",
+                    "enabled": "bridge_settings_enabled",
+                    "settable_per_mesh": true
+                },
                 "bridge_fan_speed":
                 {
                     "label": "Bridge Fan Speed",
@@ -8387,6 +8401,20 @@
                         }
                     }
                 },
+                "bridge_skin_pattern2":
+                {
+                    "label": "Bridge Second Skin Pattern",
+                    "description": "The pattern used for the second bridge skin.",
+                    "type": "enum",
+                    "options":
+                    {
+                        "lines": "Lines",
+                        "zigzag": "Zig Zag"
+                    },
+                    "default_value": "lines",
+                    "enabled": "bridge_settings_enabled",
+                    "settable_per_mesh": true
+                },
                 "bridge_fan_speed_2":
                 {
                     "label": "Bridge Second Skin Fan Speed",
@@ -8466,6 +8494,20 @@
                             "settable_per_mesh": true
                         }
                     }
+                },
+                "bridge_skin_pattern3":
+                {
+                    "label": "Bridge Third Skin Pattern",
+                    "description": "The pattern used for the third bridge skin.",
+                    "type": "enum",
+                    "options":
+                    {
+                        "lines": "Lines",
+                        "zigzag": "Zig Zag"
+                    },
+                    "default_value": "lines",
+                    "enabled": "bridge_settings_enabled",
+                    "settable_per_mesh": true
                 },
                 "bridge_fan_speed_3":
                 {
