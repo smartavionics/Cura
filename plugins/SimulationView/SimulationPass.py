@@ -191,7 +191,7 @@ class SimulationPass(RenderPass):
                                     continue
                                 # The head position is calculated and translated
                                 head_position = Vector(polygon.data[index+offset][0], polygon.data[index+offset][1], polygon.data[index+offset][2]) + node.getWorldPosition()
-                                if display_line_details and index+offset > 0 and index+offset < len(polygon.types):
+                                if display_line_details and index+offset > 0:
                                     from_location = polygon.data[index+offset-1];
                                     to_location = polygon.data[index+offset];
                                     line_type = polygon.types[index+offset-1][0]
