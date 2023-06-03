@@ -485,21 +485,6 @@ UM.PreferencesPage
             {
                 width: childrenRect.width
                 height: childrenRect.height
-                text: catalog.i18nc("@info:tooltip", "Should line details be displayed?")
-
-                CheckBox
-                {
-                    id: displayLineDetailsCheckbox
-                    text: catalog.i18nc("@option:check", "Display line details")
-                    checked: boolCheck(UM.Preferences.getValue("view/display_line_details"))
-                    onCheckedChanged: UM.Preferences.setValue("view/display_line_details", checked)
-                }
-            }
-
-            UM.TooltipArea
-            {
-                width: childrenRect.width
-                height: childrenRect.height
                 text: catalog.i18nc("@info:tooltip", "Should Cura open at the location it was closed?")
 
                 CheckBox

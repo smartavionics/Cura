@@ -140,6 +140,29 @@ Item
         }
     }
 
+    UM.SimpleButton
+    {
+        id: showLineDetailsButton
+        iconSource: UM.Theme.getIcon("Information")
+        width: UM.Theme.getSize("small_button").width
+        height: UM.Theme.getSize("small_button").height
+        hoverColor: UM.Theme.getColor("slider_handle_active")
+        color: UM.Theme.getColor("slider_handle")
+        iconMargin: UM.Theme.getSize("thick_lining").width
+        visible: !UM.SimulationView.compatibilityMode
+
+        anchors
+        {
+            left: pathSlider.right
+            verticalCenter: pathSlider.verticalCenter
+        }
+
+        onClicked:
+        {
+            UM.SimulationView.setDisplayLineDetails(!UM.SimulationView.getDisplayLineDetails())
+        }
+    }
+
     Timer
     {
         id: simulationTimer

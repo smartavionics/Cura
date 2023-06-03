@@ -152,8 +152,6 @@ class SimulationPass(RenderPass):
 
         self._layer_view._current_path_label = ""
 
-        display_line_details = bool(Application.getInstance().getPreferences().getValue("view/display_line_details"))
-
         for node in DepthFirstIterator(self._scene.getRoot()):
 
             if isinstance(node, ToolHandle):
@@ -191,7 +189,7 @@ class SimulationPass(RenderPass):
                                     continue
                                 # The head position is calculated and translated
                                 head_position = Vector(polygon.data[index+offset][0], polygon.data[index+offset][1], polygon.data[index+offset][2]) + node.getWorldPosition()
-                                if display_line_details and index+offset > 0:
+                                if self._layer_view._display_line_details and index+offset > 0:
                                     from_location = polygon.data[index+offset-1];
                                     to_location = polygon.data[index+offset];
                                     line_type = polygon.types[index+offset-1][0]

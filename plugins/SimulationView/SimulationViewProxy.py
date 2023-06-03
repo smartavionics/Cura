@@ -107,6 +107,15 @@ class SimulationViewProxy(QObject):
     def getSimulationRunning(self):
         return self._simulation_view.isSimulationRunning()
 
+    @pyqtSlot(bool)
+    def setDisplayLineDetails(self, enabled):
+        self._simulation_view._display_line_details = enabled
+        self._onPathChanged()
+
+    @pyqtSlot(result=bool)
+    def getDisplayLineDetails(self):
+        return self._simulation_view._display_line_details
+
     @pyqtProperty(float, notify = colorSchemeLimitsChanged)
     def minFeedrate(self):
         return self._simulation_view.getMinFeedrate()

@@ -83,6 +83,8 @@ class SimulationView(CuraView):
         self._busy = False
         self._simulation_running = False
 
+        self._display_line_details = False
+
         self._ghost_shader = None  # type: Optional["ShaderProgram"]
         self._layer_pass = None  # type: Optional[SimulationPass]
         self._composite_pass = None  # type: Optional[CompositePass]
@@ -110,7 +112,6 @@ class SimulationView(CuraView):
         Application.getInstance().getPreferences().addPreference("view/top_layer_count", 5)
         Application.getInstance().getPreferences().addPreference("view/only_show_top_layers", False)
         Application.getInstance().getPreferences().addPreference("view/force_layer_view_compatibility_mode", False)
-        Application.getInstance().getPreferences().addPreference("view/display_line_details", False)
 
         Application.getInstance().getPreferences().addPreference("layerview/layer_view_type", 1)  # Default to "Line Type".
         Application.getInstance().getPreferences().addPreference("layerview/extruder_opacities", "")
