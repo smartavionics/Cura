@@ -19,7 +19,6 @@ Item
     property color handleColor: UM.Theme.getColor("slider_handle")
     property color handleActiveColor: UM.Theme.getColor("slider_handle_active")
     property color rangeColor: UM.Theme.getColor("slider_groove_fill")
-    property real handleLabelWidth: width
 
     // track properties
     property real trackThickness: UM.Theme.getSize("slider_groove").width
@@ -201,8 +200,6 @@ Item
 
         UM.PointingRectangle {
             id: handleLabel
-
-            property string value: ""
 
             height: childrenRect.height
             y: parent.y + sliderRoot.handleSize + UM.Theme.getSize("default_margin").height
