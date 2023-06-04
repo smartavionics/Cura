@@ -78,7 +78,7 @@ class SimulationView(CuraView):
         self._minimum_path_num = 0
         self.currentLayerNumChanged.connect(self._onCurrentLayerNumChanged)
 
-        self._current_path_label = ""
+        self._current_path_info = ""
 
         self._busy = False
         self._simulation_running = False
@@ -205,8 +205,8 @@ class SimulationView(CuraView):
     def getCurrentPath(self) -> int:
         return self._current_path_num
 
-    def getCurrentPathLabel(self) -> str:
-        return self._current_path_label
+    def getCurrentPathInfo(self) -> str:
+        return self._current_path_info
 
     def getMinimumPath(self) -> int:
         return self._minimum_path_num
@@ -591,7 +591,7 @@ class SimulationView(CuraView):
     maxPathsChanged = Signal()
     currentLayerNumChanged = Signal()
     currentPathNumChanged = Signal()
-    currentPathLabelChanged = Signal()
+    currentPathInfoChanged = Signal()
     globalStackChanged = Signal()
     preferencesChanged = Signal()
     busyChanged = Signal()

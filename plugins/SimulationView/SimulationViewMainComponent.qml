@@ -65,9 +65,9 @@ Item
                 }
                 pathSlider.setHandleValue(UM.SimulationView.currentPath)
             }
-            function onCurrentPathLabelChanged()
+            function onCurrentPathInfoChanged()
             {
-                pathSlider.setHandleLabel(UM.SimulationView.currentPathLabel)
+                pathSlider.setHandleLabel(UM.SimulationView.currentPathInfo)
             }
         }
 
