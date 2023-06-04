@@ -207,9 +207,9 @@ class SimulationPass(RenderPass):
                                         return "{:.3f}".format(x)
                                     from_coords = "x={0}, y={1}, z={2}".format(f(from_location[0]), f(from_location[2]), f(from_location[1]))
                                     to_coords = "x={0}, y={1}, z={2}".format(f(to_location[0]), f(to_location[2]), f(to_location[1]))
-                                    self._layer_view._current_path_info = types[line_type] + ";" + from_coords + ";" + to_coords + ";{0};{1}".format(f(line_length), f(line_feedrate))
+                                    self._layer_view._current_path_info = types[line_type] + ";" + from_coords + ";" + to_coords + ";{0};{1};{2}".format(f(line_length), f(line_feedrate), f(line_flow))
                                     if line_flow != 0:
-                                        self._layer_view._current_path_info += ";{0};{1};{2}".format(f(line_width), f(line_depth), f(line_flow))
+                                        self._layer_view._current_path_info += ";{0};{1}".format(f(line_width), f(line_depth))
                                 if ride_the_nozzle and index+offset > 0:
                                     prev_position = Vector(polygon.data[index+offset-1][0], polygon.data[index+offset-1][1], polygon.data[index+offset-1][2]) + node.getWorldPosition()
                                     camera_position = head_position - (head_position - prev_position).normalized() * trail_by

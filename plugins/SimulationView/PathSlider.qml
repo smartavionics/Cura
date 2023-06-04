@@ -173,9 +173,9 @@ Item
             sliderRoot.line_to = (vals.length > 2) ? vals[2] : "";
             sliderRoot.line_length = (vals.length > 3) ? (vals[3] + " mm") : "";
             sliderRoot.line_feedrate = (vals.length > 4) ? (vals[4] + " mm/S") : "";
-            sliderRoot.line_width = (vals.length > 5) ? (vals[5] + " mm") : "";
-            sliderRoot.line_depth = (vals.length > 6) ? (vals[6] + " mm") : "";
-            sliderRoot.line_flow = (vals.length > 7) ? (vals[7]  + " mm\u00B3/S") : "";
+            sliderRoot.line_flow = (vals.length > 5) ? (vals[5]  + " mm\u00B3/S") : "";
+            sliderRoot.line_width = (vals.length > 6) ? (vals[6] + " mm") : "";
+            sliderRoot.line_depth = (vals.length > 7) ? (vals[7] + " mm") : "";
 
             handleLabel.visible = value.length > 0
         }
