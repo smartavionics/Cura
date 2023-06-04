@@ -1,4 +1,15 @@
 
+
+[4.20.13]
+* New features
+- Added settings to specify the skin pattern (lines or zig-zag) used on each bridge layer (suggested by PhilBaz).
+- Can now display details of the current line in the layer view as the path slider is moved.
+
+* Bug fixes and improvements.
+- Fixed bug when tapering horizontal expansion.
+- Infill walls are now enabled when infill is multi-layer (but still no skin edge support).
+- Further tweaks to the combed travel.
+
 [4.20.12]
 * New features
 - Added Overlap Concentric Skin Lines setting that makes concentric skin lines on even layers overlap the skin lines on odd layers.
