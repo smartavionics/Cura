@@ -323,6 +323,24 @@ Item
 
                 Label
                 {
+                    text: "Flow"
+                    font: UM.Theme.getFont("default_bold")
+                    color: UM.Theme.getColor("text")
+                    verticalAlignment: Text.AlignVCenter
+                    renderType: Text.NativeRendering
+                }
+
+                Label
+                {
+                    text: sliderRoot.line_flow
+                    font: UM.Theme.getFont("default")
+                    color: UM.Theme.getColor("text")
+                    verticalAlignment: Text.AlignVCenter
+                    renderType: Text.NativeRendering
+                }
+
+                Label
+                {
                     text: "Width"
                     font: UM.Theme.getFont("default_bold")
                     color: UM.Theme.getColor("text")
@@ -351,24 +369,6 @@ Item
                 Label
                 {
                     text: sliderRoot.line_depth
-                    font: UM.Theme.getFont("default")
-                    color: UM.Theme.getColor("text")
-                    verticalAlignment: Text.AlignVCenter
-                    renderType: Text.NativeRendering
-                }
-
-                Label
-                {
-                    text: "Flow"
-                    font: UM.Theme.getFont("default_bold")
-                    color: UM.Theme.getColor("text")
-                    verticalAlignment: Text.AlignVCenter
-                    renderType: Text.NativeRendering
-                }
-
-                Label
-                {
-                    text: sliderRoot.line_flow
                     font: UM.Theme.getFont("default")
                     color: UM.Theme.getColor("text")
                     verticalAlignment: Text.AlignVCenter
