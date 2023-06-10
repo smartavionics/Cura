@@ -181,6 +181,7 @@ Item
 
         Keys.onRightPressed: handle.setValueManually(handleValue + ((event.modifiers & Qt.ShiftModifier) ? 10 : 1))
         Keys.onLeftPressed: handle.setValueManually(handleValue - ((event.modifiers & Qt.ShiftModifier) ? 10 : 1))
+        Keys.onSpacePressed: UM.SimulationView.setDisplayLineDetails(!UM.SimulationView.getDisplayLineDetails())
 
         // dragging
         MouseArea
