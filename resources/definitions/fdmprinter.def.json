@@ -6899,6 +6899,15 @@
             "description": "Non-traditional ways to print your models.",
             "children":
             {
+                "process_layers_sequentially":
+                {
+                    "label": "Process Layers Sequentially",
+                    "description": "Process the layers sequentially in print order. Enabling this should reduce the travel required but will increase the slicing time.",
+                    "type": "bool",
+                    "default_value": false,
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false
+                },
                 "print_sequence":
                 {
                     "label": "Print Sequence",
