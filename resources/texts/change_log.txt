@@ -1,5 +1,10 @@
 
 
+[4.20.14]
+* New features
+- Added Process Layers Sequentially setting. When enabled, layers are processed sequentially in print order.
+- When the path slider has the focus, the space key toggles the visibility of the line details.
+
 [4.20.13]
 * New features
 - Added settings to specify the skin pattern (lines or zig-zag) used on each bridge layer (suggested by PhilBaz).
