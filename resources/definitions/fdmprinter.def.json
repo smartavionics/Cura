@@ -2173,7 +2173,8 @@
                         "schwarz_d": "Schwarz D",
                         "hilbert": "Hilbert Curve",
                         "honeycomb": "Honeycomb",
-                        "discrete_lines": "Discrete Lines"
+                        "discrete_lines": "Discrete Lines",
+                        "scattered_rectilinear": "Scattered Rectilinear"
                     },
                     "default_value": "grid",
                     "enabled": "infill_line_distance > 0",
@@ -2225,7 +2226,7 @@
                     "type": "bool",
                     "default_value": false,
                     "value": "infill_pattern == 'cross' or infill_pattern == 'cross_3d' or infill_pattern == 'honeycomb'",
-                    "enabled": "infill_pattern == 'lines' or infill_pattern == 'grid' or infill_pattern == 'triangles' or infill_pattern == 'trihexagon' or infill_pattern == 'cubic' or infill_pattern == 'tetrahedral' or infill_pattern == 'quarter_cubic' or infill_pattern == 'cross' or infill_pattern == 'cross_3d' or infill_pattern == 'gyroid' or infill_pattern == 'schwarz_p' or infill_pattern == 'schwarz_d' or infill_pattern == 'honeycomb' or infill_pattern == 'hilbert' or infill_pattern == 'discrete_lines'",
+                    "enabled": "infill_pattern == 'lines' or infill_pattern == 'grid' or infill_pattern == 'triangles' or infill_pattern == 'trihexagon' or infill_pattern == 'cubic' or infill_pattern == 'tetrahedral' or infill_pattern == 'quarter_cubic' or infill_pattern == 'cross' or infill_pattern == 'cross_3d' or infill_pattern == 'gyroid' or infill_pattern == 'schwarz_p' or infill_pattern == 'schwarz_d' or infill_pattern == 'honeycomb' or infill_pattern == 'hilbert' or infill_pattern == 'discrete_lines' or infill_pattern == 'scattered_rectilinear'",
                     "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
                 },
