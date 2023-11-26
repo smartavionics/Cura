@@ -1,4 +1,8 @@
 
+[4.20.15]
+* New Features
+- Added Scattered Rectilinear infill pattern.
+- Added preference to enable layer view antialiasing.
 
 [4.20.14]
 * New features
