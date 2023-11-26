@@ -112,6 +112,7 @@ class SimulationView(CuraView):
         Application.getInstance().getPreferences().addPreference("view/top_layer_count", 5)
         Application.getInstance().getPreferences().addPreference("view/only_show_top_layers", False)
         Application.getInstance().getPreferences().addPreference("view/force_layer_view_compatibility_mode", False)
+        Application.getInstance().getPreferences().addPreference("view/enable_layer_view_antialiasing", False)
 
         Application.getInstance().getPreferences().addPreference("layerview/layer_view_type", 1)  # Default to "Line Type".
         Application.getInstance().getPreferences().addPreference("layerview/extruder_opacities", "")
@@ -188,7 +189,8 @@ class SimulationView(CuraView):
         if not self._layer_pass:
             # Currently the RenderPass constructor requires a size > 0
             # This should be fixed in RenderPass's constructor.
-            self._layer_pass = SimulationPass(1, 1)
+            enable_aa = bool(Application.getInstance().getPreferences().getValue("view/enable_layer_view_antialiasing"))
+            self._layer_pass = SimulationPass(1, 1, enable_aa)
             self._compatibility_mode = self._evaluateCompatibilityMode()
             self._layer_pass.setSimulationView(self)
         return self._layer_pass

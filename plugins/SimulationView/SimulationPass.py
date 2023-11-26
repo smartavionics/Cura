@@ -31,8 +31,8 @@ from .NozzleNode import NozzleNode
 
 
 class SimulationPass(RenderPass):
-    def __init__(self, width, height):
-        super().__init__("simulationview", width, height)
+    def __init__(self, width, height, enable_aa):
+        super().__init__("simulationview", width, height, 0, enable_aa)
 
         self._layer_shader = None
         self._layer_shader_2d = None

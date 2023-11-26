@@ -485,6 +485,21 @@ UM.PreferencesPage
             {
                 width: childrenRect.width
                 height: childrenRect.height
+                text: catalog.i18nc("@info:tooltip", "Should layer view be antialiased?")
+
+                CheckBox
+                {
+                    id: antialiasLayerViewCheckbox
+                    text: catalog.i18nc("@option:check", "Enable layer view antialiasing (restart required)")
+                    checked: boolCheck(UM.Preferences.getValue("view/enable_layer_view_antialiasing"))
+                    onCheckedChanged: UM.Preferences.setValue("view/enable_layer_view_antialiasing", checked)
+                }
+            }
+
+            UM.TooltipArea
+            {
+                width: childrenRect.width
+                height: childrenRect.height
                 text: catalog.i18nc("@info:tooltip", "Should Cura open at the location it was closed?")
 
                 CheckBox
