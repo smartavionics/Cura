@@ -1,4 +1,8 @@
 
+[4.20.16]
+* Bug fixes and improvements.
+- Reworked bridge skin lines orientation.
+
 [4.20.15]
 * New Features
 - Added Scattered Rectilinear infill pattern.
