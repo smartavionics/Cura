@@ -267,29 +267,30 @@ geometry =
  #if HAVE_POINTY_ENDS
             if (v_line_height[1] > 0.01)
             {
-                vertex_delta = normalize(vertex_delta);
+                vertex_delta = normalize(vec3(-vertex_delta.x, -vertex_delta.y, -vertex_delta.z));
                 vec4 offset_point = vec4(vertex_delta * v_line_width[1], 0.0);
 
-                outputVertex(0, -normal_h, -offset_h);
-                outputVertex(0, -vertex_delta, -offset_point);
-                outputVertex(0, normal_v, offset_v);
-                outputVertex(0, normal_h, offset_h);
-                EndPrimitive();
 
                 outputVertex(0, normal_h, offset_h);
-                outputVertex(0, -vertex_delta, -offset_point);
-                outputVertex(0, -normal_v, -offset_v);
+                outputVertex(0, normal_v, offset_point);
+                outputVertex(0, normal_v, offset_v);
                 outputVertex(0, -normal_h, -offset_h);
+                EndPrimitive();
+
+                outputVertex(0, -normal_h, -offset_h);
+                outputVertex(0, -normal_v, offset_point);
+                outputVertex(0, -normal_v, -offset_v);
+                outputVertex(0, normal_h, offset_h);
                 EndPrimitive();
 
                 outputVertex(1, -normal_h, -offset_h);
-                outputVertex(1, vertex_delta, offset_point);
+                outputVertex(1, normal_v, -offset_point);
                 outputVertex(1, normal_v, offset_v);
                 outputVertex(1, normal_h, offset_h);
                 EndPrimitive();
 
                 outputVertex(1, normal_h, offset_h);
-                outputVertex(1, vertex_delta, offset_point);
+                outputVertex(1, -normal_v, -offset_point);
                 outputVertex(1, -normal_v, -offset_v);
                 outputVertex(1, -normal_h, -offset_h);
                 EndPrimitive();
