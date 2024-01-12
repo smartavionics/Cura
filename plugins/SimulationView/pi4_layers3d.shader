@@ -204,13 +204,7 @@ geometry =
 
     layout(lines) in;
 
- #define HAVE_POINTY_ENDS 0
-
- #if HAVE_POINTY_ENDS
-    layout(triangle_strip, max_vertices = 31) out;
- #else
     layout(triangle_strip, max_vertices = 15) out;
- #endif
 
     in lowp vec4 v_color[];
     in mediump float v_line_width[];
@@ -263,38 +257,6 @@ geometry =
             outputEdge(-normal_v, -offset_v);
             outputEdge(-normal_h, -offset_h);
             EndPrimitive();
-
- #if HAVE_POINTY_ENDS
-            if (v_line_height[1] > 0.01)
-            {
-                vertex_delta = normalize(vertex_delta);
-                vec4 offset_point = vec4(vertex_delta * v_line_width[1], 0.0);
-
-                outputVertex(0, -normal_h, -offset_h);
-                outputVertex(0, -vertex_delta, -offset_point);
-                outputVertex(0, normal_v, offset_v);
-                outputVertex(0, normal_h, offset_h);
-                EndPrimitive();
-
-                outputVertex(0, normal_h, offset_h);
-                outputVertex(0, -vertex_delta, -offset_point);
-                outputVertex(0, -normal_v, -offset_v);
-                outputVertex(0, -normal_h, -offset_h);
-                EndPrimitive();
-
-                outputVertex(1, -normal_h, -offset_h);
-                outputVertex(1, vertex_delta, offset_point);
-                outputVertex(1, normal_v, offset_v);
-                outputVertex(1, normal_h, offset_h);
-                EndPrimitive();
-
-                outputVertex(1, normal_h, offset_h);
-                outputVertex(1, vertex_delta, offset_point);
-                outputVertex(1, -normal_v, -offset_v);
-                outputVertex(1, -normal_h, -offset_h);
-                EndPrimitive();
-            }
- #endif
 
             if ((u_show_starts == 1) && (v_prev_line_type[0] != 1.0) && (v_line_type[0] == 1.0)) {
                 float w = v_line_width[1] * 1.1;
