@@ -130,6 +130,7 @@ class SimulationView(CuraView):
         self._only_show_top_layers = bool(Application.getInstance().getPreferences().getValue("view/only_show_top_layers"))
         self._compatibility_mode = self._evaluateCompatibilityMode()
         self._have_gles_geometry_shader = False
+        self._use_complex_pi4_shader = False
 
         self._wireprint_warning_message = Message(catalog.i18nc("@info:status",
                                                                 "Cura does not accurately display layers when Wire Printing is enabled."),
@@ -624,6 +625,11 @@ class SimulationView(CuraView):
                 return True
             if event.key == KeyEvent.DownKey:
                 self.setLayer(self._current_layer_num - amount)
+                return True
+            if event.key == KeyEvent.SpaceKey:
+                self._use_complex_pi4_shader = not self._use_complex_pi4_shader
+                self._layer_pass._layer_shader = None
+                self.currentLayerNumChanged.emit() # trigger redraw
                 return True
 
         if event.type == Event.ViewActivateEvent:

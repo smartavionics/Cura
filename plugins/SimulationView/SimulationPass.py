@@ -71,7 +71,10 @@ class SimulationPass(RenderPass):
                 shadow_shader_filename = "layers_shadow.shader"
             elif self._pi4_shaders:
                 # use simplified shaders that perform better on the PI 4
-                shader_filename = "pi4_layers3d.shader"
+                if self._layer_view._use_complex_pi4_shader:
+                    shader_filename = "pi4_complex_layers3d.shader"
+                else:
+                    shader_filename = "pi4_layers3d.shader"
                 shadow_shader_filename = "pi4_layers2d_shadow.shader"
                 self._layer_shader_2d = OpenGL.getInstance().createShaderProgram(os.path.join(PluginRegistry.getInstance().getPluginPath("SimulationView"), "pi4_layers2d.shader"))
             else:
