@@ -113,6 +113,7 @@ class SimulationView(CuraView):
         Application.getInstance().getPreferences().addPreference("view/only_show_top_layers", False)
         Application.getInstance().getPreferences().addPreference("view/force_layer_view_compatibility_mode", False)
         Application.getInstance().getPreferences().addPreference("view/enable_layer_view_antialiasing", False)
+        Application.getInstance().getPreferences().addPreference("view/enable_pi5_layer_shader", False)
 
         Application.getInstance().getPreferences().addPreference("layerview/layer_view_type", 1)  # Default to "Line Type".
         Application.getInstance().getPreferences().addPreference("layerview/extruder_opacities", "")
@@ -130,7 +131,7 @@ class SimulationView(CuraView):
         self._only_show_top_layers = bool(Application.getInstance().getPreferences().getValue("view/only_show_top_layers"))
         self._compatibility_mode = self._evaluateCompatibilityMode()
         self._have_gles_geometry_shader = False
-        self._use_pi5_layer_shader = False
+        self._use_pi5_layer_shader = bool(Application.getInstance().getPreferences().getValue("view/enable_pi5_layer_shader"))
 
         self._wireprint_warning_message = Message(catalog.i18nc("@info:status",
                                                                 "Cura does not accurately display layers when Wire Printing is enabled."),
@@ -633,6 +634,7 @@ class SimulationView(CuraView):
                         self._use_pi5_layer_shader = not self._use_pi5_layer_shader
                         self._layer_pass._layer_shader = None
                         self.currentLayerNumChanged.emit() # trigger redraw
+                        Application.getInstance().getPreferences().setValue("view/enable_pi5_layer_shader", self._use_pi5_layer_shader)
                         return True
                 except Exception:
                     pass
