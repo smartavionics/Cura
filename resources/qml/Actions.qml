@@ -94,8 +94,6 @@ Item
     Action
     {
         id: exitFullScreenAction
-        // Stop Esc key from exiting full screen mode
-        // shortcut: StandardKey.Cancel
         text: catalog.i18nc("@action:inmenu", "Exit Full Screen")
         iconName: "view-fullscreen"
     }
