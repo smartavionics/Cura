@@ -258,6 +258,10 @@ UM.MainWindow
                                 packageInstallDialog.icon = StandardIcon.Information;
                                 packageInstallDialog.open();
                             }
+                            else if (base.usingWayland && filename.toLowerCase().endsWith(".3mf"))
+                            {
+                                // ignore to avoid crash which only occurs when using Wayland
+                            }
                             else
                             {
                                 nonPackages.push(filename);
