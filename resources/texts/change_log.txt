@@ -1,4 +1,9 @@
 
+[4.20.17]
+* Bug fixes and improvements.
+- Fixed incorrect limit for radial lines in Discrete Lines infill.
+- Linux builds are now using a more recent Qt release to improve Wayland support.
+
 [4.20.16]
 * Bug fixes and improvements.
 - Reworked bridge skin lines orientation.
