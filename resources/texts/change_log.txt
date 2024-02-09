@@ -1,6 +1,7 @@
 
 [4.20.17]
 * Bug fixes and improvements.
+- Added Add Walls On Even Numbered Bottom Layers setting.
 - Fixed incorrect limit for radial lines in Discrete Lines infill.
 - Linux builds are now using a more recent Qt release to improve Wayland support.
 
