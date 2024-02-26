@@ -638,6 +638,14 @@ class SimulationView(CuraView):
                         return True
                 except Exception:
                     pass
+            if event.key == Qt.Key_Slash:
+                try:
+                    self._layer_pass.setUsingAA(not self._layer_pass.getUsingAA())
+                    self.currentLayerNumChanged.emit() # trigger redraw
+                    Logger.log("d", "Using anti-aliasing is " + str(self._layer_pass.getUsingAA()))
+                    return True
+                except Exception:
+                    pass
 
         if event.type == Event.ViewActivateEvent:
             # Start listening to changes.
