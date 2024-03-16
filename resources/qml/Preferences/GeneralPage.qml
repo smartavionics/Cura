@@ -485,12 +485,12 @@ UM.PreferencesPage
             {
                 width: childrenRect.width
                 height: childrenRect.height
-                text: catalog.i18nc("@info:tooltip", "Should layer view be antialiased?")
+                text: catalog.i18nc("@info:tooltip", "Should layer view be antialiased using MSAA?")
 
                 CheckBox
                 {
                     id: antialiasLayerViewCheckbox
-                    text: catalog.i18nc("@option:check", "Enable layer view antialiasing (restart required)")
+                    text: catalog.i18nc("@option:check", "Enable layer view MSAA (restart required, Ctrl-/ toggles its use once enabled)")
                     checked: boolCheck(UM.Preferences.getValue("view/enable_layer_view_antialiasing"))
                     onCheckedChanged: UM.Preferences.setValue("view/enable_layer_view_antialiasing", checked)
                 }
