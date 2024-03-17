@@ -12,12 +12,12 @@ from ..Script import Script
 from UM.Application import Application
 import re
 
-class AddCoolingProfile_MB(Script):
+class AddCoolingProfile(Script):
 
     def getSettingDataString(self):
         return """{
-            "name": "Advanced Cooling Fan Control MB",
-            "key": "AddCoolingProfile_MB",
+            "name": "Advanced Cooling Fan Control",
+            "key": "AddCoolingProfile",
             "metadata": {},
             "version": 2,
             "settings":
