@@ -25,10 +25,13 @@ class SuptIntMaterialChange(Script):
         super().initialize()
         mycura = CuraApplication.getInstance().getGlobalContainerStack()
         extruder = mycura.extruderList
+        extruder_material = str(extruder[0].material.getMetaDataEntry("material", ""))
+        self._instance.setProperty("model_str", "value", extruder_material)
         ext_count = int(mycura.getProperty("machine_extruder_count", "value"))
         machine_width = int(mycura.getProperty("machine_width", "value"))
         machine_depth = int(mycura.getProperty("machine_depth", "value"))
         machine_center_is_0 = str(mycura.getProperty("machine_center_is_zero", "value"))
+        
         if machine_center_is_0 == "True":
             self._instance.setProperty("park_x_max", "value", int(machine_width/2))
             self._instance.setProperty("park_y_max", "value", int(machine_depth/2))
@@ -46,12 +49,14 @@ class SuptIntMaterialChange(Script):
                 Logger.log("w", "[Supt Interface Mat'l Change]: Only T0 may be enabled.  The script will not run.")
                 Message(title = "[Support-Interface Mat'l Change]", text = "Only T0 (Extruder 1) may be enabled for this script to run.").show()
 
+        # Info message regarding rafts
         if str(mycura.getProperty("adhesion_type", "value")) == "raft":
             Message(title = "[Supt-Interface Material Change]", text = "When using a raft set the Raft Air Gap to 0.  Use the layer numbers in the Cura preview and the script will make the adjustments.").show()
-
+        
+        # Warning if Cura starts in One-At-A-Time mode
         if mycura.getProperty("print_sequence", "value") == "one_at_a_time":
             Message(title = "[Supt-Interface Material Change]", text = "Is not compatible with 'One-at-a-Time' mode.").show()
-
+            
     def getSettingDataString(self):
             return """{
             "name": "Support Interface Mat'l Change",
@@ -63,7 +68,7 @@ class SuptIntMaterialChange(Script):
                 "enable_support_interface_matl_change":
                 {
                     "label": "Enable Supt Int Mat'l Change",
-                    "description": "It must be enabled for it to work.  You can leave it active and turn this off and it will stay in the list but will not run.",
+                    "description": "It must be enabled for it to work.  You can leave it active and turn this off and it will stay in the list but will not run.  This script is not compatible with 'One-at-a-Time' mode.",
                     "type": "bool",
                     "default_value": true,
                     "enabled": true
@@ -287,7 +292,7 @@ class SuptIntMaterialChange(Script):
                     "description": "Add M300 line to beep at each pause.",
                     "type": "bool",
                     "default_value": true,
-                    "enabled": "pause_method != 'm600fil_change' and enable_support_interface_matl_change"
+                    "enabled": "enable_support_interface_matl_change"
                 },
                 "m118_add":
                 {
@@ -471,7 +476,7 @@ class SuptIntMaterialChange(Script):
             park_str = f"G0 F{round(float(speed_travel))} X{park_x} Y{park_y}; Move to park position\n"
         else:
             park_str = ""
-            
+
         ## Buzzer
         if self.getSettingValueByKey("m300_add"):
             m300_str = "M300 S400 P1000; Beep\n"
@@ -526,7 +531,7 @@ class SuptIntMaterialChange(Script):
         if purge_amt_model > 0 and enable_purge:
             purge_str_model += "G1 F" + str(round(float(nozzle_size) * 8.333) * 60) + " E" + str(purge_amt_model) + "; Purge\n"
         if not firmware_retract:
-            purge_str_model += "G1 F" + str(int(retract_speed)) + " E-" + str(retract_dist) + "; Retract\n"
+            purge_str_model += f"G1 F{retract_speed} E-{retract_dist} ; Retract\n"
         else:
             purge_str_model += "G10; Retract\n"
         purge_str_model += "M400; Complete all moves\n"
@@ -540,7 +545,7 @@ class SuptIntMaterialChange(Script):
         if purge_amt_interface > 0 and enable_purge:
             purge_str_interface += "G1 F" + str(round(float(nozzle_size) * 8.333) * 60) + " E" + str(purge_amt_interface) + "; Purge\n"
         if not firmware_retract:
-            purge_str_interface += "G1 F" + str(int(retract_speed)) + " E-" + str(retract_dist) + "; Retract\n"
+            purge_str_interface += f"G1 F{retract_speed} E-{retract_dist} ; Retract\n"
         else:
             purge_str_interface += "G10; Retract\n"
         purge_str_interface += "M400; Complete all moves\n"
