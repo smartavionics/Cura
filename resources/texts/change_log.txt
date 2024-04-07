@@ -4,6 +4,8 @@
 - If layer view antialiasing has been enabled, typing Ctrl-/ will toggle its use.
 - Upstream fix to stop Esc key from exiting fullscreen mode
 - Upstream fix that should stop the project name reverting to a previous name when buildplate is cleared.
+- Fixed some issues with variable width spiralized lines.
+- Moved FILAMENT_USED comment before TIME_ELAPSED comment in gcode.
 * New Features
 - Antialiasing is now used (if supported) for the prepare view.
 - Additional postprocessing scripts contributed by GregValiant.
