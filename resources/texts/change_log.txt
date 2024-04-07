@@ -1,4 +1,13 @@
 
+[4.20.18]
+* Bug fixes and improvements.
+- If layer view antialiasing has been enabled, typing Ctrl-/ will toggle its use.
+- Upstream fix to stop Esc key from exiting fullscreen mode
+- Upstream fix that should stop the project name reverting to a previous name when buildplate is cleared.
+* New Features
+- Antialiasing is now used (if supported) for the prepare view.
+- Additional postprocessing scripts contributed by GregValiant.
+
 [4.20.17]
 * Bug fixes and improvements.
 - Added Add Walls On Even Numbered Bottom Layers setting.
