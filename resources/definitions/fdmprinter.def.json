@@ -7544,6 +7544,16 @@
                     "limit_to_extruder": "wall_0_extruder_nr",
                     "settable_per_mesh": true
                 },
+               "magic_fuzzy_skin_layer_ranges":
+                {
+                    "label": "Fuzzy Skin Layer Ranges",
+                    "description": "Specify the layers to have fuzzy skin. Can be empty (fuzz all layers), a single number (max layer to be fuzzed) or one or more ranges of the form START-END separated by commas or spaces.",
+                    "type": "str",
+                    "default_value": "",
+                    "enabled": "magic_fuzzy_skin_enabled",
+                    "limit_to_extruder": "wall_0_extruder_nr",
+                    "settable_per_mesh": true
+               },
                "magic_fuzzy_skin_thickness":
                 {
                     "label": "Fuzzy Skin Thickness",
