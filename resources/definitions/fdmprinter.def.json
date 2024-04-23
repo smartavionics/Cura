@@ -1617,10 +1617,24 @@
                         "lines": "Lines",
                         "concentric": "Concentric",
                         "hilbert": "Hilbert Curve",
+                        "wave_triangle": "Triangular Wave",
                         "zigzag": "Zig Zag"
                     },
                     "default_value": "lines",
                     "enabled": "top_layers > 0 or bottom_layers > 0",
+                    "limit_to_extruder": "top_bottom_extruder_nr",
+                    "settable_per_mesh": true
+                },
+                "skin_wave_amplitude":
+                {
+                    "label": "Skin Wave Pattern Amplitude",
+                    "description": "The skin wave pattern amplitude (zero-peak).",
+                    "type": "float",
+                    "unit": "mm",
+                    "default_value": 5,
+                    "minimum_value": "0.001",
+                    "value": "skin_line_width * 5",
+                    "enabled": "top_bottom_pattern == 'wave_triangle' or top_bottom_pattern_0 == 'wave_triangle' or roofing_pattern == 'wave_triangle'",
                     "limit_to_extruder": "top_bottom_extruder_nr",
                     "settable_per_mesh": true
                 },
@@ -1634,6 +1648,7 @@
                         "lines": "Lines",
                         "concentric": "Concentric",
                         "hilbert": "Hilbert Curve",
+                        "wave_triangle": "Triangular Wave",
                         "zigzag": "Zig Zag"
                     },
                     "default_value": "lines",
@@ -1652,6 +1667,7 @@
                         "lines": "Lines",
                         "concentric": "Concentric",
                         "hilbert": "Hilbert Curve",
+                        "wave_triangle": "Triangular Wave",
                         "zigzag": "Zig Zag"
                     },
                     "default_value": "lines",
