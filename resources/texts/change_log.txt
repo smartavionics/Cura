@@ -1,8 +1,19 @@
+[4.20.19]
+* Bug fixes and improvements.
+Ignore bridging when printing fuzzy walls.
+No longer uses combing for short travel moves over concentric skin.
+Remove extra shrink of discrete lines infill area when connecting infill lines.
+* New Features
+Added Sine Wave and Triangular Wave infill patterns.
+Added Triangular Wave skin pattern.
+Added Skin Wave Amplitude and Infill Wave Amplitude and Infill Wave Wavelength settings.
+Added Fuzzy Skin Outside Only Heuristics setting.
+Added Fuzzy Skin Layer Ranges setting.
 
 [4.20.18]
 * Bug fixes and improvements.
 - If layer view antialiasing has been enabled, typing Ctrl-/ will toggle its use.
-- Upstream fix to stop Esc key from exiting fullscreen mode
+- Upstream fix to stop Esc key from exiting fullscreen mode.
 - Upstream fix that should stop the project name reverting to a previous name when buildplate is cleared.
 - Fixed some issues with variable width spiralized lines.
 - Moved FILAMENT_USED comment before TIME_ELAPSED comment in gcode.
