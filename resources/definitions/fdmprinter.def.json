@@ -4306,6 +4306,32 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
+                "infill_extra_prime_amount_per_mm":
+                {
+                    "label": "Infill Prime Amount Per MM Traveled",
+                    "description": "For travel moves before printing infill, add this much extra material per mm of travel.",
+                    "unit": "mm³",
+                    "type": "float",
+                    "default_value": 0,
+                    "minimum_value": "0",
+                    "maximum_value_warning": "0.1",
+                    "enabled": "retraction_enable",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
+                "infill_extra_prime_travel_power":
+                {
+                    "label": "Infill Prime Travel Power",
+                    "description": "Raise the distance travelled before printing infill to this power. Values > 1 will provide a non-linear increase in travel distance when computing the prime volume for travel moves before infill.",
+                    "unit": "",
+                    "type": "float",
+                    "default_value": 1,
+                    "minimum_value": "1",
+                    "maximum_value_warning": "2",
+                    "enabled": "retraction_enable",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
                 "retraction_min_travel":
                 {
                     "label": "Retraction Minimum Travel",
