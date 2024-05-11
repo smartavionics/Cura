@@ -1,3 +1,9 @@
+[4.20.20]
+* Bug fixes and improvements.
+Added Infill Prime Amount Per MM Traveled and Infill Prime Travel Power settings to counteract the underextrusion that can occur at the start of infill.
+* New Features
+Added Honeycomb 3D infill pattern.
+
 [4.20.19]
 * Bug fixes and improvements.
 Ignore bridging when printing fuzzy walls.
