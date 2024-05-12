@@ -1,6 +1,7 @@
 [4.20.20]
 * Bug fixes and improvements.
 Added Infill Prime Amount Per MM Traveled and Infill Prime Travel Power settings to counteract the underextrusion that can occur at the start of infill.
+When exactly 2 Infill Line Directions are specified for the Sine Wave and Triangular Wave infill patterns, the angle used is interpolated over z between those values.
 * New Features
 Added Honeycomb 3D infill pattern.
 
