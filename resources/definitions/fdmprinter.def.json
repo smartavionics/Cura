@@ -4328,7 +4328,7 @@
                     "default_value": 1,
                     "minimum_value": "1",
                     "maximum_value_warning": "2",
-                    "enabled": "retraction_enable",
+                    "enabled": "retraction_enable and infill_extra_prime_amount_per_mm > 0",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
