@@ -4308,7 +4308,7 @@
                 },
                 "infill_extra_prime_amount_per_mm":
                 {
-                    "label": "Infill Prime Amount Per MM Traveled",
+                    "label": "Infill Prime Amount Per MM Travelled",
                     "description": "For travel moves before printing infill, add this much extra material per mm of travel.",
                     "unit": "mm³",
                     "type": "float",
