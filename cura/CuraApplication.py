@@ -16,6 +16,7 @@ from PyQt5.QtWidgets import QMessageBox
 import UM.Util
 import cura.Settings.cura_empty_instance_containers
 from UM.Application import Application
+from UM.Backend.Backend import Backend, BackendState
 from UM.Decorators import override
 from UM.FlameProfiler import pyqtSlot
 from UM.Logger import Logger
@@ -2055,6 +2056,10 @@ class CuraApplication(QtApplication):
 
         # Also remove nodes with LayerData
         self._removeNodesWithLayerData(only_selectable = only_selectable)
+
+        # reset backend state to hopefully fix slice button not visible bug that occurs when slicing
+        # after a gcode file has been loaded and then the build plate is cleared and a model/project loaded
+        self.getBackend().setState(BackendState.NotStarted)
 
     def _removeNodesWithLayerData(self, only_selectable: bool = True) -> None:
         Logger.log("i", "Clearing scene")
