@@ -1,0 +1,32 @@
+{
+
+    "cura": {
+
+        "Windows": {
+
+            "major": 4,
+
+            "minor": 20,
+
+            "revision": 20,
+
+            "url": "https://github.com/smartavionics/Cura/releases/tag/4.20.20"
+
+        },
+
+        "Linux": {
+
+            "major": 4,
+
+            "minor": 20,
+
+            "revision": 20,
+
+            "url": "https://github.com/smartavionics/Cura/releases/tag/4.20.20"
+
+        }
+
+    }
+
+} 
+
