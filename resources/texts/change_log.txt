@@ -1,3 +1,9 @@
+[4.20.21]
+* Bug fixes and improvements.
+Added Vertex Meld Distance setting to allow a previously hard-coded value be altered - vertices that are closer than this distance are considered to be the same vertex.
+Possibly fixed the problem where the slice button is missing when a model/project is loaded after a g-code file has been loaded.
+Now checks for new smartavionics releases rather than new Ultimaker releases.
+
 [4.20.20]
 * Bug fixes and improvements.
 Added Infill Prime Amount Per MM Travelled and Infill Prime Travel Power settings to counteract the underextrusion that can occur at the start of infill.
