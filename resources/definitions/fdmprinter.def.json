@@ -6959,6 +6959,16 @@
                     "minimum_value": "0.001",
                     "minimum_value_warning": "0.01",
                     "maximum_value_warning": "0.3",
+                    "settable_per_meshgroup": true
+                },
+                "vertex_meld_distance":
+                {
+                    "label": "Vertex Meld Distance",
+                    "description": "Consider vertices no further apart than this distance to be the same vertex.",
+                    "type": "float",
+                    "unit": "mm",
+                    "default_value": 0.03,
+                    "minimum_value": "0.005",
                     "settable_per_mesh": true
                 }
             }
