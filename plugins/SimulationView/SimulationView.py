@@ -131,7 +131,13 @@ class SimulationView(CuraView):
         self._only_show_top_layers = bool(Application.getInstance().getPreferences().getValue("view/only_show_top_layers"))
         self._compatibility_mode = self._evaluateCompatibilityMode()
         self._have_gles_geometry_shader = False
-        self._use_pi5_layer_shader = bool(Application.getInstance().getPreferences().getValue("view/enable_pi5_layer_shader"))
+        self._on_pi5 = False
+        try:
+            gpuType = OpenGL.getInstance().getGPUType().split()
+            self._on_pi5 = gpuType[0] == "V3D" and float(gpuType[1]) >= 7.1
+        except Exception:
+            pass
+        self._use_pi5_layer_shader = self._on_pi5 and bool(Application.getInstance().getPreferences().getValue("view/enable_pi5_layer_shader"))
 
         self._wireprint_warning_message = Message(catalog.i18nc("@info:status",
                                                                 "Cura does not accurately display layers when Wire Printing is enabled."),
@@ -629,8 +635,7 @@ class SimulationView(CuraView):
                 return True
             if event.key == KeyEvent.SpaceKey:
                 try:
-                    gpuType = OpenGL.getInstance().getGPUType().split()
-                    if gpuType[0] == "V3D" and float(gpuType[1]) >= 7.1:
+                    if self._on_pi5:
                         self._use_pi5_layer_shader = not self._use_pi5_layer_shader
                         self._layer_pass._layer_shader = None
                         self.currentLayerNumChanged.emit() # trigger redraw
