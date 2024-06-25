@@ -645,6 +645,13 @@ class SimulationView(CuraView):
                     return True
                 except Exception:
                     pass
+            if event.key == Qt.Key_Period:
+                try:
+                    self._layer_pass._layer_shader = None # causes shaders to be reloaded
+                    self.currentLayerNumChanged.emit() # trigger redraw
+                    return True
+                except Exception:
+                    pass
 
         if event.type == Event.ViewActivateEvent:
             # Start listening to changes.
