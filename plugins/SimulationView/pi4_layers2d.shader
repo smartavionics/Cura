@@ -251,8 +251,6 @@ geometry =
 
         vec3 view_delta = normalize(u_viewPosition - (v_vertex[0] + v_vertex[1]) * 0.5); // camera to middle of line
 
-        float h_comp = length(view_delta.xz); // horizontal component
-        float v_comp = 1.0 - h_comp; // vertical component
         float x_sign = -1.0;
 
         // fiddle with sign of horizontal offset so that primitive is always tilting towards viewer
@@ -263,10 +261,8 @@ geometry =
             x_sign *= -1.0;
         }
 
-        // x_offset is max when looking from above/below (i.e. v_comp is near 1.0) or when looking along line segment
-        float x_offset = v_line_width[1] * max(v_comp, abs(dot(normalize(v_vertex[1] - v_vertex[0]), view_delta)));
-        // y_offset is max when looking from side
-        float y_offset = v_line_height[1] * h_comp;
+        float x_offset = v_line_width[1];
+        float y_offset = v_line_height[1];
 
         outputVertex(0, -view_delta, -x_sign * x_offset, -y_offset);
         outputVertex(1, -view_delta, -x_sign * x_offset, -y_offset);
