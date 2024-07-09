@@ -1698,10 +1698,10 @@
                 "monotonic_skin_lines":
                 {
                     "label": "Monotonic Skin Lines (mb-master)",
-                    "description": "Print the skin lines monotonically. This may improve the visual quality of the skin. Only applied when the 'Lines' skin pattern is used.",
+                    "description": "Print the skin lines monotonically. This may improve the visual quality of the skin. Only applied when the 'Lines' or 'Zig Zag' skin patterns are used.",
                     "type": "bool",
                     "default_value": false,
-                    "enabled": "not skin_monotonic and not ironing_monotonic and not roofing_monotonic and (top_layers > 0 or bottom_layers > 0) and (top_bottom_pattern == 'lines' or top_bottom_pattern_0 == 'lines' or roofing_pattern == 'lines')",
+                    "enabled": "not skin_monotonic and not ironing_monotonic and not roofing_monotonic and (top_layers > 0 or bottom_layers > 0) and (top_bottom_pattern == 'lines' or top_bottom_pattern_0 == 'lines' or roofing_pattern == 'lines' or top_bottom_pattern == 'zigzag' or top_bottom_pattern_0 == 'zigzag' or roofing_pattern == 'zigzag')",
                     "limit_to_extruder": "top_bottom_extruder_nr",
                     "settable_per_mesh": true,
                     "children":
@@ -1712,7 +1712,7 @@
                               "description": "Print the skin lines monotonically in reverse order.",
                               "type": "bool",
                               "default_value": false,
-                              "enabled": "not skin_monotonic and not ironing_monotonic and not roofing_monotonic and monotonic_skin_lines and (top_layers > 0 or bottom_layers > 0) and (top_bottom_pattern == 'lines' or top_bottom_pattern_0 == 'lines' or roofing_pattern == 'lines')",
+                              "enabled": "not skin_monotonic and not ironing_monotonic and not roofing_monotonic and monotonic_skin_lines and (top_layers > 0 or bottom_layers > 0) and (top_bottom_pattern == 'lines' or top_bottom_pattern_0 == 'lines' or roofing_pattern == 'lines' or top_bottom_pattern == 'zigzag' or top_bottom_pattern_0 == 'zigzag' or roofing_pattern == 'zigzag')",
                               "limit_to_extruder": "top_bottom_extruder_nr",
                               "settable_per_mesh": true
                           }
