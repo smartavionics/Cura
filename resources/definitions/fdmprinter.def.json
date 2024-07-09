@@ -1181,7 +1181,7 @@
                 "two_pass_outer_inset":
                 {
                     "label": "Two Pass Outer Wall",
-                    "description": "Prints the outer wall as two half-height walls stacked.",
+                    "description": "Prints the outer wall as two half-height walls stacked vertically (bug alert!, the layer view only shows the top half-height wall).",
                     "type": "bool",
                     "default_value": false,
                     "enabled": "wall_0_extruder_nr == wall_x_extruder_nr and outer_inset_first",
