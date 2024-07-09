@@ -1178,6 +1178,15 @@
                     "enabled": "wall_0_extruder_nr == wall_x_extruder_nr",
                     "settable_per_mesh": true
                 },
+                "two_pass_outer_inset":
+                {
+                    "label": "Two Pass Outer Wall",
+                    "description": "Prints the outer wall as two half-height walls stacked.",
+                    "type": "bool",
+                    "default_value": false,
+                    "enabled": "wall_0_extruder_nr == wall_x_extruder_nr and outer_inset_first",
+                    "settable_per_mesh": true
+                },
                 "alternate_extra_perimeter":
                 {
                     "label": "Alternate Extra Wall",
