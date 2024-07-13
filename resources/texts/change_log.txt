@@ -1,3 +1,12 @@
+[4.20.22]
+* Bug fixes and improvements.
+Now provides skin edge support when using multi-layer infill.
+Now provides monotonic ordering when printing zig-zag skin pattern.
+Now outputs extruder printing and standby temperatures as gcode comments.
+Reworked layer view shader on Raspberry Pi builds.
+* New Features
+Added Two Pass Outer Wall setting to print outer wall as two half-height walls stacked vertically.
+
 [4.20.21]
 * Bug fixes and improvements.
 Added Vertex Meld Distance setting to allow a previously hard-coded value be altered - vertices that are closer than this distance are considered to be the same vertex.
