@@ -132,12 +132,6 @@ class SimulationView(CuraView):
         self._compatibility_mode = self._evaluateCompatibilityMode()
         self._have_gles_geometry_shader = False
         self._on_pi5 = False
-        try:
-            gpuType = OpenGL.getInstance().getGPUType().split()
-            self._on_pi5 = gpuType[0] == "V3D" and float(gpuType[1]) >= 7.1
-        except Exception:
-            pass
-        self._use_pi5_layer_shader = self._on_pi5 and bool(Application.getInstance().getPreferences().getValue("view/enable_pi5_layer_shader"))
 
         self._wireprint_warning_message = Message(catalog.i18nc("@info:status",
                                                                 "Cura does not accurately display layers when Wire Printing is enabled."),
@@ -195,6 +189,14 @@ class SimulationView(CuraView):
 
     def getSimulationPass(self) -> SimulationPass:
         if not self._layer_pass:
+            # moved from __init__() as OpenGL hasn't yet been setup when it is called
+            try:
+                gpuType = OpenGL.getInstance().getGPUType().split()
+                self._on_pi5 = gpuType[0] == "V3D" and float(gpuType[1]) >= 7.1
+            except Exception as e:
+                Logger.log("e", str(e))
+            self._use_pi5_layer_shader = self._on_pi5 and bool(Application.getInstance().getPreferences().getValue("view/enable_pi5_layer_shader"))
+
             # Currently the RenderPass constructor requires a size > 0
             # This should be fixed in RenderPass's constructor.
             enable_aa = bool(Application.getInstance().getPreferences().getValue("view/enable_layer_view_antialiasing"))
