@@ -4343,11 +4343,12 @@
                 },
                 "infill_extra_prime_amount_per_mm":
                 {
-                    "label": "Infill Prime Amount Per MM Travelled",
+                    "label": "Infill Extra Prime Amount Per MM Travelled",
                     "description": "For travel moves before printing infill, add this much extra material per mm of travel.",
                     "unit": "mm³",
                     "type": "float",
                     "default_value": 0,
+                    "value": "retraction_extra_prime_amount_per_mm",
                     "minimum_value": "0",
                     "maximum_value_warning": "0.1",
                     "enabled": "retraction_enable",
@@ -4356,12 +4357,13 @@
                 },
                 "infill_extra_prime_travel_power":
                 {
-                    "label": "Infill Prime Travel Power",
+                    "label": "Infill Extra Prime Travel Power",
                     "description": "Raise the distance travelled before printing infill to this power. Values > 1 will provide a non-linear increase in travel distance when computing the prime volume for travel moves before infill.",
                     "unit": "",
                     "type": "float",
                     "default_value": 1,
-                    "minimum_value": "1",
+                    "value": "retraction_extra_prime_travel_power",
+                    "minimum_value": "0.1",
                     "maximum_value_warning": "2",
                     "enabled": "retraction_enable and infill_extra_prime_amount_per_mm > 0",
                     "settable_per_mesh": false,
