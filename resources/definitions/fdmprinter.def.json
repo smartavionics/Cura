@@ -2566,6 +2566,36 @@
                               "limit_to_extruder": "infill_extruder_nr",
                               "enabled": "infill_sparse_density > 0",
                               "settable_per_mesh": true
+                         },
+                         "skin_edge_support_density":
+                         {
+                             "label": "Skin Edge Support Density",
+                              "description": "Density of infill on layer immediately below skin edge. When non-zero, the area below a skin edge is completely filled with Zig Zag infill.",
+                              "unit": "%",
+                              "type": "float",
+                              "default": 0,
+                              "minimum_value": "0",
+                              "maximum_value": "100",
+                              "limit_to_extruder": "infill_extruder_nr",
+                              "enabled": "infill_sparse_density > 0 and skin_edge_support_layers == 1",
+                              "settable_per_mesh": true,
+                              "children":
+                              {
+                                  "skin_edge_support_line_distance":
+                                  {
+                                      "label": "Skin Edge Support Line Distance",
+                                      "description": "Distance between the infill lines on the layer immediately below skin.",
+                                      "unit": "mm",
+                                      "type": "float",
+                                      "default": 2,
+                                      "minimum_value": "0",
+                                      "minimum_value_warning": "infill_line_width",
+                                      "value": "0 if skin_edge_support_density == 0 else (infill_line_width * 100) / skin_edge_support_density",
+                                      "limit_to_extruder": "infill_extruder_nr",
+                                      "enabled": "infill_sparse_density > 0 and skin_edge_support_layers == 1",
+                                      "settable_per_mesh": true
+                                  }
+                              }
                          }
                     }
                 },
