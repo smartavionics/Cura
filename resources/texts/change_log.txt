@@ -1,3 +1,13 @@
+[4.20.23]
+* Bug fixes and improvements.
+Renamed Infill Prime Amount Per MM Travelled and Infill Prime Travel Power settings to be Infill Extra Prime Amount Per MM Travelled and Infill Extra Prime Travel Power.
+Improve zig-zag skin monotonic ordering.
+Other minor fixes.
+* New Features
+Added Retraction Extra Prime Amount Per MM Travelled and Retraction Extra Prime Travel Power settings to counteract the underextrusion that can occur at the start of printing anything except infill.
+Added Skin Edge Support Density and Skin Edge Support Line Distance settings to completely fill infill layer below skin regions. Visible when Skin Edge Support Layers is set to 1.
+Added Z Hop Only Over Roofing setting to cause travel moves over visible skin areas to be z hopped. Visible when Z Hop When Retracted is off.
+
 [4.20.22]
 * Bug fixes and improvements.
 Now provides skin edge support when using multi-layer infill.
