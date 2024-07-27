@@ -4601,6 +4601,15 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
+                "retraction_hop_over_roofing": {
+                    "label": "Z Hop Only Over Roofing",
+                    "description": "Z hop only when travel moves are crossing roofing (visible top skins).",
+                    "type": "bool",
+                    "default_value": false,
+                    "enabled": "retraction_enable and not retraction_hop_enabled",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
                 "retraction_hop": {
                     "label": "Z Hop Height",
                     "description": "The height difference when performing a Z Hop.",
@@ -4609,7 +4618,7 @@
                     "default_value": 1,
                     "minimum_value_warning": "0",
                     "maximum_value_warning": "10",
-                    "enabled": "retraction_enable and (retraction_hop_enabled or retraction_hop_initial_layers > 0)",
+                    "enabled": "retraction_enable and (retraction_hop_enabled or retraction_hop_initial_layers > 0 or retraction_hop_over_roofing)",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
