@@ -300,7 +300,7 @@ fragment =
 
     void main()
     {
-        vec4 colour = u_minimumAlbedo + f_color * ((gl_FrontFacing) ? (dot(f_normal, normalize(u_lightPosition)) + 0.2) :  0.7);
+        vec4 colour = u_minimumAlbedo + f_color * ((gl_FrontFacing) ? (dot(normalize(f_normal), normalize(u_lightPosition)) + 0.2) :  0.7);
         colour.a = f_color.a;
         frag_color = colour;
     }
