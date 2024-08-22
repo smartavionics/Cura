@@ -264,6 +264,8 @@ geometry =
         float x_offset = v_line_width[1];
         float y_offset = v_line_height[1];
 
+        view_delta = -view_delta;
+
         outputVertex(0, -view_delta, -x_sign * x_offset, -y_offset);
         outputVertex(1, -view_delta, -x_sign * x_offset, -y_offset);
         if (u_resolution > 0) {
