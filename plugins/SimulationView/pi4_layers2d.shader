@@ -266,6 +266,12 @@ geometry =
 
         view_delta = -view_delta;
 
+        if (u_resolution == 0 && abs(view_delta.y) > 0.3) {
+            // when looking from above or below, shrink the element as this makes the layers more visible
+            x_offset *= 0.6;
+            y_offset *= 0.6;
+        }
+
         outputVertex(0, -view_delta, -x_sign * x_offset, -y_offset);
         outputVertex(1, -view_delta, -x_sign * x_offset, -y_offset);
         if (u_resolution > 0) {
