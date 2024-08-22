@@ -57,6 +57,14 @@ class SimulationPass(RenderPass):
                 self._max_3d_elements = int(os.environ["CURA_MAX_LAYER_VIEW_3D_ELEMENTS"])
             except:
                 pass
+
+        self._resolution = None
+        if "CURA_LAYER_VIEW_RESOLUTION" in os.environ:
+            try:
+                self._resolution = int(os.environ["CURA_LAYER_VIEW_RESOLUTION"])
+            except:
+                pass
+
         self._scene.sceneChanged.connect(self._onSceneChanged)
 
     def setSimulationView(self, layerview):
@@ -257,13 +265,16 @@ class SimulationPass(RenderPass):
                         else:
                             self._current_shader = self._layer_shader_2d
                             resolution = 1
-                            camera = self._scene.getActiveCamera()
-                            if camera.isPerspective():
-                                if camera.getWorldPosition().length() > 200.0:
-                                    resolution = 0
+                            if self._resolution is None:
+                                camera = self._scene.getActiveCamera()
+                                if camera.isPerspective():
+                                    if camera.getWorldPosition().length() > 200.0:
+                                        resolution = 0
+                                else:
+                                    if camera.getZoomFactor() > -0.45:
+                                        resolution = 0
                             else:
-                                if camera.getZoomFactor() > -0.45:
-                                    resolution = 0
+                                resolution = self._resolution
                             self._current_shader.setUniformValue("u_resolution", resolution)
 
                     if self._pi4_shaders:
