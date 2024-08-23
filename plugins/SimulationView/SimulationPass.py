@@ -73,6 +73,8 @@ class SimulationPass(RenderPass):
         self._pi4_shaders = layerview._have_gles_geometry_shader
         if self._max_3d_elements is None:
             self._max_3d_elements = 500000 * (2 if self._layer_view._on_pi5 else 1)
+        if self._resolution is None and self._layer_view._on_pi5:
+            self._resolution = 1
 
     def render(self):
         if not self._layer_shader:
