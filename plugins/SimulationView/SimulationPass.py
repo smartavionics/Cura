@@ -51,7 +51,7 @@ class SimulationPass(RenderPass):
         self._layer_view = None
         self._compatibility_mode = None
 
-        self._max_3d_elements = 500000
+        self._max_3d_elements = None
         if "CURA_MAX_LAYER_VIEW_3D_ELEMENTS" in os.environ:
             try:
                 self._max_3d_elements = int(os.environ["CURA_MAX_LAYER_VIEW_3D_ELEMENTS"])
@@ -71,6 +71,8 @@ class SimulationPass(RenderPass):
         self._layer_view = layerview
         self._compatibility_mode = layerview.getCompatibilityMode()
         self._pi4_shaders = layerview._have_gles_geometry_shader
+        if self._max_3d_elements is None:
+            self._max_3d_elements = 500000 * (2 if self._layer_view._on_pi5 else 1)
 
     def render(self):
         if not self._layer_shader:
