@@ -41,8 +41,8 @@ vertex =
     out mediump float v_prev_line_type;
     out mediump float v_line_type;
 
-    out lowp vec4 f_color;
-    out lowp vec3 f_normal;
+    //out lowp vec4 f_color;
+    //out lowp vec3 f_normal;
 
     vec4 feedrateGradientColor(float abs_value, float min_value, float max_value)
     {
@@ -189,7 +189,7 @@ vertex =
         v_line_type = a_line_type;
 
         // for testing without geometry shader
-        f_color = v_color;
+        //f_color = v_color;
         //f_normal = v_normal;
     }
 
