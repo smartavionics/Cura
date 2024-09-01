@@ -1,3 +1,9 @@
+[4.20.24]
+* Bug fixes and improvements.
+Further tweaks to layer view shader on Raspberry Pi builds.
+Reverse bridge skins printing order which will help adhesion when bridges have multiple layers.
+Fix combing when Avoid Printed Parts When Travelling is enabled.
+
 [4.20.23]
 * Bug fixes and improvements.
 Renamed Infill Prime Amount Per MM Travelled and Infill Prime Travel Power settings to be Infill Extra Prime Amount Per MM Travelled and Infill Extra Prime Travel Power.
