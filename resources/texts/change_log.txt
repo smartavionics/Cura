@@ -3,6 +3,7 @@
 Further tweaks to layer view shader on Raspberry Pi builds.
 Reverse bridge skins printing order which will help adhesion when bridges have multiple layers.
 Fix combing when Avoid Printed Parts When Travelling is enabled.
+Remove libwayland-egl.so.1 and libwayland-cursor.so.0 from appimage.
 
 [4.20.23]
 * Bug fixes and improvements.
