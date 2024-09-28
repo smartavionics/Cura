@@ -7066,6 +7066,16 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
                 },
+                "mesh_priority":
+                {
+                    "label": "Mesh Priority",
+                    "description": "Influences the order in which the models are printed in both 'one at a time' and 'all at once' modes. Models with higher priorities are printed first. This must be set per-model.",
+                    "default_value": 0,
+                    "value": "0",
+                    "minimum_value": "0",
+                    "type": "int",
+                    "settable_per_mesh": true
+                },
                 "print_sequence":
                 {
                     "label": "Print Sequence",
