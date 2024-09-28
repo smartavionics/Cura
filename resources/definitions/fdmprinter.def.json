@@ -7068,7 +7068,7 @@
                 },
                 "mesh_priority":
                 {
-                    "label": "Mesh Priority",
+                    "label": "Model Priority",
                     "description": "Influences the order in which the models are printed in both 'one at a time' and 'all at once' modes. Models with higher priorities are printed first. This must be set per-model.",
                     "default_value": 0,
                     "value": "0",

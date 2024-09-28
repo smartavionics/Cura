@@ -1,6 +1,6 @@
 [4.20.24]
 * New Features
-Added Mesh Priority setting to influence the order in which models are printed. Higher priority models are printed first. Works in both 'One at a time' and 'All at once' modes.
+Added Model Priority setting to influence the order in which models are printed. Higher priority models are printed first. Works in both 'One at a time' and 'All at once' modes.
 * Bug fixes and improvements.
 Further tweaks to layer view shader on Raspberry Pi builds.
 Reverse bridge skins printing order which will help adhesion when bridges have multiple layers.
