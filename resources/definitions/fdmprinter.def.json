@@ -7092,6 +7092,16 @@
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
                 },
+                "ignore_gantry_height":
+                {
+                    "label": "Ignore Gantry Height",
+                    "description": "When enabled, the height of the build volume is not reduced to Gantry Height when printing in 'One at a Time' mode. It is your responsibility to ensure collisions do not occur by suitable positioning and prioritisation of the models.",
+                    "type": "bool",
+                    "default_value": false,
+                    "enabled": "print_sequence == 'one_at_a_time'",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false
+                },
                 "infill_mesh":
                 {
                     "label": "Infill Mesh",

@@ -102,6 +102,12 @@ class BuildVolume(SceneNode):
             title = catalog.i18nc("@info:title", "Build Volume"),
             message_type = Message.MessageType.WARNING)
 
+        self._ignore_gantry_height_message = Message(catalog.i18nc("@info:status",
+                "The build volume height has NOT been reduced so it is your"
+                " responsibility to print models in an order that avoids collisions."),
+            title = catalog.i18nc("@info:title", "Build Volume"),
+            message_type = Message.MessageType.WARNING)
+
         self._global_container_stack = None  # type: Optional[GlobalStack]
 
         self._stack_change_timer = QTimer()
@@ -635,8 +641,13 @@ class BuildVolume(SceneNode):
 
             self._width = self._global_container_stack.getProperty("machine_width", "value")
             machine_height = self._global_container_stack.getProperty("machine_height", "value")
-            if self._global_container_stack.getProperty("print_sequence", "value") == "one_at_a_time" and len(self._scene_objects) > 1:
-                self._height = min(self._global_container_stack.getProperty("gantry_height", "value"), machine_height)
+            if self._height == machine_height and self._global_container_stack.getProperty("print_sequence", "value") == "one_at_a_time" and len(self._scene_objects) > 1:
+                if self._global_container_stack.getProperty("ignore_gantry_height", "value"):
+                    self._height = machine_height
+                    self._ignore_gantry_height_message.show()
+                else:
+                    self._height = min(self._global_container_stack.getProperty("gantry_height", "value"), machine_height)
+                    self._ignore_gantry_height_message.hide()
                 if self._height < machine_height:
                     self._build_volume_message.show()
                 else:
@@ -644,6 +655,7 @@ class BuildVolume(SceneNode):
             else:
                 self._height = self._global_container_stack.getProperty("machine_height", "value")
                 self._build_volume_message.hide()
+                self._ignore_gantry_height_message.hide()
             self._depth = self._global_container_stack.getProperty("machine_depth", "value")
             self._shape = self._global_container_stack.getProperty("machine_shape", "value")
 
@@ -675,10 +687,15 @@ class BuildVolume(SceneNode):
         update_extra_z_clearance = True
 
         for setting_key in self._changed_settings_since_last_rebuild:
-            if setting_key == "print_sequence":
+            if setting_key == "print_sequence" or setting_key == "ignore_gantry_height":
                 machine_height = self._global_container_stack.getProperty("machine_height", "value")
                 if self._application.getGlobalContainerStack().getProperty("print_sequence", "value") == "one_at_a_time" and len(self._scene_objects) > 1:
-                    self._height = min(self._global_container_stack.getProperty("gantry_height", "value"), machine_height)
+                    if self._global_container_stack.getProperty("ignore_gantry_height", "value"):
+                        self._height = machine_height
+                        self._ignore_gantry_height_message.show()
+                    else:
+                        self._height = min(self._global_container_stack.getProperty("gantry_height", "value"), machine_height)
+                        self._ignore_gantry_height_message.hide()
                     if self._height < machine_height:
                         self._build_volume_message.show()
                     else:
@@ -686,6 +703,7 @@ class BuildVolume(SceneNode):
                 else:
                     self._height = self._global_container_stack.getProperty("machine_height", "value")
                     self._build_volume_message.hide()
+                    self._ignore_gantry_height_message.hide()
                 update_disallowed_areas = True
 
             # sometimes the machine size or shape settings are adjusted on the active machine, we should reflect this
