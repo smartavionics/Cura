@@ -278,7 +278,14 @@ geometry =
 
         EndPrimitive();
 
-        if ((u_show_starts == 1) && (v_prev_line_type[0] != 1.0) && (v_line_type[0] == 1.0)) {
+ #if 1
+        if ((u_show_starts == 0) || (v_prev_line_type[0] == 1.0) || (v_line_type[0] != 1.0)) {
+            return;
+        }
+ #else
+        if ((u_show_starts == 1) && (v_prev_line_type[0] != 1.0) && (v_line_type[0] == 1.0))
+ #endif
+        {
             float w = v_line_width[1] * 1.1;
             float h = v_line_height[1];
 
