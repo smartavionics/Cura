@@ -235,42 +235,50 @@ geometry =
 
     void main()
     {
-        if (v_color[1].a != 0.0) {
+        if (v_color[1].a == 0.0) {
+            return;
+        }
 
-            viewProjectionMatrix = u_projectionMatrix * u_viewMatrix;
+        viewProjectionMatrix = u_projectionMatrix * u_viewMatrix;
 
-            vec3 vertex_delta = gl_in[1].gl_Position.xyz - gl_in[0].gl_Position.xyz;
-            vec3 normal_h = normalize(vec3(vertex_delta.z, vertex_delta.y, -vertex_delta.x));
-            vec3 normal_v = vec3(0.0, 1.0, 0.0);
-            vec4 offset_h = vec4(normal_h * v_line_width[1], 0.0);
-            vec4 offset_v = vec4(normal_v * v_line_height[1], 0.0);
+        vec3 vertex_delta = gl_in[1].gl_Position.xyz - gl_in[0].gl_Position.xyz;
+        vec3 normal_h = normalize(vec3(vertex_delta.z, vertex_delta.y, -vertex_delta.x));
+        vec3 normal_v = vec3(0.0, 1.0, 0.0);
+        vec4 offset_h = vec4(normal_h * v_line_width[1], 0.0);
+        vec4 offset_v = vec4(normal_v * v_line_height[1], 0.0);
 
-            outputEdge(-normal_h, -offset_h);
-            outputEdge(normal_v, offset_v);
-            outputEdge(normal_h, offset_h);
-            outputEdge(-normal_v, -offset_v);
-            outputEdge(-normal_h, -offset_h);
-            EndPrimitive();
+        outputEdge(-normal_h, -offset_h);
+        outputEdge(normal_v, offset_v);
+        outputEdge(normal_h, offset_h);
+        outputEdge(-normal_v, -offset_v);
+        outputEdge(-normal_h, -offset_h);
+        EndPrimitive();
 
-            if ((u_show_starts == 1) && (v_prev_line_type[0] != 1.0) && (v_line_type[0] == 1.0)) {
-                float w = v_line_width[1] * 1.1;
-                float h = v_line_height[1];
  #if 1
-                outputStartVertex(normalize(vec3( 1.0,  1.0,  1.0)), vec4( w,  h,  w, 0.0)); // Front-top-left
-                outputStartVertex(normalize(vec3( 1.0,  1.0, -1.0)), vec4( w,  h, -w, 0.0)); // Back-top-left
-                outputStartVertex(normalize(vec3(-1.0,  1.0,  1.0)), vec4(-w,  h,  w, 0.0)); // Front-top-right
-                outputStartVertex(normalize(vec3(-1.0,  1.0, -1.0)), vec4(-w,  h, -w, 0.0)); // Back-top-right
-                outputStartVertex(normalize(vec3( 1.0,  1.0, -1.0)), vec4( w,  h, -w, 0.0)); // Back-top-left
+        if ((u_show_starts == 0) || (v_prev_line_type[0] == 1.0) || (v_line_type[0] != 1.0)) {
+            return;
+        }
  #else
-                float z = 0.0;
-                outputStartVertex(normalize(vec3( 1.0, -1.0,  1.0)), vec4(  w, -h,  w, z)); // Front-bottom-left
-                outputStartVertex(normalize(vec3(   z,  1.0, -1.0)), vec4(  z,  h, -w, z)); // Back-top-middle
-                outputStartVertex(normalize(vec3(   z,  1.0,  1.0)), vec4(  z,  h,  w, z)); // Front-top-middle
-                outputStartVertex(normalize(vec3(-1.0, -1.0,  1.0)), vec4( -w, -h,  w, z)); // Front-bottom-right
-                outputStartVertex(normalize(vec3(   z,  1.0, -1.0)), vec4(  z,  h, -w, z)); // Back-top-middle
+        if ((u_show_starts == 1) && (v_prev_line_type[0] != 1.0) && (v_line_type[0] == 1.0))
  #endif
-                EndPrimitive();
-            }
+        {
+            float w = v_line_width[1] * 1.1;
+            float h = v_line_height[1];
+ #if 1
+            outputStartVertex(normalize(vec3( 1.0,  1.0,  1.0)), vec4( w,  h,  w, 0.0)); // Front-top-left
+            outputStartVertex(normalize(vec3( 1.0,  1.0, -1.0)), vec4( w,  h, -w, 0.0)); // Back-top-left
+            outputStartVertex(normalize(vec3(-1.0,  1.0,  1.0)), vec4(-w,  h,  w, 0.0)); // Front-top-right
+            outputStartVertex(normalize(vec3(-1.0,  1.0, -1.0)), vec4(-w,  h, -w, 0.0)); // Back-top-right
+            outputStartVertex(normalize(vec3( 1.0,  1.0, -1.0)), vec4( w,  h, -w, 0.0)); // Back-top-left
+ #else
+            float z = 0.0;
+            outputStartVertex(normalize(vec3( 1.0, -1.0,  1.0)), vec4(  w, -h,  w, z)); // Front-bottom-left
+            outputStartVertex(normalize(vec3(   z,  1.0, -1.0)), vec4(  z,  h, -w, z)); // Back-top-middle
+            outputStartVertex(normalize(vec3(   z,  1.0,  1.0)), vec4(  z,  h,  w, z)); // Front-top-middle
+            outputStartVertex(normalize(vec3(-1.0, -1.0,  1.0)), vec4( -w, -h,  w, z)); // Front-bottom-right
+            outputStartVertex(normalize(vec3(   z,  1.0, -1.0)), vec4(  z,  h, -w, z)); // Back-top-middle
+ #endif
+            EndPrimitive();
         }
     }
 
