@@ -107,12 +107,6 @@ vertex =
         return vec4(red, green, blue, 1.0);
     }
 
-    float clamp1(float v)
-    {
-        float t = v < 0.0 ? 0.0 : v;
-        return t > 1.0 ? 1.0 : t;
-    }
-
     // Inspired by https://stackoverflow.com/a/46628410
     vec4 flowRateGradientColor(float abs_value, float min_value, float max_value)
     {
@@ -125,9 +119,9 @@ vertex =
         {
           t = 2.0 * ((abs_value - min_value) / (max_value - min_value)) - 1.0;
         }
-        float red = clamp1(1.5 - abs(2.0 * t - 1.0));
-        float green = clamp1(1.5 - abs(2.0 * t));
-        float blue = clamp1(1.5 - abs(2.0 * t + 1.0));
+        float red = clamp(1.5 - abs(2.0 * t - 1.0), 0.0, 1.0);
+        float green = clamp(1.5 - abs(2.0 * t), 0.0, 1.0);
+        float blue = clamp(1.5 - abs(2.0 * t + 1.0), 0.0, 1.0);
         return vec4(red, green, blue, 1.0);
     }
 
@@ -170,9 +164,9 @@ vertex =
 
         if ((u_extruder_opacity[int(mod(a_extruder, 4.0))][int(a_extruder / 4.0)] == 0.0) ||
             ((u_show_travel_moves == 0) && ((a_line_type == 8.0) || (a_line_type == 9.0))) ||
+            ((u_show_infill == 0) && (a_line_type == 6.0)) ||
             ((u_show_helpers == 0) && ((a_line_type == 4.0) || (a_line_type == 5.0) || (a_line_type == 7.0) || (a_line_type == 10.0) || a_line_type == 11.0)) ||
-            ((u_show_skin == 0) && ((a_line_type == 1.0) || (a_line_type == 2.0) || (a_line_type == 3.0))) ||
-            ((u_show_infill == 0) && (a_line_type == 6.0))) {
+            ((u_show_skin == 0) && ((a_line_type == 1.0) || (a_line_type == 2.0) || (a_line_type == 3.0)))) {
             v_color.a = 0.0;
         }
 
@@ -284,7 +278,14 @@ geometry =
 
         EndPrimitive();
 
-        if ((u_show_starts == 1) && (v_prev_line_type[0] != 1.0) && (v_line_type[0] == 1.0)) {
+ #if 1
+        if ((u_show_starts == 0) || (v_prev_line_type[0] == 1.0) || (v_line_type[0] != 1.0)) {
+            return;
+        }
+ #else
+        if ((u_show_starts == 1) && (v_prev_line_type[0] != 1.0) && (v_line_type[0] == 1.0))
+ #endif
+        {
             float w = v_line_width[1] * 1.1;
             float h = v_line_height[1];
 

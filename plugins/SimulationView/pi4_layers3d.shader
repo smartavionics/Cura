@@ -107,12 +107,6 @@ vertex =
         return vec4(red, green, blue, 1.0);
     }
 
-    float clamp1(float v)
-    {
-        float t = v < 0.0 ? 0.0 : v;
-        return t > 1.0 ? 1.0 : t;
-    }
-
     // Inspired by https://stackoverflow.com/a/46628410
     vec4 flowRateGradientColor(float abs_value, float min_value, float max_value)
     {
@@ -125,9 +119,9 @@ vertex =
         {
           t = 2.0 * ((abs_value - min_value) / (max_value - min_value)) - 1.0;
         }
-        float red = clamp1(1.5 - abs(2.0 * t - 1.0));
-        float green = clamp1(1.5 - abs(2.0 * t));
-        float blue = clamp1(1.5 - abs(2.0 * t + 1.0));
+        float red = clamp(1.5 - abs(2.0 * t - 1.0), 0.0, 1.0);
+        float green = clamp(1.5 - abs(2.0 * t), 0.0, 1.0);
+        float blue = clamp(1.5 - abs(2.0 * t + 1.0), 0.0, 1.0);
         return vec4(red, green, blue, 1.0);
     }
 
@@ -170,9 +164,9 @@ vertex =
 
         if ((u_extruder_opacity[int(mod(a_extruder, 4.0))][int(a_extruder / 4.0)] == 0.0) ||
             ((u_show_travel_moves == 0) && ((a_line_type == 8.0) || (a_line_type == 9.0))) ||
+            ((u_show_infill == 0) && (a_line_type == 6.0)) ||
             ((u_show_helpers == 0) && ((a_line_type == 4.0) || (a_line_type == 5.0) || (a_line_type == 7.0) || (a_line_type == 10.0) || a_line_type == 11.0)) ||
-            ((u_show_skin == 0) && ((a_line_type == 1.0) || (a_line_type == 2.0) || (a_line_type == 3.0))) ||
-            ((u_show_infill == 0) && (a_line_type == 6.0))) {
+            ((u_show_skin == 0) && ((a_line_type == 1.0) || (a_line_type == 2.0) || (a_line_type == 3.0)))) {
             v_color.a = 0.0;
         }
 
@@ -241,42 +235,50 @@ geometry =
 
     void main()
     {
-        if (v_color[1].a != 0.0) {
+        if (v_color[1].a == 0.0) {
+            return;
+        }
 
-            viewProjectionMatrix = u_projectionMatrix * u_viewMatrix;
+        viewProjectionMatrix = u_projectionMatrix * u_viewMatrix;
 
-            vec3 vertex_delta = gl_in[1].gl_Position.xyz - gl_in[0].gl_Position.xyz;
-            vec3 normal_h = normalize(vec3(vertex_delta.z, vertex_delta.y, -vertex_delta.x));
-            vec3 normal_v = vec3(0.0, 1.0, 0.0);
-            vec4 offset_h = vec4(normal_h * v_line_width[1], 0.0);
-            vec4 offset_v = vec4(normal_v * v_line_height[1], 0.0);
+        vec3 vertex_delta = gl_in[1].gl_Position.xyz - gl_in[0].gl_Position.xyz;
+        vec3 normal_h = normalize(vec3(vertex_delta.z, vertex_delta.y, -vertex_delta.x));
+        vec3 normal_v = vec3(0.0, 1.0, 0.0);
+        vec4 offset_h = vec4(normal_h * v_line_width[1], 0.0);
+        vec4 offset_v = vec4(normal_v * v_line_height[1], 0.0);
 
-            outputEdge(-normal_h, -offset_h);
-            outputEdge(normal_v, offset_v);
-            outputEdge(normal_h, offset_h);
-            outputEdge(-normal_v, -offset_v);
-            outputEdge(-normal_h, -offset_h);
-            EndPrimitive();
+        outputEdge(-normal_h, -offset_h);
+        outputEdge(normal_v, offset_v);
+        outputEdge(normal_h, offset_h);
+        outputEdge(-normal_v, -offset_v);
+        outputEdge(-normal_h, -offset_h);
+        EndPrimitive();
 
-            if ((u_show_starts == 1) && (v_prev_line_type[0] != 1.0) && (v_line_type[0] == 1.0)) {
-                float w = v_line_width[1] * 1.1;
-                float h = v_line_height[1];
  #if 1
-                outputStartVertex(normalize(vec3( 1.0,  1.0,  1.0)), vec4( w,  h,  w, 0.0)); // Front-top-left
-                outputStartVertex(normalize(vec3( 1.0,  1.0, -1.0)), vec4( w,  h, -w, 0.0)); // Back-top-left
-                outputStartVertex(normalize(vec3(-1.0,  1.0,  1.0)), vec4(-w,  h,  w, 0.0)); // Front-top-right
-                outputStartVertex(normalize(vec3(-1.0,  1.0, -1.0)), vec4(-w,  h, -w, 0.0)); // Back-top-right
-                outputStartVertex(normalize(vec3( 1.0,  1.0, -1.0)), vec4( w,  h, -w, 0.0)); // Back-top-left
+        if ((u_show_starts == 0) || (v_prev_line_type[0] == 1.0) || (v_line_type[0] != 1.0)) {
+            return;
+        }
  #else
-                float z = 0.0;
-                outputStartVertex(normalize(vec3( 1.0, -1.0,  1.0)), vec4(  w, -h,  w, z)); // Front-bottom-left
-                outputStartVertex(normalize(vec3(   z,  1.0, -1.0)), vec4(  z,  h, -w, z)); // Back-top-middle
-                outputStartVertex(normalize(vec3(   z,  1.0,  1.0)), vec4(  z,  h,  w, z)); // Front-top-middle
-                outputStartVertex(normalize(vec3(-1.0, -1.0,  1.0)), vec4( -w, -h,  w, z)); // Front-bottom-right
-                outputStartVertex(normalize(vec3(   z,  1.0, -1.0)), vec4(  z,  h, -w, z)); // Back-top-middle
+        if ((u_show_starts == 1) && (v_prev_line_type[0] != 1.0) && (v_line_type[0] == 1.0))
  #endif
-                EndPrimitive();
-            }
+        {
+            float w = v_line_width[1] * 1.1;
+            float h = v_line_height[1];
+ #if 1
+            outputStartVertex(normalize(vec3( 1.0,  1.0,  1.0)), vec4( w,  h,  w, 0.0)); // Front-top-left
+            outputStartVertex(normalize(vec3( 1.0,  1.0, -1.0)), vec4( w,  h, -w, 0.0)); // Back-top-left
+            outputStartVertex(normalize(vec3(-1.0,  1.0,  1.0)), vec4(-w,  h,  w, 0.0)); // Front-top-right
+            outputStartVertex(normalize(vec3(-1.0,  1.0, -1.0)), vec4(-w,  h, -w, 0.0)); // Back-top-right
+            outputStartVertex(normalize(vec3( 1.0,  1.0, -1.0)), vec4( w,  h, -w, 0.0)); // Back-top-left
+ #else
+            float z = 0.0;
+            outputStartVertex(normalize(vec3( 1.0, -1.0,  1.0)), vec4(  w, -h,  w, z)); // Front-bottom-left
+            outputStartVertex(normalize(vec3(   z,  1.0, -1.0)), vec4(  z,  h, -w, z)); // Back-top-middle
+            outputStartVertex(normalize(vec3(   z,  1.0,  1.0)), vec4(  z,  h,  w, z)); // Front-top-middle
+            outputStartVertex(normalize(vec3(-1.0, -1.0,  1.0)), vec4( -w, -h,  w, z)); // Front-bottom-right
+            outputStartVertex(normalize(vec3(   z,  1.0, -1.0)), vec4(  z,  h, -w, z)); // Back-top-middle
+ #endif
+            EndPrimitive();
         }
     }
 
