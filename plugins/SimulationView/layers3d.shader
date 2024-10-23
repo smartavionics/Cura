@@ -33,7 +33,7 @@ vertex41core =
     out lowp vec4 v_color;
 
     out highp vec3 v_vertex;
-    out highp vec3 v_normal;
+    //out highp vec3 v_normal;
     out lowp vec2 v_line_dim;
     out highp int v_extruder;
     out highp mat4 v_extruder_opacity;
@@ -157,7 +157,7 @@ vertex41core =
         }
 
         v_vertex = world_space_vert.xyz;
-        v_normal = (u_normalMatrix * normalize(a_normal)).xyz;
+        //v_normal = (u_normalMatrix * normalize(a_normal)).xyz;
         v_line_dim = a_line_dim;
         v_extruder = int(a_extruder);
         v_prev_line_type = a_prev_line_type;
@@ -165,9 +165,9 @@ vertex41core =
         v_extruder_opacity = u_extruder_opacity;
 
         // for testing without geometry shader
-        f_color = v_color;
-        f_vertex = v_vertex;
-        f_normal = v_normal;
+        //f_color = v_color;
+        //f_vertex = v_vertex;
+        //f_normal = v_normal;
     }
 
 geometry41core =
@@ -190,7 +190,7 @@ geometry41core =
 
     in vec4 v_color[];
     in vec3 v_vertex[];
-    in vec3 v_normal[];
+    //in vec3 v_normal[];
     in lowp vec2 v_line_dim[];
     in int v_extruder[];
     in mat4 v_extruder_opacity[];
