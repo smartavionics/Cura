@@ -224,12 +224,13 @@ geometry =
         EmitVertex();
     }
 
-    void outputVertex(const int index, const vec3 normal, const float x_offset, const float y_offset)
+    void outputVertex(const int index, const vec3 normal, const float x_offset, const float y_offset, const vec4 end_offset)
     {
         f_color = v_color[1];
         f_normal = normal;
         vec4 vertex_delta = gl_in[1].gl_Position - gl_in[0].gl_Position;
         vec4 offset_vec = normalize(vec4(vertex_delta.z, 0.0, -vertex_delta.x, 0.0)) * x_offset;
+        offset_vec += end_offset;
         offset_vec.y = y_offset;
         gl_Position = viewProjectionMatrix * (gl_in[index].gl_Position + offset_vec);
         EmitVertex();
@@ -266,15 +267,17 @@ geometry =
             y_offset *= 0.6;
         }
 
-        outputVertex(0, -view_delta, -x_sign * x_offset, -y_offset);
-        outputVertex(1, -view_delta, -x_sign * x_offset, -y_offset);
+        vec4 end_offset = normalize(gl_in[1].gl_Position - gl_in[0].gl_Position) * 0.25 * v_line_width[1]; // extend line a little at at each end to fill gaps
+
+        outputVertex(0, -view_delta, -x_sign * x_offset, -y_offset, -end_offset);
+        outputVertex(1, -view_delta, -x_sign * x_offset, -y_offset, end_offset);
         if (u_resolution > 0) {
-            outputVertex(0, view_delta, 0.0, 0.0);
-            outputVertex(1, view_delta, 0.0, 0.0);
+            outputVertex(0, view_delta, 0.0, 0.0, -end_offset);
+            outputVertex(1, view_delta, 0.0, 0.0, end_offset);
             view_delta = -view_delta;
         }
-        outputVertex(0, view_delta, x_sign * x_offset, y_offset);
-        outputVertex(1, view_delta, x_sign * x_offset, y_offset);
+        outputVertex(0, view_delta, x_sign * x_offset, y_offset, -end_offset);
+        outputVertex(1, view_delta, x_sign * x_offset, y_offset, end_offset);
 
         EndPrimitive();
 
