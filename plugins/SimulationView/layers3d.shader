@@ -285,64 +285,71 @@ geometry41core =
             myEmitVertex(v_vertex[0], v_color[1], g_vertex_normal_vert, va_up);
 
             EndPrimitive();
-        } else {
-            vec4 va_m_horz = viewProjectionMatrix * (gl_in[0].gl_Position - g_vertex_offset_horz); //Line start, left vertex.
-            vec4 vb_m_horz = viewProjectionMatrix * (gl_in[1].gl_Position - g_vertex_offset_horz); //Line end, left vertex.
-            vec4 va_p_vert = viewProjectionMatrix * (gl_in[0].gl_Position + g_vertex_offset_vert); //Line start, top vertex.
-            vec4 vb_p_vert = viewProjectionMatrix * (gl_in[1].gl_Position + g_vertex_offset_vert); //Line end, top vertex.
-            vec4 va_p_horz = viewProjectionMatrix * (gl_in[0].gl_Position + g_vertex_offset_horz); //Line start, right vertex.
-            vec4 vb_p_horz = viewProjectionMatrix * (gl_in[1].gl_Position + g_vertex_offset_horz); //Line end, right vertex.
-            vec4 va_m_vert = viewProjectionMatrix * (gl_in[0].gl_Position - g_vertex_offset_vert); //Line start, bottom vertex.
-            vec4 vb_m_vert = viewProjectionMatrix * (gl_in[1].gl_Position - g_vertex_offset_vert); //Line end, bottom vertex.
-            vec4 va_head   = viewProjectionMatrix * (gl_in[0].gl_Position + g_vertex_offset_horz_head); //Line start, tip.
-            vec4 vb_head   = viewProjectionMatrix * (gl_in[1].gl_Position - g_vertex_offset_horz_head); //Line end, tip.
 
-            // All normal lines are rendered as 3d tubes.
-            myEmitVertex(v_vertex[0], v_color[1], -g_vertex_normal_horz, va_m_horz);
-            myEmitVertex(v_vertex[1], v_color[1], -g_vertex_normal_horz, vb_m_horz);
-            myEmitVertex(v_vertex[0], v_color[1], g_vertex_normal_vert, va_p_vert);
-            myEmitVertex(v_vertex[1], v_color[1], g_vertex_normal_vert, vb_p_vert);
-            myEmitVertex(v_vertex[0], v_color[1], g_vertex_normal_horz, va_p_horz);
-            myEmitVertex(v_vertex[1], v_color[1], g_vertex_normal_horz, vb_p_horz);
-            myEmitVertex(v_vertex[0], v_color[1], -g_vertex_normal_vert, va_m_vert);
-            myEmitVertex(v_vertex[1], v_color[1], -g_vertex_normal_vert, vb_m_vert);
-            myEmitVertex(v_vertex[0], v_color[1], -g_vertex_normal_horz, va_m_horz);
-            myEmitVertex(v_vertex[1], v_color[1], -g_vertex_normal_horz, vb_m_horz);
-
-            EndPrimitive();
-
-            // left side
-            myEmitVertex(v_vertex[0], v_color[1], -g_vertex_normal_horz, va_m_horz);
-            myEmitVertex(v_vertex[0], v_color[1], g_vertex_normal_vert, va_p_vert);
-            myEmitVertex(v_vertex[0], v_color[1], g_vertex_normal_horz_head, va_head);
-            myEmitVertex(v_vertex[0], v_color[1], g_vertex_normal_horz, va_p_horz);
-
-            EndPrimitive();
-
-            myEmitVertex(v_vertex[0], v_color[1], g_vertex_normal_horz, va_p_horz);
-            myEmitVertex(v_vertex[0], v_color[1], -g_vertex_normal_vert, va_m_vert);
-            myEmitVertex(v_vertex[0], v_color[1], g_vertex_normal_horz_head, va_head);
-            myEmitVertex(v_vertex[0], v_color[1], -g_vertex_normal_horz, va_m_horz);
-
-            EndPrimitive();
-
-            // right side
-            myEmitVertex(v_vertex[1], v_color[1], g_vertex_normal_horz, vb_p_horz);
-            myEmitVertex(v_vertex[1], v_color[1], g_vertex_normal_vert, vb_p_vert);
-            myEmitVertex(v_vertex[1], v_color[1], -g_vertex_normal_horz_head, vb_head);
-            myEmitVertex(v_vertex[1], v_color[1], -g_vertex_normal_horz, vb_m_horz);
-
-            EndPrimitive();
-
-            myEmitVertex(v_vertex[1], v_color[1], -g_vertex_normal_horz, vb_m_horz);
-            myEmitVertex(v_vertex[1], v_color[1], -g_vertex_normal_vert, vb_m_vert);
-            myEmitVertex(v_vertex[1], v_color[1], -g_vertex_normal_horz_head, vb_head);
-            myEmitVertex(v_vertex[1], v_color[1], g_vertex_normal_horz, vb_p_horz);
-
-            EndPrimitive();
+            return;
         }
 
-        if ((u_show_starts == 1) && (v_prev_line_type[0] != 1) && (v_line_type[0] == 1)) {
+        // all extrusions
+        vec4 va_m_horz = viewProjectionMatrix * (gl_in[0].gl_Position - g_vertex_offset_horz); //Line start, left vertex.
+        vec4 vb_m_horz = viewProjectionMatrix * (gl_in[1].gl_Position - g_vertex_offset_horz); //Line end, left vertex.
+        vec4 va_p_vert = viewProjectionMatrix * (gl_in[0].gl_Position + g_vertex_offset_vert); //Line start, top vertex.
+        vec4 vb_p_vert = viewProjectionMatrix * (gl_in[1].gl_Position + g_vertex_offset_vert); //Line end, top vertex.
+        vec4 va_p_horz = viewProjectionMatrix * (gl_in[0].gl_Position + g_vertex_offset_horz); //Line start, right vertex.
+        vec4 vb_p_horz = viewProjectionMatrix * (gl_in[1].gl_Position + g_vertex_offset_horz); //Line end, right vertex.
+        vec4 va_m_vert = viewProjectionMatrix * (gl_in[0].gl_Position - g_vertex_offset_vert); //Line start, bottom vertex.
+        vec4 vb_m_vert = viewProjectionMatrix * (gl_in[1].gl_Position - g_vertex_offset_vert); //Line end, bottom vertex.
+        vec4 va_head   = viewProjectionMatrix * (gl_in[0].gl_Position + g_vertex_offset_horz_head); //Line start, tip.
+        vec4 vb_head   = viewProjectionMatrix * (gl_in[1].gl_Position - g_vertex_offset_horz_head); //Line end, tip.
+
+        // All normal lines are rendered as 3d tubes.
+        myEmitVertex(v_vertex[0], v_color[1], -g_vertex_normal_horz, va_m_horz);
+        myEmitVertex(v_vertex[1], v_color[1], -g_vertex_normal_horz, vb_m_horz);
+        myEmitVertex(v_vertex[0], v_color[1], g_vertex_normal_vert, va_p_vert);
+        myEmitVertex(v_vertex[1], v_color[1], g_vertex_normal_vert, vb_p_vert);
+        myEmitVertex(v_vertex[0], v_color[1], g_vertex_normal_horz, va_p_horz);
+        myEmitVertex(v_vertex[1], v_color[1], g_vertex_normal_horz, vb_p_horz);
+        myEmitVertex(v_vertex[0], v_color[1], -g_vertex_normal_vert, va_m_vert);
+        myEmitVertex(v_vertex[1], v_color[1], -g_vertex_normal_vert, vb_m_vert);
+        myEmitVertex(v_vertex[0], v_color[1], -g_vertex_normal_horz, va_m_horz);
+        myEmitVertex(v_vertex[1], v_color[1], -g_vertex_normal_horz, vb_m_horz);
+
+        EndPrimitive();
+
+        // left side
+        myEmitVertex(v_vertex[0], v_color[1], -g_vertex_normal_horz, va_m_horz);
+        myEmitVertex(v_vertex[0], v_color[1], g_vertex_normal_vert, va_p_vert);
+        myEmitVertex(v_vertex[0], v_color[1], g_vertex_normal_horz_head, va_head);
+        myEmitVertex(v_vertex[0], v_color[1], g_vertex_normal_horz, va_p_horz);
+
+        EndPrimitive();
+
+        myEmitVertex(v_vertex[0], v_color[1], g_vertex_normal_horz, va_p_horz);
+        myEmitVertex(v_vertex[0], v_color[1], -g_vertex_normal_vert, va_m_vert);
+        myEmitVertex(v_vertex[0], v_color[1], g_vertex_normal_horz_head, va_head);
+        myEmitVertex(v_vertex[0], v_color[1], -g_vertex_normal_horz, va_m_horz);
+
+        EndPrimitive();
+
+        // right side
+        myEmitVertex(v_vertex[1], v_color[1], g_vertex_normal_horz, vb_p_horz);
+        myEmitVertex(v_vertex[1], v_color[1], g_vertex_normal_vert, vb_p_vert);
+        myEmitVertex(v_vertex[1], v_color[1], -g_vertex_normal_horz_head, vb_head);
+        myEmitVertex(v_vertex[1], v_color[1], -g_vertex_normal_horz, vb_m_horz);
+
+        EndPrimitive();
+
+        myEmitVertex(v_vertex[1], v_color[1], -g_vertex_normal_horz, vb_m_horz);
+        myEmitVertex(v_vertex[1], v_color[1], -g_vertex_normal_vert, vb_m_vert);
+        myEmitVertex(v_vertex[1], v_color[1], -g_vertex_normal_horz_head, vb_head);
+        myEmitVertex(v_vertex[1], v_color[1], g_vertex_normal_horz, vb_p_horz);
+
+        EndPrimitive();
+
+        if ((u_show_starts == 0) || (v_prev_line_type[0] == 1) || (v_line_type[0] != 1)) {
+            return;
+        }
+
+        {
             float w = size_x;
             float h = size_y;
 
