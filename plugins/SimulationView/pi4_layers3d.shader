@@ -211,8 +211,6 @@ geometry =
 
     mediump mat4 viewProjectionMatrix;
 
-    vec4 end_offset;
-
     void outputStartVertex(const vec3 normal, const vec4 offset)
     {
         f_color = u_starts_color;
@@ -229,12 +227,6 @@ geometry =
         EmitVertex();
     }
 
-    void outputEdge(const vec3 normal, const vec4 offset)
-    {
-        outputVertex(0, normal, offset - end_offset);
-        outputVertex(1, normal, offset + end_offset);
-    }
-
     void main()
     {
         if (v_color[1].a == 0.0) {
@@ -249,13 +241,18 @@ geometry =
         vec4 offset_h = vec4(normal_h * v_line_width[1], 0.0);
         vec4 offset_v = vec4(normal_v * v_line_height[1], 0.0);
 
-        end_offset = normalize(gl_in[1].gl_Position - gl_in[0].gl_Position) * 0.25 * v_line_width[1]; // extend line a little at at each end to fill gaps
+        vec4 end_offset = vec4(normalize(vertex_delta) * 0.25 * v_line_width[1], 0.0); // extend line a little at at each end to fill gaps
 
-        outputEdge(-normal_h, -offset_h);
-        outputEdge(normal_v, offset_v);
-        outputEdge(normal_h, offset_h);
-        outputEdge(-normal_v, -offset_v);
-        outputEdge(-normal_h, -offset_h);
+        outputVertex(0, -normal_h, -offset_h - end_offset);
+        outputVertex(1, -normal_h, -offset_h + end_offset);
+        outputVertex(0, normal_v, offset_v - end_offset);
+        outputVertex(1, normal_v, offset_v + end_offset);
+        outputVertex(0, normal_h, offset_h - end_offset);
+        outputVertex(1, normal_h, offset_h + end_offset);
+        outputVertex(0, -normal_v, -offset_v - end_offset);
+        outputVertex(1, -normal_v, -offset_v + end_offset);
+        outputVertex(0, -normal_h, -offset_h - end_offset);
+        outputVertex(1, -normal_h, -offset_h + end_offset);
         EndPrimitive();
 
  #if 1
