@@ -839,6 +839,30 @@
                                     "limit_to_extruder": "wall_0_extruder_nr",
                                     "settable_per_mesh": true
                                 },
+                                "wall_line_width_02":
+                                {
+                                    "label": "Outer Wall Line Width (Even Layers)",
+                                    "description": "Width of the outermost wall line on even layers.",
+                                    "unit": "mm",
+                                    "minimum_value": "0.001",
+                                    "minimum_value_warning": "wall_line_width_0 / 2",
+                                    "maximum_value_warning": "1.5 * wall_line_width_0",
+                                    "default_value": 0.4,
+                                    "value": "wall_line_width_0",
+                                    "type": "float",
+                                    "limit_to_extruder": "wall_0_extruder_nr",
+                                    "settable_per_mesh": true
+                                },
+                                "wall_0_constant_flow":
+                                {
+                                   "label": "Outer Wall Constant Flow",
+                                   "description": "When enabled, the print speed used for outer walls on even layers will be adjusted to keep the flow rate constant.",
+                                   "type": "bool",
+                                   "default_value": false,
+                                   "enabled": "wall_line_width_02 != wall_line_width_0",
+                                   "limit_to_extruder": "wall_x_extruder_nr",
+                                   "settable_per_mesh": true
+                                },
                                 "wall_line_width_x":
                                 {
                                     "label": "Inner Wall(s) Line Width",

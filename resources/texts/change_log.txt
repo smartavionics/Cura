@@ -1,3 +1,10 @@
+[4.20.26]
+* New Features
+Added Outer Wall Line Width (Even Layers) and Outer Wall Constant Flow settings to provide a simple implementation of "Brick Layering".
+* Bug fixes and improvements.
+Cutting meshes that have no walls, skin or infill are now ignored when calculating the skirt or brim.
+Improve the exact z-seam placement when the wall doesn't intersect with the z-seam hint line.
+
 [4.20.25]
 * New Features
 Added Ignore Gantry Height setting which stops the height of the build volume being reduced to Gantry Height when printing in 'One at a Time' mode. Use with caution!
