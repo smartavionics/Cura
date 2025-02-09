@@ -192,7 +192,10 @@ class SimulationView(CuraView):
             # moved from __init__() as OpenGL hasn't yet been setup when it is called
             try:
                 gpuType = OpenGL.getInstance().getGPUType().split()
-                self._on_pi5 = gpuType[0] == "V3D" and float(gpuType[1]) >= 7.1
+                self._on_pi5 = gpuType[0] == "V3D" and int(gpuType[1].split(".")[0]) >= 7
+                if gpuType[0] == "V3D":
+                    Logger.log("d", "V3D renderer version is " + gpuType[1])
+                    Logger.log("Pi5 detected = " + str(self._on_pi5))
             except Exception as e:
                 Logger.log("e", str(e))
             self._use_pi5_layer_shader = self._on_pi5 and bool(Application.getInstance().getPreferences().getValue("view/enable_pi5_layer_shader"))
