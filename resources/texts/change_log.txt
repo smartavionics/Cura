@@ -1,3 +1,12 @@
+
+[4.20.27]
+* New Features
+Added Fill Below All Skin setting to force use of zig-zag infill even when a skin doesn't have an edge that needs supporting.
+* Bug fixes and improvements.
+Small change to perimeter gap filling.
+Don't use small feature speed if line is overhanging (requested change).
+Fixed an issue with detecting Raspberry Pi 5 GPU.
+
 [4.20.26]
 * New Features
 Added Outer Wall Line Width (Even Layers) and Outer Wall Constant Flow settings to provide a simple implementation of "Brick Layering".
