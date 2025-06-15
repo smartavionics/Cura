@@ -1,4 +1,14 @@
 
+[4.20.28]
+* New Features
+Added Bridge Has Third Layer setting that is effective when multiple bridge layers are enabled (defaults to true).
+Added Anycubic Kobra and Kobra Max printer profiles.
+* Bug fixes and improvements.
+Try to avoid generating thin infill regions below sloping walls when multi-layer infill is enabled.
+When printing infill before walls, print infill meshes before non-infill meshes.
+It wasn't detecting sparse infill below when printing 2nd and 3rd bridge layers, it does now.
+It now tries to make the orientation of the lines on the top bridge layer different to the orientation of the lines on the skin above.
+
 [4.20.27]
 * New Features
 Added Fill Below All Skin setting to force use of zig-zag infill even when a skin doesn't have an edge that needs supporting.
