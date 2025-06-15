@@ -8666,7 +8666,7 @@
                         "zigzag": "Zig Zag"
                     },
                     "default_value": "lines",
-                    "enabled": "bridge_settings_enabled",
+                    "enabled": "bridge_settings_enabled and bridge_enable_more_layers",
                     "settable_per_mesh": true
                 },
                 "bridge_fan_speed_2":
