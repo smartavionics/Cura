@@ -8681,6 +8681,15 @@
                     "enabled": "bridge_settings_enabled and bridge_enable_more_layers",
                     "settable_per_mesh": true
                 },
+                "bridge_enable_third_layer":
+                {
+                    "label": "Bridge Has Third Layer",
+                    "description": "If enabled, the third layer above the air is printed using the following settings. Otherwise, this layers is printed using the normal settings.",
+                    "type": "bool",
+                    "default_value": true,
+                    "enabled": "bridge_settings_enabled and bridge_enable_more_layers",
+                    "settable_per_mesh": true
+                },
                 "bridge_skin_speed_3":
                 {
                     "label": "Bridge Third Skin Speed",
@@ -8692,7 +8701,7 @@
                     "maximum_value_warning": "300",
                     "default_value": 15,
                     "value": "bridge_skin_speed",
-                    "enabled": "bridge_settings_enabled and bridge_enable_more_layers",
+                    "enabled": "bridge_settings_enabled and bridge_enable_more_layers and bridge_enable_third_layer",
                     "settable_per_mesh": true
                 },
                 "bridge_skin_material_flow_3":
@@ -8706,7 +8715,7 @@
                     "maximum_value": "500",
                     "minimum_value_warning": "50",
                     "maximum_value_warning": "150",
-                    "enabled": "bridge_settings_enabled and bridge_enable_more_layers",
+                    "enabled": "bridge_settings_enabled and bridge_enable_more_layers and bridge_enable_third_layer",
                     "settable_per_mesh": true
                 },
                 "bridge_skin_density_3":
@@ -8720,7 +8729,7 @@
                     "maximum_value": "20000 / bridge_skin_material_flow_3",
                     "minimum_value_warning": "20",
                     "maximum_value_warning": "10000 / bridge_skin_material_flow_3",
-                    "enabled": "bridge_settings_enabled and bridge_enable_more_layers",
+                    "enabled": "bridge_settings_enabled and bridge_enable_more_layers and bridge_enable_third_layer",
                     "settable_per_mesh": true
                 },
                 "bridge_skin_overlap_3":
@@ -8730,7 +8739,7 @@
                     "unit": "%",
                     "type": "float",
                     "default_value": 25,
-                    "enabled": "bridge_settings_enabled and bridge_enable_more_layers",
+                    "enabled": "bridge_settings_enabled and bridge_enable_more_layers and bridge_enable_third_layer",
                     "settable_per_mesh": true,
                     "children":
                     {
@@ -8744,7 +8753,7 @@
                             "minimum_value_warning": "-0.5 * machine_nozzle_size",
                             "maximum_value_warning": "bottom_skin_expand_distance",
                             "value": "wall_line_width_0 * bridge_skin_overlap_3 / 100",
-                            "enabled": "bridge_settings_enabled and bridge_enable_more_layers",
+                            "enabled": "bridge_settings_enabled and bridge_enable_more_layers and bridge_enable_third_layer",
                             "settable_per_mesh": true
                         }
                     }
@@ -8760,7 +8769,7 @@
                         "zigzag": "Zig Zag"
                     },
                     "default_value": "lines",
-                    "enabled": "bridge_settings_enabled",
+                    "enabled": "bridge_settings_enabled and bridge_enable_more_layers and bridge_enable_third_layer",
                     "settable_per_mesh": true
                 },
                 "bridge_fan_speed_3":
@@ -8772,7 +8781,7 @@
                     "maximum_value": "100",
                     "default_value": 0,
                     "type": "float",
-                    "enabled": "bridge_settings_enabled and bridge_enable_more_layers",
+                    "enabled": "bridge_settings_enabled and bridge_enable_more_layers and bridge_enable_third_layer",
                     "settable_per_mesh": true
                 },
                 "mesh_temperature_delta":
