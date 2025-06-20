@@ -43,6 +43,8 @@ Item
     property string line_depth
     property string line_flow
 
+    property real maxWidth
+
     function getHandleValueFromSliderHandle()
     {
         return handle.getValue()
@@ -72,6 +74,12 @@ Item
     onWidthChanged : {
         // After a width change, the pixel-position of the handle is out of sync with the property value
         setHandleValue(handleValue)
+    }
+
+    FontMetrics
+    {
+        id: fontMetrics
+        font: UM.Theme.getFont("default")
     }
 
     // slider track
@@ -176,6 +184,13 @@ Item
             sliderRoot.line_width = (vals.length > 6) ? (vals[6] + " mm") : "";
             sliderRoot.line_depth = (vals.length > 7) ? (vals[7] + " mm") : "";
 
+            sliderRoot.maxWidth = 0;
+            for(const v of vals)
+            {
+                sliderRoot.maxWidth = Math.max(sliderRoot.maxWidth, fontMetrics.boundingRect(v).width);
+            }
+            sliderRoot.maxWidth += fontMetrics.boundingRect("Length").width; // "Length" is the longest label
+
             handleLabel.visible = value.length > 0
         }
 
@@ -202,7 +217,7 @@ Item
         UM.PointingRectangle {
             id: handleLabel
 
-            height: childrenRect.height
+            height: fontMetrics.lineSpacing * 9 // always display 8 lines + some margin
             y: parent.y + sliderRoot.handleSize + UM.Theme.getSize("default_margin").height
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.bottom:parent.top
@@ -210,7 +225,7 @@ Item
             target: Qt.point(x + width / 2, parent.top)
 
             arrowSize: UM.Theme.getSize("button_tooltip_arrow").height
-            width: childrenRect.width + Math.round(UM.Theme.getSize("default_margin").width / 2)
+            width: sliderRoot.maxWidth + Math.round(UM.Theme.getSize("default_margin").width * 3)
             visible: false
 
             color: UM.Theme.getColor("tool_panel_background")
